@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>How this interview works · Northwind Freight interview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet"><link rel="stylesheet" href="cand.css"><style>
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;margin-top:0;align-items:start}
+.notice p{margin:0 0 10px;color:var(--ink2)}
+.sect{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.three div{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.three b{display:block;font-weight:450}
+.three small{display:block;color:var(--mute);font-size:12px;line-height:16px;margin-top:2px}
+.never{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.facts div{background:var(--sub);border-radius:8px;padding:10px 12px}
+.facts small{display:block;font-size:12px;color:var(--mute);line-height:16px}
+.agree{display:flex;gap:8px;align-items:flex-start;padding:10px;border:1px solid var(--line2);border-radius:8px;cursor:pointer;margin:14px 0}
+.agree input{width:16px;height:16px;margin:2px 0 0;accent-color:#1C1C18;flex:none}
+.acc{margin-top:12px}
+.opt{display:flex;align-items:center;gap:8px;height:32px;padding:0 10px;border:1px solid var(--line);border-radius:8px;margin-top:6px;cursor:pointer}
+.opt input{accent-color:#1C1C18}
+.sent{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;background:var(--green);color:var(--greenT);font-size:12.5px;line-height:18px}
+</style></head><body>
+<header class="ctop"><div class="co"><span class="lg">N</span><div><b>Northwind Freight</b><small>Account Executive, Mid-Market · first interview</small></div></div>
+<nav class="steps" aria-label="Your progress"><span class="now"><i>1</i>Notice</span><span class="ln"></span><span class=""><i>2</i>Practice</span><span class="ln"></span><span class=""><i>3</i>Scored call</span><span class="ln"></span><span class=""><i>4</i>Done</span></nav>
+<a class="help" href="#"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="3.5" width="11" height="9" rx="1.5"/><path d="m3 4.5 5 4 5-4"/></svg>Questions? Write to Dana</a></header>
+<main class="page">
+<div class="phc"><div><h1>How this interview works</h1><p class="lede">Hi Sam. Before you start, here's what happens, what gets scored and who decides. Practice is open now. Your scored call opens on Mon, Nov 16.</p></div><div class="r"><span class="tag gray">Read before your calls · about 3 minutes</span></div></div>
+<div class="grid">
+  <section class="card notice">
+    <h2>Notice from Northwind Freight</h2>
+    <p style="margin-top:10px">Northwind Freight uses Warmcall for the first interview for this role. You'll talk with an AI buyer for about 7 minutes. Warmcall scores three skills: discovery, handling doubt and getting a next step. It doesn't score your voice, accent or face.</p>
+    <p>A person on our hiring team reviews every result and makes the decision. You can ask for extra time, captions, a text version or a person to interview you instead.</p>
+    <div class="sect"><h2>What gets scored</h2>
+      <div class="three"><div><b>Discovery</b><small>Finds the real problem before pitching anything</small></div><div><b>Handling doubt</b><small>Stays with a concern until the buyer says it's answered</small></div><div><b>Getting a next step</b><small>Asks for a specific, dated next step</small></div></div></div>
+    <div class="sect"><h2>What never gets scored</h2>
+      <div class="never"><span class="tag gray">Your voice</span><span class="tag gray">Your accent</span><span class="tag gray">Pauses and "um"</span><span class="tag gray">Your face (there's no video)</span><span class="tag gray">Practice calls</span></div></div>
+    <div class="sect"><h2>What to know</h2>
+      <div class="facts">
+        <div><small>Practice</small>As many times as you like. Never scored, never shared.</div>
+        <div><small>Scored call</small>One call, 7 minutes, opens Mon, Nov 16</div>
+        <div><small>Who decides</small>Marcus Lee, hiring manager, with Dana Whitfield</div>
+        <div><small>Your recording</small>Kept 12 months, then deleted. Ask Dana to delete it sooner.</div>
+      </div></div>
+  </section>
+  <aside>
+    <div class="card">
+      <h2>Your agreement</h2>
+      <p class="small muted" style="margin:6px 0 0">You need to agree before the scored call. You can practice either way.</p>
+      <label class="agree"><input type="checkbox" id="ok" onchange="document.getElementById('go').disabled=!this.checked"><span>I've read this and I agree to take the scored call.</span></label>
+      <button class="btn yellow lg" id="go" style="width:100%" disabled data-go="prep.html">Continue to practice</button>
+      <p class="small muted" style="margin:10px 0 0">Your agreement is saved with the date and this version of the notice.</p>
+    </div>
+    <div class="card acc">
+      <h2>Need something different?</h2>
+      <p class="small muted" style="margin:6px 0 0">Asking doesn't affect your score. The hiring manager never sees it.</p>
+      <label class="opt"><input type="checkbox">Extra time on the scored call</label>
+      <label class="opt"><input type="checkbox">Live captions</label>
+      <label class="opt"><input type="checkbox">A text version of the call</label>
+      <label class="opt"><input type="checkbox">A person to interview me instead</label>
+      <button class="btn" style="width:100%;margin-top:12px" data-js onclick="document.getElementById('sent').style.display='block';this.disabled=true">Send to Dana</button>
+      <div class="sent" id="sent">Sent. Dana usually replies within one working day. Your scored call won't open until she does.</div>
+    </div>
+  </aside>
+</div>
+<p class="cfoot">Interview run with Warmcall for Northwind Freight</p>
+</main>
+
+<script src="proto.js"></script>
+</body></html>
