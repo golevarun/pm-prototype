@@ -134,7 +134,7 @@
     function close(){ov.remove();document.removeEventListener('keydown',k,true);}
     function k(e){if(e.key==='Escape')close();}
     (o.actions||[{label:'Close'}]).forEach(function(a){
-      var b=document.createElement('button');b.className='ui-b'+(a.primary?' pri':'');b.textContent=a.label;
+      var b=document.createElement('button');b.className='ui-b'+(a.primary?' pri':'')+(a.danger?' danger':'');b.textContent=a.label;
       b.addEventListener('click',function(){var r=a.onClick?a.onClick(dr):undefined;if(r!==false)close();});f.appendChild(b);
     });
     ov.querySelector('.ui-x').onclick=close;
