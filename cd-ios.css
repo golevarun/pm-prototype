@@ -1,0 +1,194 @@
+/* cd-ios.css: Sam's iPhone running Apple Mail, used by email.html and outcome-email.html.
+   Light mode only. Screen is 390x844 (iPhone 15/16). The whole device scales down to fit the window. */
+body.cd-ios-page{background:var(--sub);overflow:hidden;min-width:0}
+.cd-ios-stage{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:56px;align-items:start;padding:16px 24px 0;height:100vh}
+.cd-ios-cap{justify-self:end;text-align:right;padding-top:96px;max-width:260px;font-family:Inter,system-ui,sans-serif}
+.cd-ios-cap .cd-ios-c1{font-size:13px;line-height:20px;color:var(--ink);font-weight:500}
+.cd-ios-cap .cd-ios-c2{font-size:12px;line-height:18px;color:var(--mute);margin-top:4px}
+.cd-ios-cap .oe-top{display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:20px}
+.cd-ios-cap .oe-top small{color:var(--mute);font-size:12px;line-height:16px}
+.oe-seg{display:inline-flex;gap:2px;border:1px solid var(--line);border-radius:10px;padding:3px;background:#fff}
+.oe-seg button{height:26px;padding:0 10px;border-radius:7px;font-size:12.5px;color:var(--mute)}
+.oe-seg button.on{background:#EEF3FC;color:var(--ink);font-weight:450}
+
+/* ---------- device ---------- */
+.cd-ios-fit{position:relative;width:414px}
+.cd-ios-phone{position:absolute;left:0;top:0;width:414px;height:868px;padding:12px;border-radius:68px;background:#1C1C1E;transform-origin:top left;
+  box-shadow:inset 0 0 0 2px #48484A,0 0 0 1.5px #A1A1A6,0 0 0 3px #D1D1D6,0 30px 60px -12px rgba(28,28,24,.28),0 12px 24px -8px rgba(28,28,24,.14)}
+.cd-ios-phone::before{content:"";position:absolute;left:-4px;top:180px;width:3px;height:62px;border-radius:2px 0 0 2px;background:#B8B8BD;box-shadow:0 82px 0 #B8B8BD,0 -60px 0 0 #B8B8BD}
+.cd-ios-phone::after{content:"";position:absolute;right:-4px;top:230px;width:3px;height:96px;border-radius:0 2px 2px 0;background:#B8B8BD}
+.cd-ios-screen{position:relative;width:390px;height:844px;border-radius:56px;overflow:hidden;clip-path:inset(0 round 56px);background:#fff;isolation:isolate;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display",Inter,system-ui,sans-serif;color:#000;font-feature-settings:normal;-webkit-font-smoothing:antialiased;letter-spacing:-.2px;font-size:17px;line-height:22px}
+.cd-ios-screen *{scrollbar-width:none}
+.cd-ios-screen *::-webkit-scrollbar{display:none}
+.cd-ios-screen button{letter-spacing:inherit}
+.cd-ios-screen textarea:focus-visible,.cd-ios-screen input:focus-visible{outline:none}
+.cd-ios-screen :focus-visible{outline:2px solid #007AFF;outline-offset:-2px;border-radius:8px}
+.cd-ios-di{position:absolute;top:11px;left:50%;width:125px;height:37px;margin-left:-62.5px;border-radius:20px;background:#000;z-index:60;pointer-events:none}
+.cd-ios-sb{position:absolute;top:0;left:0;right:0;height:54px;z-index:55;display:flex;align-items:center;justify-content:space-between;padding:4px 30px 0 52px;pointer-events:none}
+.cd-ios-clock{font-size:17px;font-weight:600;letter-spacing:-.4px;width:54px;text-align:center}
+.cd-ios-sbr{display:flex;align-items:center;gap:6px}
+.cd-ios-sbr svg{display:block}
+.cd-ios-home{position:absolute;bottom:8px;left:50%;width:139px;height:5px;margin-left:-69.5px;border-radius:3px;background:#000;z-index:80;pointer-events:none}
+
+/* ---------- navigation stack ---------- */
+.cd-ios-v{position:absolute;inset:0;display:flex;flex-direction:column;background:#fff;transform:translateX(100%);visibility:hidden;z-index:1}
+.cd-ios-v.on{transform:none;visibility:visible;z-index:3;box-shadow:-8px 0 24px rgba(0,0,0,.08)}
+.cd-ios-v.left{transform:translateX(-30%);visibility:visible;z-index:2}
+.cd-ios-v.left::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.06);pointer-events:none}
+.cd-ios-anim .cd-ios-v{transition:transform .42s cubic-bezier(.2,.85,.25,1),visibility 0s linear .42s}
+.cd-ios-anim .cd-ios-v.on,.cd-ios-anim .cd-ios-v.left{transition:transform .42s cubic-bezier(.2,.85,.25,1),visibility 0s}
+.cd-ios-v.grp,.cd-ios-v.grp .cd-ios-top{background:#F2F2F7}
+.cd-ios-top{flex:none;padding-top:54px;background:rgba(255,255,255,.94);position:relative;z-index:4}
+.cd-ios-top.sm{box-shadow:0 .5px 0 rgba(60,60,67,.29)}
+.cd-ios-nav{height:44px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 8px}
+.cd-ios-nt{font-size:17px;font-weight:600;opacity:0;transition:opacity .15s;white-space:nowrap;max-width:180px;overflow:hidden;text-overflow:ellipsis}
+.cd-ios-top.sm .cd-ios-nt{opacity:1}
+.cd-ios-nl{justify-self:start;display:flex}
+.cd-ios-nr{justify-self:end;display:flex;gap:4px}
+.cd-ios-back{display:flex;align-items:center;gap:6px;height:44px;padding:0 8px 0 4px;color:#007AFF;font-size:17px;font-weight:400}
+.cd-ios-back svg{width:12px;height:21px}
+.cd-ios-ib{width:40px;height:40px;display:grid;place-items:center;color:#007AFF;border-radius:20px}
+.cd-ios-ib:disabled{color:rgba(60,60,67,.3);cursor:default}
+.cd-ios-ib svg{width:24px;height:24px}
+.cd-ios-tx{height:44px;padding:0 8px;color:#007AFF;font-size:17px}
+.cd-ios-sc{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+.cd-ios-lt{font-size:34px;line-height:41px;font-weight:700;letter-spacing:.37px;margin:0;padding:2px 16px 8px}
+
+/* bottom toolbar */
+.cd-ios-tb{flex:none;height:83px;padding:0 14px 34px;display:flex;align-items:center;justify-content:space-between;background:rgba(249,249,249,.96);box-shadow:0 -.5px 0 rgba(60,60,67,.29);position:relative;z-index:4}
+.cd-ios-v.grp .cd-ios-tb{background:rgba(242,242,247,.96)}
+.cd-ios-tbc{position:absolute;left:80px;right:80px;top:9px;text-align:center;font-size:11px;line-height:13px;color:#000;pointer-events:none}
+.cd-ios-tbc small{display:block;color:rgba(60,60,67,.6);font-size:11px}
+.cd-ios-tbc .bl{color:#007AFF}
+.cd-ios-tb .cd-ios-ib.on{background:rgba(0,122,255,.12)}
+.cd-ios-tbs{width:40px}
+
+/* search */
+.cd-ios-srch{position:relative;margin:0 16px 10px;height:36px;border-radius:10px;background:rgba(118,118,128,.12);display:flex;align-items:center;gap:6px;padding:0 8px}
+.cd-ios-srch svg{flex:none;color:rgba(60,60,67,.6)}
+.cd-ios-srch input{flex:1;min-width:0;height:36px;border:0;background:none;outline:none;font:inherit;font-size:17px;letter-spacing:-.4px;color:#000}
+.cd-ios-srch input::placeholder{color:rgba(60,60,67,.6)}
+.cd-ios-srch .cd-ios-clr{width:20px;height:20px;border-radius:50%;background:rgba(60,60,67,.35);color:#fff;display:grid;place-items:center}
+
+/* message rows */
+.cd-ios-rows{border-top:.5px solid rgba(60,60,67,.18)}
+.cd-ios-row{display:flex;width:100%;text-align:left;padding:0;background:#fff;position:relative}
+.cd-ios-row:active,.cd-ios-row.hit{background:#E5E5EA}
+.cd-ios-dc{width:30px;flex:none;display:flex;flex-direction:column;align-items:center;padding-top:15px;gap:9px}
+.cd-ios-dot{width:10px;height:10px;border-radius:50%;background:#007AFF}
+.cd-ios-rb{flex:1;min-width:0;padding:10px 16px 11px 0;border-bottom:.5px solid rgba(60,60,67,.18)}
+.cd-ios-r1{display:flex;align-items:baseline;gap:6px}
+.cd-ios-r1 b{flex:1;min-width:0;font-size:17px;line-height:22px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd-ios-r1 time{font-size:15px;color:rgba(60,60,67,.6);white-space:nowrap}
+.cd-ios-r1 .cv{color:rgba(60,60,67,.3);width:8px;height:13px;align-self:center;margin-left:2px}
+.cd-ios-r2{display:flex;align-items:center;gap:6px;font-size:15px;line-height:20px}
+.cd-ios-r2 span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd-ios-r2 svg{flex:none}
+.cd-ios-r3{font-size:15px;line-height:20px;color:rgba(60,60,67,.6);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cd-ios-empty{padding:72px 32px;text-align:center;color:rgba(60,60,67,.6);font-size:15px;line-height:20px}
+.cd-ios-empty b{display:block;color:#000;font-size:20px;line-height:25px;font-weight:600;margin-bottom:6px}
+
+/* mailboxes */
+.cd-ios-sech{display:flex;align-items:center;justify-content:space-between;width:calc(100% - 32px);margin:10px 16px 6px;padding:0 4px;font-size:20px;line-height:25px;font-weight:600;color:#000;text-align:left}
+.cd-ios-sech svg{color:#007AFF;transition:transform .2s}
+.cd-ios-sech.shut svg{transform:rotate(-90deg)}
+.cd-ios-grp{margin:0 16px 24px;border-radius:10px;background:#fff;overflow:hidden}
+.cd-ios-box{display:flex;align-items:center;width:100%;height:44px;padding-left:16px;text-align:left;background:#fff}
+.cd-ios-box:active{background:#E5E5EA}
+.cd-ios-box>svg{flex:none;width:26px;height:26px;color:#007AFF;margin-right:14px}
+.cd-ios-box .bx{flex:1;display:flex;align-items:center;height:44px;padding-right:16px;border-bottom:.5px solid rgba(60,60,67,.22)}
+.cd-ios-box:last-child .bx{border-bottom:0}
+.cd-ios-box .bx span{flex:1}
+.cd-ios-box .bx em{font-style:normal;color:rgba(60,60,67,.6);margin-right:10px}
+.cd-ios-box .cv{color:rgba(60,60,67,.3);width:8px;height:13px}
+
+/* message view */
+.cd-ios-mh{display:flex;gap:12px;padding:8px 16px 12px}
+.cd-ios-av{width:40px;height:40px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:16px;font-weight:600;background:linear-gradient(#A5ABB8,#858994);color:#fff;letter-spacing:0}
+.cd-ios-mhb{flex:1;min-width:0}
+.cd-ios-mh1{display:flex;align-items:baseline;gap:8px}
+.cd-ios-mh1 b{flex:1;min-width:0;font-size:17px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd-ios-mh1 time{font-size:15px;color:rgba(60,60,67,.6);white-space:nowrap}
+.cd-ios-mh2{font-size:15px;line-height:20px;color:rgba(60,60,67,.6);display:flex;gap:6px;align-items:center}
+.cd-ios-mh2 button{color:#007AFF;font-size:15px;margin-left:auto}
+.cd-ios-det{margin-top:6px;font-size:13px;line-height:18px;color:rgba(60,60,67,.6)}
+.cd-ios-det b{color:#000;font-weight:500}
+.cd-ios-subj{margin:0 16px;padding:10px 0 12px;border-top:.5px solid rgba(60,60,67,.18);font-size:20px;line-height:25px;font-weight:600;letter-spacing:-.4px}
+.cd-ios-subj svg{vertical-align:-2px;margin-left:6px}
+.cd-ios-subj small{display:block;font-size:13px;line-height:18px;font-weight:400;color:rgba(60,60,67,.6);letter-spacing:0;margin-top:2px}
+.cd-ios-body{padding:4px 16px 28px;font-size:16px;line-height:23px;letter-spacing:-.25px;color:#000}
+.cd-ios-body p{margin:0 0 14px}
+.cd-ios-cta{margin:20px 0 18px;border:1px solid #E5E5EA;border-radius:12px;overflow:hidden;background:#FAFAF9}
+.cd-ios-cta dl{margin:0;padding:4px 16px}
+.cd-ios-cta dl div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #EBEBEF;font-size:15px;line-height:20px}
+.cd-ios-cta dl div:last-child{border-bottom:0}
+.cd-ios-cta dt{color:rgba(60,60,67,.6);flex:none}
+.cd-ios-cta dd{margin:0;text-align:right}
+.cd-ios-cta .cd-ios-btnw{padding:4px 16px 16px}
+.cd-ios-btn{display:flex;align-items:center;justify-content:center;height:50px;border-radius:12px;background:#1C1C18;color:#fff!important;text-decoration:none;font-size:17px;font-weight:600;letter-spacing:-.3px}
+.cd-ios-btn:active{background:#3A3A33}
+.cd-ios-att{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;margin:4px 0 6px;border-radius:12px;background:#F2F2F7;text-align:left}
+.cd-ios-att:active{background:#E5E5EA}
+.cd-ios-att .pdf{width:34px;height:42px;flex:none;border-radius:4px;background:#fff;box-shadow:0 0 0 .5px rgba(0,0,0,.14);position:relative;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px}
+.cd-ios-att .pdf i{font-style:normal;font-size:9px;line-height:11px;font-weight:700;color:#fff;background:#E5483A;border-radius:2px;padding:0 3px;letter-spacing:.2px}
+.cd-ios-att .pdf::before{content:"";position:absolute;left:6px;right:6px;top:7px;height:14px;background:repeating-linear-gradient(#D8D8DC 0 1.5px,transparent 1.5px 4px)}
+.cd-ios-att b{display:block;font-size:15px;line-height:20px;font-weight:500}
+.cd-ios-att small{display:block;font-size:13px;line-height:18px;color:rgba(60,60,67,.6)}
+.cd-ios-sig{margin-top:18px;padding-top:12px;border-top:1px solid #EBEBEF;font-size:13px;line-height:18px;color:rgba(60,60,67,.6)}
+.oe-notes{margin:14px 0 0;border:1px solid #E5E5EA;border-radius:12px;background:#FAFAF9;overflow:hidden}
+.oe-notes .oe-h{padding:12px 14px;border-bottom:1px solid #EBEBEF}
+.oe-notes .oe-h b{display:block;font-size:15px;line-height:20px;font-weight:600}
+.oe-notes .oe-h small{display:block;color:rgba(60,60,67,.6);font-size:13px;line-height:18px;margin-top:2px}
+.oe-m{display:grid;grid-template-columns:46px 1fr;gap:8px;padding:11px 14px;border-bottom:1px solid #EBEBEF;font-size:15px;line-height:20px}
+.oe-m:last-child{border-bottom:0}
+.oe-m time{font-variant-numeric:tabular-nums;color:rgba(60,60,67,.6);font-size:13px}
+.oe-m b{display:block;font-weight:600}
+.oe-m span{color:#3C3C43}
+
+/* sheets, scrim, toast */
+.cd-ios-scrim{position:absolute;inset:0;z-index:40;background:rgba(0,0,0,.28);opacity:0;pointer-events:none;transition:opacity .3s}
+.cd-ios-scrim.on{opacity:1;pointer-events:auto}
+.cd-ios-sheet{position:absolute;left:0;right:0;bottom:0;z-index:45;background:#F2F2F7;border-radius:14px 14px 0 0;transform:translateY(105%);transition:transform .38s cubic-bezier(.2,.85,.25,1);padding:0 0 34px;box-shadow:0 -6px 24px rgba(0,0,0,.08)}
+.cd-ios-sheet.on{transform:none}
+.cd-ios-grab{width:36px;height:5px;border-radius:3px;background:rgba(60,60,67,.3);margin:6px auto 0}
+.cd-ios-shh{display:flex;align-items:center;gap:12px;padding:10px 16px 14px}
+.cd-ios-shh div{flex:1;min-width:0}
+.cd-ios-shh b{display:block;font-size:15px;line-height:20px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd-ios-shh small{display:block;font-size:13px;line-height:18px;color:rgba(60,60,67,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd-ios-x{width:30px;height:30px;border-radius:50%;background:rgba(118,118,128,.12);color:rgba(60,60,67,.6);display:grid;place-items:center;flex:none}
+.cd-ios-acts{margin:0 16px;border-radius:12px;background:#fff;overflow:hidden}
+.cd-ios-act{display:flex;align-items:center;justify-content:space-between;width:100%;height:50px;padding:0 16px;font-size:17px;text-align:left;border-bottom:.5px solid rgba(60,60,67,.22);background:#fff;color:#000}
+.cd-ios-act:last-child{border-bottom:0}
+.cd-ios-act:active{background:#E5E5EA}
+.cd-ios-act svg{color:#007AFF;width:22px;height:22px}
+.cd-ios-act:disabled{color:rgba(60,60,67,.3);cursor:default}
+.cd-ios-act:disabled svg{color:rgba(60,60,67,.3)}
+.cd-ios-shp{padding:0 16px 10px;font-size:13px;line-height:18px;color:rgba(60,60,67,.6);text-align:center}
+.cd-ios-cmp{top:58px;bottom:0;background:#fff;border-radius:12px 12px 0 0;display:flex;flex-direction:column;padding:0}
+.cd-ios-cmph{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:56px;padding:0 8px 0 8px;flex:none}
+.cd-ios-cmph b{font-size:17px;font-weight:600;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd-ios-cmph .cd-ios-tx{justify-self:start}
+.cd-ios-send{justify-self:end;width:32px;height:32px;margin-right:8px;border-radius:50%;background:#007AFF;color:#fff;display:grid;place-items:center}
+.cd-ios-send:disabled{background:#C7C7CC;cursor:default}
+.cd-ios-fld{display:flex;align-items:center;gap:6px;margin-left:16px;padding-right:16px;min-height:44px;border-bottom:.5px solid rgba(60,60,67,.29);font-size:16px;color:rgba(60,60,67,.6)}
+.cd-ios-fld input{flex:1;min-width:0;border:0;outline:none;font:inherit;font-size:16px;color:#000;height:43px;background:none}
+.cd-ios-fld span.v{color:#000}
+.cd-ios-cmp textarea{flex:1;border:0;outline:none;resize:none;font:inherit;font-size:16px;line-height:22px;padding:12px 16px 40px;color:#000;background:none}
+.cd-ios-toast{position:absolute;left:50%;bottom:96px;z-index:50;transform:translate(-50%,8px);display:flex;align-items:center;gap:14px;width:max-content;max-width:340px;padding:11px 16px;border-radius:14px;background:rgba(44,44,46,.94);color:#fff;font-size:15px;line-height:20px;box-shadow:0 8px 24px rgba(0,0,0,.18);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.cd-ios-toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.cd-ios-toast span{flex:1;min-width:0}
+.cd-ios-toast button{color:#0A84FF;font-size:15px;font-weight:600;flex:none}
+
+/* the shared PDF preview modal (outside the phone) */
+.cd-pdf{border:1px solid var(--line2);border-radius:8px;padding:20px 24px;background:#fff;box-shadow:0 1px 3px rgba(28,28,24,.06)}
+.cd-pdf h3{font-size:13px;font-weight:550;margin:14px 0 4px}
+.cd-pdf p{margin:0 0 6px;color:var(--ink2)}
+.cd-pdfh{display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.cd-pdfh .lg{width:28px;height:28px;border-radius:6px;background:#1F3A5F;color:#fff;display:grid;place-items:center;font-weight:600;font-size:12px}
+.cd-pdfh b{display:block;font-weight:550}
+.cd-pdfh small{display:block;color:var(--mute);font-size:12px}
+.cd-pdff{margin-top:16px!important;padding-top:10px;border-top:1px solid var(--line);font-size:12px;color:var(--mute)!important}
+.cd-pm{display:grid;grid-template-columns:44px 1fr;gap:8px;padding:6px 0}
+.cd-pm time{font-variant-numeric:tabular-nums;color:var(--mute);font-size:12px}
+.cd-pm b{font-weight:450}
