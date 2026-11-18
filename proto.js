@@ -37,7 +37,7 @@
   var t=document.createElement('div');t.className='ptoast';t.setAttribute('role','status');document.body.appendChild(t);var tm;
   window.protoNote=function(msg){t.textContent=msg;t.classList.add('on');clearTimeout(tm);tm=setTimeout(function(){t.classList.remove('on')},2200);};
   document.addEventListener('click',function(e){
-    var el=e.target.closest('a,button');if(!el||el.closest('.protobar,.ui-pop,.ui-ov,.ui-dr-ov'))return;
+    var el=e.target.closest('a,button');if(!el||!document.contains(el)||el.closest('.protobar,.ui-pop,.ui-ov,.ui-dr-ov'))return;
     if(el.hasAttribute('data-go')){e.preventDefault();location.href=el.getAttribute('data-go');return;}
     if(el.hasAttribute('data-js'))return;
     var href=el.getAttribute('href');
