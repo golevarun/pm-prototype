@@ -364,7 +364,14 @@ td.cbx,th.cbx{width:36px;padding:0 0 0 16px}
 .mo .pb::after{content:"";border-left:6px solid var(--ink);border-top:4px solid transparent;border-bottom:4px solid transparent;margin-left:2px}
 .mo small{display:block;font-size:12px;color:var(--mute)}
 .note3{display:flex;gap:8px;padding:10px 12px;border-radius:12px;background:#F0F0EC;color:var(--ink2);font-size:12.5px}
-</style></head><body><div class="app">
+.mo{cursor:pointer}.mo:hover{border-color:var(--line2)}
+.mo.cx-on{border-color:#C9D7F2;background:#F7F9FE}
+.mo.cx-on .pb::after{border:0;width:8px;height:9px;margin:0;border-left:2.5px solid var(--ink);border-right:2.5px solid var(--ink);box-sizing:border-box}
+.cx-pt{display:block;margin-top:6px;height:3px;border-radius:2px;background:var(--chip);overflow:hidden}.cx-pt i{display:block;height:100%;width:0;background:#2A4F99}
+.cx-mt{font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums}
+.cx-dtag{display:inline-flex;height:20px;align-items:center;padding:0 8px;border-radius:12px;font-size:12px;font-weight:450;background:var(--green);color:var(--greenT)}
+.cx-dtag.d{background:var(--chip);color:var(--ink2)}
+</style><link rel="stylesheet" href="cx.css"></head><body><div class="app">
   <aside class="side" aria-label="Main navigation">
     <div class="side-top">
       <a class="logo" href="home.html" style="text-decoration:none;color:inherit"><i></i>PM</a>
@@ -410,33 +417,56 @@ td.cbx,th.cbx{width:36px;padding:0 0 0 16px}
 
     <div class="ph">
       <div class="crumb"><a href="roles.html">Roles</a><svg class="i" viewBox="0 0 16 16" style="width:12px;height:12px"><path d="m6 4 4 4-4 4"/></svg><a href="shortlist.html">Shortlist</a><svg class="i" viewBox="0 0 16 16" style="width:12px;height:12px"><path d="m6 4 4 4-4 4"/></svg><span>Compare</span></div>
-      <div class="ph-row"><h1>Sam Rivera and Priya Nair</h1><span class="tag beige">Ranges overlap</span>
-        <div class="ph-acts"><button class="btn" data-go="shortlist.html">Back to shortlist</button><button class="btn" data-js onclick="protoNote('Pick any two finished candidates from the shortlist.')">Change candidates</button></div></div>
+      <div class="ph-row"><h1 id="cxH1">Sam Rivera and Priya Nair</h1><span class="tag beige" id="cxTag">Ranges overlap</span>
+        <div class="ph-acts"><button class="btn" data-go="shortlist.html">Back to shortlist</button><button class="btn" id="cxChange">Change candidates</button></div></div>
       <nav class="tabs" aria-label="Role"><a href="overview.html">Overview</a><a href="setup.html">Interview setup</a><a href="candidates.html">Candidates</a><a href="shortlist.html" class="on" aria-current="page">Shortlist</a><a href="role-settings.html">Settings</a></nav>
     </div>
-    <div class="cmp"><div class="cw">
-      <div class="heads">
-        <div class="hc"><span class="key" style="background:#1C1C18"></span><span class="pav" style="background:#E3ECFC;color:#2A4F99">SR</span><div><b>Sam Rivera</b><small>Rank 1 · Nov 17 · 7 min with Jordan Ellis, medium</small></div><div class="r"><span class="big">7.0–8.0</span><button class="btn sm yellow" data-go="shortlist.html#sam">Decide</button></div></div>
-        <div class="hc"><span class="key" style="background:#2A4F99"></span><span class="pav">PN</span><div><b>Priya Nair</b><small>Rank 2 · Nov 16 · 7 min with Jordan Ellis, medium</small></div><div class="r"><span class="big">6.5–8.0</span><button class="btn sm" data-go="shortlist.html#priya">Decide</button></div></div>
-      </div>
-      <section class="card2">
-        <div class="h"><h2>Skill ranges</h2><div class="r"><span><i style="background:#1C1C18"></i>Sam</span><span><i style="background:#2A4F99"></i>Priya</span><span>Scale 4 to 10 shown</span></div></div>
-        <div class="cr" style="border-top:0;padding-top:4px"><div><b>Overall</b><small>Weighted</small></div><div class="ax2"><i style="left:50.0%;width:16.7%;background:#1C1C18"></i><i style="left:41.7%;width:25.0%;background:#2A4F99"></i></div><em>7.0–8.0</em><em class="p">6.5–8.0</em></div>
-        <div class="cr"><div><b>Discovery</b><small>Weight 40%</small></div><div class="ax2"><i style="left:58.3%;width:16.7%;background:#1C1C18"></i><i style="left:33.3%;width:25.0%;background:#2A4F99"></i></div><em>7.5–8.5</em><em class="p">6.0–7.5</em></div><div class="cr"><div><b>Handling doubt</b><small>Weight 35%</small></div><div class="ax2"><i style="left:41.7%;width:16.7%;background:#1C1C18"></i><i style="left:33.3%;width:16.7%;background:#2A4F99"></i></div><em>6.5–7.5</em><em class="p">6.0–7.0</em></div><div class="cr"><div><b>Getting a next step</b><small>Weight 25%</small></div><div class="ax2"><i style="left:50.0%;width:16.7%;background:#1C1C18"></i><i style="left:58.3%;width:16.7%;background:#2A4F99"></i></div><em>7.0–8.0</em><em class="p">7.5–8.5</em></div>
-        <div class="ticks"><div></div><div><span style="left:0%">4</span><span style="left:33.3%">6</span><span style="left:66.7%">8</span><span style="left:100%">10</span></div><div></div><div></div></div>
-      </section>
-      <section class="card2">
-        <div class="h"><h2>Where they differ most</h2><div class="r">Play both before you decide</div></div>
-        <div class="moms">
-          <div class="mo"><span class="pb"></span><div><small>Sam · 03:12 · Discovery</small>Asked what happened to the last tool before pitching anything.</div></div>
-          <div class="mo"><span class="pb"></span><div><small>Priya · 01:48 · Discovery</small>Found the budget review in the first two minutes.</div></div>
-          <div class="mo"><span class="pb"></span><div><small>Sam · 06:55 · Getting a next step</small>Booked a follow-up with the ops manager for Tuesday.</div></div>
-          <div class="mo"><span class="pb"></span><div><small>Priya · 06:20 · Getting a next step</small>Asked for a pilot and got a yes in principle.</div></div>
-        </div>
-      </section>
-      <div class="note3"><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 7.2v3.3M8 5.3v.1"/></svg><span>Both talked to Jordan Ellis at medium difficulty. Every candidate in this role gets the same buyer mix, and each draw is logged. When ranges overlap this much, the order between them is close to a tie.</span></div>
-    </div></div>
+    <div class="cmp"><div class="cw" id="cxCw"></div></div>
   </div>
 </div>
-<script src="ui.js"></script><script src="proto.js"></script>
+<script src="ui.js"></script><script src="proto.js"></script><script src="cx.js"></script>
+<script>
+(function(){
+var C=CX.SL,SK=[['Discovery',40],['Handling doubt',35],['Getting a next step',25]],COL=['#1C1C18','#2A4F99'];
+var q=new URLSearchParams(location.search),A=q.get('a')||'sam',B=q.get('b')||'priya',play={k:null,t:0,tm:null};
+function by(id){return C.filter(function(c){return c.id===id})[0];}
+function rank(c){return C.indexOf(c)+1;}
+function rg(r){return r[0].toFixed(1)+'–'+r[1].toFixed(1);}
+function pos(r){return 'left:'+((r[0]-4)/6*100).toFixed(1)+'%;width:'+((r[1]-r[0])/6*100).toFixed(1)+'%';}
+function ov(a,b){return a[0]<=b[1]&&b[0]<=a[1];}
+function fn(c){return c.name.split(' ')[0];}
+function sec(t){var p=t.split(':');return +p[0]*60+ +p[1];}
+function mm(n){return (n<600?'0':'')+Math.floor(n/60)+':'+(n%60<10?'0':'')+n%60;}
+function render(){
+ if(!by(A))A='sam';if(!by(B)||B===A)B=A==='priya'?'sam':'priya';
+ var a=by(A),b=by(B),P=[a,b],dec=CX.ss('cx-dec')||{},o=ov(a.ov,b.ov);
+ document.getElementById('cxH1').textContent=a.name+' and '+b.name;document.title=a.name+' and '+b.name+' · Compare · PM';
+ var tg=document.getElementById('cxTag');tg.textContent=o?'Ranges overlap':'Ranges don\'t overlap';tg.className='tag '+(o?'beige':'gray');
+ var diff=[0,1,2].map(function(k){return [k,Math.abs((a.sk[k][0]+a.sk[k][1])-(b.sk[k][0]+b.sk[k][1]))];}).sort(function(x,y){return y[1]-x[1];}).slice(0,2).map(function(x){return x[0];}).sort();
+ var moms=[];diff.forEach(function(k){P.forEach(function(c,j){var m=c.mo.filter(function(m){return m[1]===SK[k][0];})[0];if(m)moms.push([j,c,m]);});});
+ function hc(c,j){var d=dec[c.id];return '<div class="hc"><span class="key" style="background:'+COL[j]+'"></span><span class="pav"'+(j===0?' style="background:#E3ECFC;color:#2A4F99"':'')+'>'+c.ini+'</span><div><b>'+c.name+'</b><small>Rank '+rank(c)+' · '+c.date+' · 7 min with Jordan Ellis, medium</small></div><div class="r"><span class="big">'+rg(c.ov)+'</span>'+(d?'<span class="cx-dtag'+(d==='dec'?' d':'')+'">'+(d==='adv'?'Final round':'Declined')+'</span>':'')+'<button class="btn sm'+(j===0&&!d?' yellow':'')+'" data-go="shortlist.html#'+c.id+'">'+(d?'Open':'Decide')+'</button></div></div>';}
+ function row(lbl,sub,ra,rb){return '<div class="cr"><div><b>'+lbl+'</b><small>'+sub+'</small></div><div class="ax2"><i style="'+pos(ra)+';background:'+COL[0]+'"></i><i style="'+pos(rb)+';background:'+COL[1]+'"></i></div><em>'+rg(ra)+'</em><em class="p">'+rg(rb)+'</em></div>';}
+ document.getElementById('cxCw').innerHTML='<div class="heads">'+hc(a,0)+hc(b,1)+'</div>'+
+  '<section class="card2"><div class="h"><h2>Skill ranges</h2><div class="r"><span><i style="background:'+COL[0]+'"></i>'+fn(a)+'</span><span><i style="background:'+COL[1]+'"></i>'+fn(b)+'</span><span>Scale 4 to 10 shown</span></div></div>'+
+  row('Overall','Weighted',a.ov,b.ov).replace('class="cr"','class="cr" style="border-top:0;padding-top:4px"')+SK.map(function(s,k){return row(s[0],'Weight '+s[1]+'%',a.sk[k],b.sk[k]);}).join('')+
+  '<div class="ticks"><div></div><div><span style="left:0%">4</span><span style="left:33.3%">6</span><span style="left:66.7%">8</span><span style="left:100%">10</span></div><div></div><div></div></div></section>'+
+  '<section class="card2"><div class="h"><h2>Where they differ most</h2><div class="r">Play both before you decide</div></div><div class="moms">'+
+  moms.map(function(x,k){var t=sec(x[2][0]);return '<div class="mo" role="button" tabindex="0" data-k="'+k+'" data-t="'+t+'" aria-label="Play '+fn(x[1])+' at '+x[2][0]+'"><span class="pb"></span><div><small>'+fn(x[1])+' · '+x[2][0]+' · '+x[2][1]+'</small>'+x[2][2]+'<span class="cx-pt"><i></i></span><span class="cx-mt">'+x[2][0]+' to '+mm(Math.min(420,t+20))+'</span></div></div>';}).join('')+'</div></section>'+
+  '<div class="note3"><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 7.2v3.3M8 5.3v.1"/></svg><span>Both talked to Jordan Ellis at medium difficulty. Every candidate in this role gets the same buyer mix, and each draw is logged. '+(o?'When ranges overlap this much, the order between them is close to a tie.':'Their overall ranges don\'t overlap, so the order between them is clearer. A person still makes the decision.')+'</span></div>';
+ document.querySelectorAll('#cxCw .mo').forEach(function(m){function go(){toggle(m);}m.addEventListener('click',go);m.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});
+}
+function stop(){clearInterval(play.tm);if(play.el){play.el.classList.remove('cx-on');play.el.setAttribute('aria-label',play.el.getAttribute('aria-label').replace('Pause','Play'));}play.el=null;}
+function toggle(m){if(play.el===m){stop();return;}stop();play.el=m;play.t=0;m.classList.add('cx-on');m.setAttribute('aria-label',m.getAttribute('aria-label').replace('Play','Pause'));
+ var t0=+m.getAttribute('data-t'),bar=m.querySelector('.cx-pt i'),lab=m.querySelector('.cx-mt');
+ function tick(){bar.style.width=(play.t/20*100)+'%';lab.textContent='Playing '+mm(t0+play.t)+' · '+mm(t0)+' to '+mm(Math.min(420,t0+20));}
+ tick();play.tm=setInterval(function(){play.t++;tick();if(play.t>=20){stop();lab.textContent='Played '+mm(t0)+' to '+mm(Math.min(420,t0+20));}},1000);}
+UI.wire('#cxChange',function(){
+ function opts(sel){return C.map(function(c,i){return '<option value="'+c.id+'"'+(c.id===sel?' selected':'')+'>'+(i+1)+'. '+c.name+' · '+rg(c.ov)+(c.rec?'':' · not recommended')+'</option>';}).join('');}
+ UI.modal({title:'Change candidates',body:'<p>Pick any two finished candidates for Req 114. Both talked to the same buyer at the same difficulty.</p><label for="cxA">First candidate</label><select id="cxA">'+opts(A)+'</select><label for="cxB">Second candidate</label><select id="cxB">'+opts(B)+'</select>',
+  actions:[{label:'Cancel'},{label:'Compare',primary:true,onClick:function(md){var a=md.querySelector('#cxA').value,b=md.querySelector('#cxB').value;if(a===b){md.querySelector('#cxB').style.borderColor='#B42318';CX.note('Pick two different candidates.');return false;}
+   A=a;B=b;stop();history.replaceState(null,'','compare.html?a='+a+'&b='+b);render();CX.note('Comparing '+by(a).name+' and '+by(b).name+'.');}}]});
+});
+render();
+})();
+</script>
 </body></html>

@@ -331,6 +331,24 @@ td.cbx,th.cbx{width:36px;padding:0 0 0 16px}
 .btn[disabled]{opacity:.45;pointer-events:none}
 .done-tag{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:8px;background:var(--green);color:var(--greenT);font-weight:450}
 </style>
+<link rel="stylesheet" href="cx.css">
+<style>
+.views span{cursor:pointer}
+.views span:hover{color:var(--ink)}
+.cx-cbar{display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid var(--line);background:#F4F7FD}
+.cx-cbar[hidden]{display:none}
+#rows .box{cursor:pointer}
+#rows .box svg{display:none}
+#rows .box.on svg{display:block}
+button.playb{border:0;cursor:pointer}
+button.playb.cx-pause::after{border:0;width:9px;height:10px;margin:0;border-left:3px solid #fff;border-right:3px solid #fff;box-sizing:border-box}
+.track{cursor:pointer}
+.mo{cursor:pointer}
+.mo:hover{border-color:var(--line2)}
+.mo.cx-play .pb{border-color:#2A4F99}
+.cx-saved{font-size:12px;color:var(--mute);margin-left:8px;font-weight:400}
+.cx-empty td{height:120px;text-align:center;color:var(--mute)}
+</style>
 </head>
 <body>
 <div class="app">
@@ -388,7 +406,7 @@ td.cbx,th.cbx{width:36px;padding:0 0 0 16px}
         <div class="ph-acts">
           <span class="meta">Debrief with Dana, Thu 2:00 pm</span>
           <button class="btn" data-go="compare.html"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="3" width="4.5" height="10" rx="1"/><rect x="9" y="3" width="4.5" height="10" rx="1"/></svg>Compare</button>
-          <button class="btn"><svg class="i" viewBox="0 0 16 16"><path d="M8 2.5v8M5 7.5l3 3 3-3M3 12.5h10"/></svg>Export</button>
+          <button class="btn" id="cxExport"><svg class="i" viewBox="0 0 16 16"><path d="M8 2.5v8M5 7.5l3 3 3-3M3 12.5h10"/></svg>Export</button>
         </div>
       </div>
       <nav class="tabs" aria-label="Role"><a href="overview.html">Overview</a><a href="setup.html">Interview setup</a><a href="candidates.html">Candidates</a><a href="shortlist.html" class="on" aria-current="page">Shortlist</a><a href="role-settings.html">Settings</a></nav>
@@ -397,10 +415,11 @@ td.cbx,th.cbx{width:36px;padding:0 0 0 16px}
     <div class="body4">
       <div class="tw">
         <div class="tbar">
-          <div class="views"><span class="on">Recommended <em>9</em></span><span>All finished <em>39</em></span><span>Advanced <em>0</em></span><span>Declined <em>0</em></span></div>
-          <div class="r"><button class="btn"><svg class="i" viewBox="0 0 16 16"><path d="M3 4.5h10M5 8h6M7 11.5h2"/></svg>Filter</button></div>
+          <div class="views" role="tablist" aria-label="Shortlist view"><span class="on" role="tab" tabindex="0" data-v="rec" aria-selected="true">Recommended <em>9</em></span><span role="tab" tabindex="0" data-v="all" aria-selected="false">All finished <em>39</em></span><span role="tab" tabindex="0" data-v="adv" aria-selected="false">Advanced <em>0</em></span><span role="tab" tabindex="0" data-v="dec" aria-selected="false">Declined <em>0</em></span></div>
+          <div class="r"><button class="btn" id="cxFilter"><svg class="i" viewBox="0 0 16 16"><path d="M3 4.5h10M5 8h6M7 11.5h2"/></svg><span>Filter</span></button></div>
         </div>
         <div class="rankline">Ranked by range midpoint, weighted<span class="k"><em>Discovery</em> 40%</span><span class="k"><em>Handling doubt</em> 35%</span><span class="k"><em>Next step</em> 25%</span></div>
+        <div class="cx-cbar" id="cxCbar" hidden></div>
         <div class="tscroll">
           <table>
             <thead><tr><th class="cbx"></th><th>#</th><th>Candidate</th><th>Overall range<small>scale 4 to 10 shown</small></th><th>Discovery</th><th>Handling doubt</th><th>Next step</th></tr></thead>
@@ -410,9 +429,9 @@ td.cbx,th.cbx{width:36px;padding:0 0 0 16px}
         </div>
         <div class="pager">
           <span class="foot-note"><svg class="i" viewBox="0 0 16 16" style="width:13px;height:13px"><circle cx="8" cy="8" r="5.5"/><path d="M8 7.2v3.3M8 5.3v.1"/></svg>Same buyer mix for all 39, logged. Voice, accent, pauses and face are never scored.</span>
-          <span class="meta">1–9 of 9 recommended</span>
-          <span class="pg"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m10 4-4 4 4 4"/></svg></span>
-          <span class="pg"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m6 4 4 4-4 4"/></svg></span>
+          <span class="meta" id="cxPgn">1–9 of 9 recommended</span>
+          <button class="pg" id="cxPrev" data-js aria-label="Previous page"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m10 4-4 4 4 4"/></svg></button>
+          <button class="pg" id="cxNext" data-js aria-label="Next page"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m6 4 4 4-4 4"/></svg></button>
         </div>
       </div>
 
@@ -452,68 +471,94 @@ td.cbx,th.cbx{width:36px;padding:0 0 0 16px}
     <div class="mf2"><span class="meta">You can edit the message before it sends.</span><button class="btn" data-js onclick="closeDecide()">Cancel</button><button class="btn yellow" id="mGo" data-js onclick="confirmDecide()">Advance Sam</button></div>
   </div>
 </div>
+<script src="ui.js"></script><script src="proto.js"></script><script src="cx.js"></script>
 <script>
-var C=[
- {id:'sam',ini:'SR',name:'Sam Rivera',note:'Strongest at discovery',ov:[7.0,8.0],sk:[[7.5,8.5],[6.5,7.5],[7.0,8.0]],date:'Nov 17',time:'9:05–9:12 am',pr:'his',
-  mo:[['03:12','Discovery','Asked what happened to the last tool before pitching anything.','Before I tell you about us, what went wrong with the one you tried?'],['05:40','Handling doubt','Offered to let drivers flag roads, tied to Jordan\'s own story.'],['06:55','Getting a next step','Booked a follow-up with the ops manager for Tuesday.']]},
- {id:'priya',ini:'PN',name:'Priya Nair',note:'Strongest at next steps',close:1,ov:[6.5,8.0],sk:[[6.0,7.5],[6.0,7.0],[7.5,8.5]],date:'Nov 16',time:'3:20–3:27 pm',pr:'her',
-  mo:[['01:48','Discovery','Found the budget review in the first two minutes.','Is there a budget review coming up that this would need to fit into?'],['04:30','Handling doubt','Moved past the drivers\' concern a little fast.'],['06:20','Getting a next step','Asked for a pilot and got a yes in principle.']]},
- {id:'ama',ini:'AO',name:'Ama Owusu',note:'Strongest at handling doubt',ov:[6.0,7.5],sk:[[6.0,7.0],[7.0,8.0],[6.0,7.0]],date:'Nov 17',time:'8:48–8:55 am',pr:'her',
-  mo:[['02:05','Discovery','Asked about overtime costs first.','What is overtime costing you on the days the routes go wrong?'],['04:48','Handling doubt','Repeated Jordan\'s words back before answering.'],['06:40','Getting a next step','Proposed a two-week trial with five drivers.']]},
- {id:'rhea',ini:'RD',name:'Rhea Das',note:'Even across skills',ov:[6.0,7.0],sk:[[6.0,7.0],[6.0,7.0],[5.5,7.0]],date:'Nov 16',time:'11:02–11:09 am',pr:'her',
-  mo:[['02:30','Discovery','Asked how routes get planned on a normal morning.','Walk me through how a route gets planned on a normal morning.'],['04:55','Handling doubt','Gave a short example from a fleet of a similar size.'],['06:30','Getting a next step','Suggested a call with the dispatch lead next week.']]},
- {id:'nia',ini:'NB',name:'Nia Brooks',note:'Strongest at discovery',ov:[5.5,7.0],sk:[[6.5,7.5],[5.0,6.5],[5.5,6.5]],date:'Nov 13',time:'4:15–4:22 pm',pr:'her',
-  mo:[['01:55','Discovery','Asked how many routes change after the morning plan goes out.','How many routes change after the morning plan goes out?'],['04:40','Handling doubt','Answered the drivers\' concern with a list of features.'],['06:45','Getting a next step','Offered to send a summary but set no date.']]},
- {id:'ben',ini:'BC',name:'Ben Carter',note:'Strongest at next steps',ov:[5.5,7.0],sk:[[5.0,6.5],[5.5,6.5],[6.5,7.5]],date:'Nov 12',time:'10:30–10:37 am',pr:'his',
-  mo:[['02:40','Discovery','Asked about fleet size, then moved on quickly.','How many vans are we talking about across your regions?'],['05:05','Handling doubt','Acknowledged the last tool before answering.'],['06:35','Getting a next step','Got Jordan to agree to a demo on Friday.']]},
- {id:'theo',ini:'TG',name:'Theo Grant',note:'Strongest at handling doubt',ov:[5.5,6.5],sk:[[5.0,6.0],[6.0,7.0],[5.0,6.5]],date:'Nov 12',time:'1:44–1:51 pm',pr:'his',
-  mo:[['02:20','Discovery','Asked one question about current costs.','Where does the cost show up first, fuel or overtime?'],['04:15','Handling doubt','Asked what would make Jordan trust a new tool.'],['06:50','Getting a next step','Asked for a follow-up and Jordan said maybe.']]},
- {id:'carmen',ini:'CR',name:'Carmen Ruiz',note:'Strongest at discovery',ov:[5.0,6.5],sk:[[6.0,7.0],[4.5,6.0],[4.5,6.0]],date:'Nov 11',time:'9:20–9:27 am',pr:'her',
-  mo:[['01:40','Discovery','Asked what the drivers think of the routes they get now.','What do your drivers say about the routes they get now?'],['04:25','Handling doubt','Moved to pricing before answering Jordan\'s concern.'],['06:40','Getting a next step','Ended the call without a next step.']]},
- {id:'ian',ini:'IW',name:'Ian Walsh',note:'Even across skills',ov:[5.0,6.0],sk:[[5.0,6.0],[5.0,6.0],[5.0,6.5]],date:'Nov 10',time:'2:05–2:12 pm',pr:'his',
-  mo:[['02:50','Discovery','Asked how the fleet is split across regions.','Is that 120 vans in one region or spread out?'],['05:00','Handling doubt','Offered a reference customer in freight.'],['06:40','Getting a next step','Proposed a follow-up call with the date to be confirmed.']]}
-];
+var C=CX.SL;
 var SK=[['Discovery',40],['Handling doubt',35],['Getting a next step',25]];
 var WAVE=[55,63,38,75,86,44,36,33,27,76,95,62,32,53,91,93,71,60,47,38,58,52,28,58,59,49,46,64,62,72,36,68,74,89,56,47,56,85,60,36,95,63,25,62,98,64,90,49,77,79,61,80,82,45,54,64,58,30,35,30];
-var dec={},cur=0,mode=1;
+var dec=CX.ss('cx-dec')||{},cur=0,mode=1,view='rec',page=0,PER=25,cmp={},F={und:false,str:[],min6:false},notes=CX.ss('cx-notes')||{},PL={id:null,t:0,on:false,tm:null};
 function f1(n){return n.toFixed(1)}
 function rg(r){return f1(r[0])+'–'+f1(r[1])}
 function pos(r){return 'left:'+((r[0]-4)/6*100).toFixed(1)+'%;width:'+((r[1]-r[0])/6*100).toFixed(1)+'%'}
 function sec(t){var p=t.split(':');return +p[0]*60+ +p[1]}
+function mmss(n){n=Math.round(n);return (n<600?'0':'')+Math.floor(n/60)+':'+(n%60<10?'0':'')+n%60}
 function first(c){return c.name.split(' ')[0]}
 function esc(t){return t.replace(/'/g,"\\'")}
+function strongest(c){var b=0;c.sk.forEach(function(s,j){if(s[0]+s[1]>c.sk[b][0]+c.sk[b][1])b=j;});return b;}
+function visible(){
+ var V=[];C.forEach(function(c,i){
+  if(view==='rec'&&!c.rec)return;if(view==='adv'&&dec[c.id]!=='adv')return;if(view==='dec'&&dec[c.id]!=='dec')return;
+  if(F.und&&dec[c.id])return;if(F.min6&&c.ov[0]<6)return;if(F.str.length&&F.str.indexOf(strongest(c))<0)return;
+  V.push(i);});return V;}
 function tagHtml(c){var d=dec[c.id];if(!d)return '';return '<span class="close" style="background:'+(d==='adv'?'var(--green);color:var(--greenT)':'var(--chip);color:var(--ink2)')+'">'+(d==='adv'?'Final round':'Declined')+'</span>';}
+function counts(){var a=0,d=0;for(var k in dec){if(dec[k]==='adv')a++;else if(dec[k]==='dec')d++;}var v=document.querySelectorAll('.views span em');v[2].textContent=a;v[3].textContent=d;}
 function renderRows(){
- document.getElementById('rows').innerHTML=C.map(function(c,i){
-  return '<tr data-js tabindex="0" data-i="'+i+'" aria-selected="'+(i===cur)+'"'+(i===cur?' class="sel"':'')+'><td class="cbx"><span class="box"></span></td><td class="rk">'+(i+1)+'</td><td><div class="person"><span class="pav">'+c.ini+'</span><div><b>'+c.name+(dec[c.id]?tagHtml(c):(c.close?'<span class="close">Close to #1</span>':''))+'</b><small>'+c.note+'</small></div></div></td><td><div class="ov"><span class="rbar "><i style="'+pos(c.ov)+'"></i></span><b>'+rg(c.ov)+'</b></div></td>'+c.sk.map(function(s){return '<td class="skc">'+rg(s)+'</td>'}).join('')+'</tr>';
- }).join('');
+ var V=visible(),pages=Math.max(1,Math.ceil(V.length/PER));if(page>=pages)page=pages-1;
+ var S=V.slice(page*PER,page*PER+PER);
+ var names={rec:'recommended',all:'finished',adv:'advanced',dec:'declined'};
+ document.getElementById('rows').innerHTML=S.length?S.map(function(i){var c=C[i];
+  return '<tr data-js tabindex="0" data-i="'+i+'" aria-selected="'+(i===cur)+'"'+(i===cur?' class="sel"':'')+'><td class="cbx"><span class="box'+(cmp[c.id]?' on':'')+'" role="checkbox" aria-checked="'+!!cmp[c.id]+'" tabindex="0" aria-label="Pick '+c.name+' to compare"><svg viewBox="0 0 16 16"><path d="M4 8.2l2.6 2.6L12 5.4"/></svg></span></td><td class="rk">'+(i+1)+'</td><td><div class="person"><span class="pav">'+c.ini+'</span><div><b>'+c.name+(dec[c.id]?tagHtml(c):(c.close?'<span class="close">Close to #1</span>':''))+'</b><small>'+c.note+'</small></div></div></td><td><div class="ov"><span class="rbar "><i style="'+pos(c.ov)+'"></i></span><b>'+rg(c.ov)+'</b></div></td>'+c.sk.map(function(s){return '<td class="skc">'+rg(s)+'</td>'}).join('')+'</tr>';
+ }).join(''):'<tr class="cx-empty"><td colspan="7">'+(view==='adv'?'Nobody advanced yet.':view==='dec'?'Nobody declined yet.':'No candidates match this filter.')+(F.und||F.min6||F.str.length?' <button class="btn sm ghost" data-js onclick="clearF()">Clear filter</button>':'')+'</td></tr>';
+ var a=page*PER+1,b=Math.min(V.length,a+PER-1);
+ document.getElementById('cxPgn').textContent=V.length?a+'–'+b+' of '+V.length+' '+names[view]:'0 '+names[view];
+ document.getElementById('cxPrev').disabled=page===0;document.getElementById('cxNext').disabled=page>=pages-1;
+ cbar();
 }
+function cbar(){var ids=Object.keys(cmp),el=document.getElementById('cxCbar');el.hidden=!ids.length;
+ el.innerHTML='<span class="meta" style="color:var(--ink)">'+ids.length+' picked to compare</span><span class="meta">'+ids.map(function(id){return C.filter(function(c){return c.id===id})[0].name}).join(', ')+'</span><span style="margin-left:auto"></span><button class="btn sm ghost" data-js onclick="cmp={};renderRows()">Clear</button><button class="btn sm yellow" data-js onclick="goCompare()">Compare'+(ids.length===2?' these two':'')+'</button>';}
+function goCompare(){var ids=Object.keys(cmp);if(ids.length!==2){protoNote(ids.length<2?'Pick one more candidate to compare.':'Pick exactly two candidates to compare.');return;}location.href='compare.html?a='+ids[0]+'&b='+ids[1];}
 function actsHtml(c){var d=dec[c.id];
- if(d)return '<span class="done-tag">'+(d==='adv'?'Advanced to Final round':'Declined')+' · synced</span><button class="btn sm" data-js onclick="protoNote(\'Undo is available for 10 minutes.\')">Undo</button>';
- return '<button class="btn sm" data-go="compare.html">Add to compare</button><button class="btn sm" data-js onclick="openDecide(0)">Decline</button><button class="btn sm yellow" data-js onclick="openDecide(1)">Advance to final round</button>';}
-function renderPanel(){var c=C[cur],fn=first(c),D=420,t0=sec(c.mo[0][0]);
- var prog=Math.max(0,Math.floor(t0/D*60)-1);
+ if(d)return '<span class="done-tag">'+(d==='adv'?'Advanced to Final round':'Declined')+' · synced</span><button class="btn sm" data-js onclick="undoDecide()">Undo</button>';
+ var other=c.id==='sam'?'priya':'sam';
+ return '<button class="btn sm" data-go="compare.html?a='+other+'&b='+c.id+'">Compare with '+(other==='sam'?'Sam':'Priya')+'</button><button class="btn sm" data-js onclick="openDecide(0)">Decline</button><button class="btn sm yellow" data-js onclick="openDecide(1)">Advance to final round</button>';}
+function renderPanel(){var c=C[cur],fn=first(c),D=420;
+ if(PL.id!==c.id){stopPlay();PL.id=c.id;PL.t=sec(c.mo[0][0]);}
+ var prog=Math.floor(PL.t/D*60);
  var wave=WAVE.map(function(h,k){return '<i class="'+(k<prog?'p':'')+'" style="height:'+h+'%"></i>'}).join('');
  var mks=c.mo.map(function(m){return '<span class="mk" style="left:'+Math.min(98,Math.round(sec(m[0])/D*100))+'%"></span>'}).join('');
- var full=c.id==='sam'?'<a class="r" href="call-review.html" style="color:var(--ink2);text-decoration:underline;text-underline-offset:2px">Open full call</a>':'<a class="r" href="#" data-js onclick="protoNote(\'The full call review is set up for Sam in this prototype.\');return false" style="color:var(--ink2);text-decoration:underline;text-underline-offset:2px">Open full call</a>';
+ var full=c.id==='sam'?'<a class="r" href="call-review.html" style="color:var(--ink2);text-decoration:underline;text-underline-offset:2px">Open full call</a>':'<a class="r" href="#" data-js onclick="fullCall();return false" style="color:var(--ink2);text-decoration:underline;text-underline-offset:2px">Open full call</a>';
  var dp=document.getElementById('dp');dp.setAttribute('aria-label',c.name);
+ var V=visible(),vi=V.indexOf(cur);
  dp.innerHTML='<div class="dp-h"><div class="dp-top"><span class="pav">'+c.ini+'</span><div><b>'+c.name+'</b><small>Finished '+c.date+' · 7 min with Jordan Ellis, medium</small></div>'+
-  '<div class="nav2"><button class="btn sm ghost" data-js onclick="step(-1)" aria-label="Previous candidate"'+(cur===0?' disabled':'')+'><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m10 4-4 4 4 4"/></svg></button><button class="btn sm ghost" data-js onclick="step(1)" aria-label="Next candidate"'+(cur===C.length-1?' disabled':'')+'><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m6 4 4 4-4 4"/></svg></button></div></div>'+
+  '<div class="nav2"><button class="btn sm ghost" data-js onclick="step(-1)" aria-label="Previous candidate"'+(vi<=0?' disabled':'')+'><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m10 4-4 4 4 4"/></svg></button><button class="btn sm ghost" data-js onclick="step(1)" aria-label="Next candidate"'+(vi<0||vi>=V.length-1?' disabled':'')+'><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m6 4 4 4-4 4"/></svg></button></div></div>'+
   '<div class="dp-acts"><span id="dpActs" style="display:contents">'+actsHtml(c)+'</span></div></div>'+
   '<div class="dp-b"><div><div class="sl">Overall range<span class="r">Rank '+(cur+1)+' of 39</span></div><div class="big"><b>'+rg(c.ov)+'</b><span>out of 10</span></div>'+
   '<div class="axis"><span class="ln"></span><span class="band" style="'+pos(c.ov)+'"></span><span class="tk" style="left:0%">4</span><span class="tk" style="left:33.3%">6</span><span class="tk" style="left:66.7%">8</span><span class="tk" style="left:100%">10</span></div></div>'+
   '<div><div class="sl">Skills</div><div class="skl">'+SK.map(function(s,k){var n=c.mo.filter(function(m){return m[1]===s[0]}).length;return '<div class="skr"><div><b>'+s[0]+'</b><small>Weight '+s[1]+'% · '+n+' moment'+(n===1?'':'s')+'</small></div><span class="rbar "><i style="'+pos(c.sk[k])+'"></i></span><em>'+rg(c.sk[k])+'</em></div>'}).join('')+'</div></div>'+
-  '<div><div class="sl">Call recording<span class="meta" style="font-weight:400">'+c.date+', '+c.time+'</span>'+full+'</div><div class="player"><span class="playb" aria-label="Play"></span><div class="track"><div class="wave">'+wave+'</div>'+mks+'</div><span class="ptime">'+c.mo[0][0]+' / 07:00</span></div></div>'+
-  '<div><div class="sl">Moments behind the scores</div><div class="moments">'+c.mo.map(function(m,k){return '<div class="mo'+(k===0?' on':'')+'"><span class="pb"></span><div><div class="mh"><b>'+m[0]+'</b>'+m[1]+'</div><p>'+m[2]+'</p>'+(m[3]?'<q>"'+m[3]+'"</q>':'')+'</div></div>'}).join('')+'</div></div>'+
-  '<div><div class="sl">Your note for the debrief</div><textarea class="ta2" placeholder="What would you want to ask '+fn+' in the final round?"></textarea></div>'+
+  '<div><div class="sl">Call recording<span class="meta" style="font-weight:400">'+c.date+', '+c.time+'</span>'+full+'</div><div class="player"><button class="playb'+(PL.on?' cx-pause':'')+'" data-js id="cxPlay" aria-label="'+(PL.on?'Pause':'Play')+'"></button><div class="track" id="cxTrack"><div class="wave">'+wave+'</div>'+mks+'</div><span class="ptime" id="cxTime">'+mmss(PL.t)+' / 07:00</span></div></div>'+
+  '<div><div class="sl">Moments behind the scores</div><div class="moments">'+c.mo.map(function(m,k){return '<div class="mo" role="button" tabindex="0" data-t="'+sec(m[0])+'"><span class="pb"></span><div><div class="mh"><b>'+m[0]+'</b>'+m[1]+'</div><p>'+m[2]+'</p>'+(m[3]?'<q>"'+m[3]+'"</q>':'')+'</div></div>'}).join('')+'</div></div>'+
+  '<div><div class="sl">Your note for the debrief<span class="cx-saved" id="cxSaved">'+(notes[c.id]?'Saved':'')+'</span></div><textarea class="ta2" id="cxNote" placeholder="What would you want to ask '+fn+' in the final round?"></textarea></div>'+
   '<div class="note2"><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 7.2v3.3M8 5.3v.1"/></svg><span>Advance or decline syncs to your applicant tracker. Either way, '+fn+' gets a date to hear back and notes from the call.</span></div></div>';
+ var ta=document.getElementById('cxNote');ta.value=notes[c.id]||'';ta.oninput=function(){notes[c.id]=ta.value;CX.ss('cx-notes',notes);document.getElementById('cxSaved').textContent=ta.value?'Saved':'';};
+ document.getElementById('cxPlay').onclick=function(){PL.on?stopPlay():startPlay();};
+ document.getElementById('cxTrack').onclick=function(e){var r=this.getBoundingClientRect();PL.t=Math.max(0,Math.min(D,(e.clientX-r.left)/r.width*D));updPlayer();};
+ dp.querySelectorAll('.mo').forEach(function(m){function go(){PL.t=+m.getAttribute('data-t');updPlayer();startPlay();}m.onclick=go;m.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}};});
+ updPlayer();
 }
+function updPlayer(){var c=C[cur],D=420,prog=Math.floor(PL.t/D*60);
+ var w=document.querySelectorAll('#dp .wave i');w.forEach(function(x,k){x.classList.toggle('p',k<prog);});
+ var tt=document.getElementById('cxTime');if(tt)tt.textContent=mmss(PL.t)+' / 07:00';
+ var b=document.getElementById('cxPlay');if(b){b.classList.toggle('cx-pause',PL.on);b.setAttribute('aria-label',PL.on?'Pause':'Play');}
+ var on=-1;c.mo.forEach(function(m,k){if(PL.t>=sec(m[0]))on=k;});
+ document.querySelectorAll('#dp .mo').forEach(function(m,k){m.classList.toggle('on',k===Math.max(0,on));m.classList.toggle('cx-play',PL.on&&k===on);});}
+function startPlay(){if(PL.t>=420)PL.t=0;PL.on=true;clearInterval(PL.tm);PL.tm=setInterval(function(){PL.t+=1;if(PL.t>=420){PL.t=420;stopPlay();}updPlayer();},1000);updPlayer();}
+function stopPlay(){PL.on=false;clearInterval(PL.tm);updPlayer();}
+function fullCall(){UI.modal({title:'Full call for '+C[cur].name,body:'<p>The full call review, with the transcript and every scored moment, is built for Sam Rivera in this prototype. '+first(C[cur])+'\'s recording and moments are on this panel.</p>',actions:[{label:'Stay here'},{label:'Open Sam\'s call review',primary:true,onClick:function(){location.href='call-review.html';}}]});}
 function select(i,noHash){cur=Math.max(0,Math.min(C.length-1,i));renderRows();renderPanel();
  if(!noHash&&location.hash!=='#'+C[cur].id)history.replaceState(null,'','#'+C[cur].id);}
-function step(d){select(cur+d);}
-function fromHash(){var h=location.hash.slice(1).toLowerCase(),i=0;C.forEach(function(c,k){if(c.id===h)i=k});select(i,true);}
-document.getElementById('rows').addEventListener('click',function(e){var tr=e.target.closest('tr[data-i]');if(tr)select(+tr.getAttribute('data-i'));});
-document.getElementById('rows').addEventListener('keydown',function(e){var tr=e.target.closest('tr[data-i]');if(tr&&e.key==='Enter'){e.preventDefault();select(+tr.getAttribute('data-i'));var n=document.querySelector('tbody tr[data-i="'+cur+'"]');if(n)n.focus();}});
+function step(d){var V=visible(),k=V.indexOf(cur);if(k<0)return;var n=V[Math.max(0,Math.min(V.length-1,k+d))];var pi=Math.floor(V.indexOf(n)/PER);if(pi!==page)page=pi;select(n);}
+function setView(v,keep){view=v;page=0;document.querySelectorAll('.views span').forEach(function(s){var on=s.getAttribute('data-v')===v;s.classList.toggle('on',on);s.setAttribute('aria-selected',on);});
+ var V=visible();if(!keep&&V.length&&V.indexOf(cur)<0)select(V[0]);else renderRows();}
+function fromHash(){var h=location.hash.slice(1).toLowerCase(),i=0;C.forEach(function(c,k){if(c.id===h)i=k});if(visible().indexOf(i)<0){F={und:false,str:[],min6:false};fLabel();setView(C[i].rec?'rec':'all',true);}var V=visible();page=Math.max(0,Math.floor(V.indexOf(i)/PER));select(i,true);}
+function clearF(){F={und:false,str:[],min6:false};fLabel();setView(view);}
+function fLabel(){var n=(F.und?1:0)+(F.min6?1:0)+F.str.length;document.querySelector('#cxFilter span').textContent=n?'Filter · '+n:'Filter';}
+document.getElementById('rows').addEventListener('click',function(e){var bx=e.target.closest('.box');var tr=e.target.closest('tr[data-i]');if(!tr)return;
+ if(bx){var c=C[+tr.getAttribute('data-i')];if(cmp[c.id])delete cmp[c.id];else{if(Object.keys(cmp).length>=2){protoNote('You can compare two at a time. Clear one first.');return;}cmp[c.id]=1;}renderRows();return;}
+ select(+tr.getAttribute('data-i'));});
+document.getElementById('rows').addEventListener('keydown',function(e){var tr=e.target.closest('tr[data-i]');if(tr&&e.key===' '&&e.target.classList.contains('box')){e.preventDefault();e.target.click();return;}if(tr&&e.key==='Enter'){e.preventDefault();select(+tr.getAttribute('data-i'));var n=document.querySelector('tbody tr[data-i="'+cur+'"]');if(n)n.focus();}});
+document.querySelectorAll('.views span').forEach(function(s){s.addEventListener('click',function(){setView(s.getAttribute('data-v'));});s.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();setView(s.getAttribute('data-v'));}});});
+document.getElementById('cxPrev').addEventListener('click',function(){page=Math.max(0,page-1);renderRows();});
+document.getElementById('cxNext').addEventListener('click',function(){page++;renderRows();});
 window.addEventListener('hashchange',fromHash);
 function openDecide(adv){mode=adv;var D=document,c=C[cur],fn=first(c),pr=c.pr;
  D.getElementById('mTitle').textContent=adv?'Advance '+c.name+' to Final round?':'Decline '+c.name+'?';
@@ -530,13 +575,22 @@ function reasonPicked(){document.getElementById('mGo').disabled=false;}
 function closeDecide(){document.getElementById('scrim').classList.remove('on');}
 function confirmDecide(){var c=C[cur],fn=first(c);
  if(!mode&&!document.querySelector('.reasons input:checked'))return;
- closeDecide();dec[c.id]=mode?'adv':'dec';
- var a=0,d=0;for(var k in dec){if(dec[k]==='adv')a++;else d++;}
- var v=document.querySelectorAll('.views span em');v[2].textContent=a;v[3].textContent=d;
- renderRows();renderPanel();
+ closeDecide();dec[c.id]=mode?'adv':'dec';CX.ss('cx-dec',dec);
+ counts();renderRows();renderPanel();
  protoNote(mode?fn+' moved to Final round. Dana\'s message goes out at 2:00 pm.':fn+' declined. Dana\'s message goes out by Nov 24.');}
-fromHash();
+function undoDecide(){var c=C[cur],fn=first(c),was=dec[c.id];delete dec[c.id];CX.ss('cx-dec',dec);counts();
+ if((view==='adv'||view==='dec')&&visible().indexOf(cur)<0){renderRows();renderPanel();}else{renderRows();renderPanel();}
+ protoNote('Undone. '+fn+' is back to undecided and Dana\'s message won\'t go out.');}
+UI.wire('#cxExport',function(){var V=visible();
+ var csv=[CX.csvRow(['Rank','Candidate','Overall range','Discovery','Handling doubt','Getting a next step','Call date','Recommended','Decision','Decided by'])].concat(V.map(function(i){var c=C[i],d=dec[c.id];return CX.csvRow([i+1,c.name,rg(c.ov),rg(c.sk[0]),rg(c.sk[1]),rg(c.sk[2]),c.date,c.rec?'Yes':'No',d==='adv'?'Final round':d==='dec'?'Declined':'Undecided',d?'Marcus Lee':'']);})).join('\n');
+ UI.download('shortlist-req-114-'+view+'.csv',csv);});
+UI.wire('#cxFilter',function(b){
+ var pop=UI.popover(b,'<div class="ui-h">Decision</div><label class="cx-colr"><input type="checkbox" data-f="und"'+(F.und?' checked':'')+'>Undecided only</label><div class="ui-sep"></div><div class="ui-h">Strongest skill</div>'+SK.map(function(s,k){return '<label class="cx-colr"><input type="checkbox" data-s="'+k+'"'+(F.str.indexOf(k)>=0?' checked':'')+'>'+s[0]+'</label>';}).join('')+'<div class="ui-sep"></div><div class="ui-h">Overall range</div><label class="cx-colr"><input type="checkbox" data-f="min6"'+(F.min6?' checked':'')+'>Starts at 6.0 or higher</label><div class="ui-sep"></div><button class="ui-it" data-clear>Clear filter</button>',{width:240});
+ if(!pop)return;
+ pop.querySelectorAll('input').forEach(function(i){i.onchange=function(){if(i.dataset.f)F[i.dataset.f]=i.checked;else{var k=+i.dataset.s,j=F.str.indexOf(k);if(i.checked&&j<0)F.str.push(k);if(!i.checked&&j>=0)F.str.splice(j,1);}fLabel();page=0;var V=visible();if(V.length&&V.indexOf(cur)<0)select(V[0]);else renderRows();};});
+ pop.querySelector('[data-clear]').onclick=function(){UI.close();clearF();};
+});
+counts();fromHash();
 </script>
-<script src="ui.js"></script><script src="proto.js"></script>
 </body>
 </html>

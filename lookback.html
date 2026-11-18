@@ -11,6 +11,27 @@
 .side .card+.card{margin-top:12px}
 .prow{display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);font-size:13px}
 .prow:first-of-type{border-top:0}
+
+.steps .cd-step{cursor:pointer}
+.steps .cd-step:not(.now):hover{background:var(--chip);color:var(--ink)}
+.steps .cd-step.cd-locked{cursor:not-allowed;color:var(--faint)}
+.steps .cd-step.cd-locked:hover{background:var(--sub);color:var(--mute)}
+.steps .cd-lk{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;margin-left:-2px}
+.cd-lockpop{padding:8px 10px 10px}
+.cd-lockpop b{display:block;font-weight:550}
+.cd-lockpop p{margin:2px 0 10px;color:#535347;font-size:12.5px;line-height:18px}
+.cd-lb{display:flex;align-items:center;justify-content:center;width:100%;height:30px;border-radius:8px;background:#1C1C18;color:#fff;font:450 12.5px Inter,system-ui,sans-serif;text-decoration:none;margin-top:6px}
+.cd-lb.ghost{background:#fff;color:#1C1C18;border:1px dashed rgba(28,28,24,.24)}
+.cd-lb.ghost:hover{background:#F4F4F2}
+.cd-lockbtn{color:var(--mute)}
+.cd-lockbtn svg{width:14px;height:14px}
+.cd-textbtn{font-size:12.5px;color:var(--ink2);text-decoration:underline;text-underline-offset:2px;margin-top:8px}
+.cd-textbtn:hover{color:var(--ink)}
+
+.cd-prow{width:100%;text-align:left;border-radius:6px;padding:8px 6px!important;margin:0 -6px;width:calc(100% + 12px)}
+.cd-prow:hover{background:var(--sub)}
+.cd-prow.on{background:#EEF3FC}
+.side .btn.cd-lockbtn{background:var(--field)}
 </style></head><body>
 <header class="ctop"><div class="co"><span class="lg">N</span><div><b>Northwind Freight</b><small>Account Executive, Mid-Market · first interview</small></div></div>
 <nav class="steps" aria-label="Your progress"><span class="done"><i>✓</i>Notice</span><span class="ln"></span><span class="now"><i>2</i>Practice</span><span class="ln"></span><span class=""><i>3</i>Scored call</span><span class="ln"></span><span class=""><i>4</i>Done</span></nav>
@@ -41,5 +62,5 @@
 </div>
 </main>
 
-<script src="ui.js"></script><script src="proto.js"></script>
+<script src="ui.js"></script><script src="proto.js"></script><script src="cd-cand.js"></script>
 </body></html>

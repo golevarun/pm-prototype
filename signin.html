@@ -293,6 +293,24 @@ body.si-body{background:#FAFAF9;min-height:100%;height:auto}
 .si-foot{margin-top:auto;padding-top:40px;display:flex;gap:16px;font-size:12px}
 .si-foot a{color:var(--mute);text-decoration:none}
 .si-foot a:hover{color:var(--ink);text-decoration:underline}
+
+.cd-lrow{display:flex;align-items:center;justify-content:space-between}
+.cd-lrow .si-lab{margin-bottom:6px}
+.cd-link{font-size:12px;color:var(--mute);margin-bottom:6px}
+.cd-link:hover{color:var(--ink);text-decoration:underline}
+.si-in.cd-bad{border-color:#B42318}
+.cd-err{margin:6px 0 0;font-size:12px;line-height:16px;color:#B42318}
+.cd-spin{width:14px;height:14px;border-radius:50%;border:2px solid rgba(28,28,24,.18);border-top-color:currentColor;animation:cd-rot .7s linear infinite;flex:none}
+.btn.yellow .cd-spin{border-color:rgba(255,255,255,.3);border-top-color:#fff}
+@keyframes cd-rot{to{transform:rotate(360deg)}}
+.si-card.cd-busy .btn{pointer-events:none}
+.si-card.cd-busy .btn:not(.cd-now){opacity:.5}
+.cd-doc h3{font-size:13px;font-weight:550;margin:14px 0 4px}
+.cd-doc h3:first-child{margin-top:0}
+.cd-doc p{color:#535347}
+.cd-doc .cd-upd{font-size:12px;color:#68685D;margin-top:12px}
+.cd-ok{display:flex;gap:10px;align-items:flex-start}
+.cd-ok span{width:24px;height:24px;border-radius:50%;background:#E2F2E6;color:#2B6B3E;display:grid;place-items:center;flex:none;font-weight:600}
 </style>
 </head>
 <body class="si-body">
@@ -315,13 +333,18 @@ body.si-body{background:#FAFAF9;min-height:100%;height:auto}
 
     <div class="si-div" role="separator">or</div>
 
-    <form onsubmit="return false">
+    <form id="cd-form" novalidate>
       <div class="si-field">
         <label class="si-lab" for="si-email">Work email</label>
         <input class="si-in" id="si-email" type="email" autocomplete="email" value="dana@northwindfreight.com">
       </div>
+      <div class="si-field">
+        <div class="cd-lrow"><label class="si-lab" for="si-pass">Password</label><button class="cd-link" type="button" id="cd-forgot">Forgot password?</button></div>
+        <input class="si-in" id="si-pass" type="password" autocomplete="current-password" value="northwind-114">
+        <p class="cd-err" id="cd-err" role="alert" hidden></p>
+      </div>
       <div class="si-stack">
-        <button class="btn yellow" type="submit" data-go="home.html">Continue with email</button>
+        <button class="btn yellow" type="submit" id="cd-submit">Sign in</button>
         <button class="btn" type="button">
           <svg class="i" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="6.5" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>
           Sign in with SSO
@@ -342,5 +365,62 @@ body.si-body{background:#FAFAF9;min-height:100%;height:auto}
   </nav>
 </main>
 <script src="ui.js"></script><script src="proto.js"></script>
+<script>
+(function(){
+  /* ui.js modal, menu and popover buttons have no data-js, so proto.js shows its "not built" note after they run. Mark them. */
+  new MutationObserver(function(){document.querySelectorAll('.ui-ov button:not([data-js]),.ui-dr-ov button:not([data-js]),.ui-pop button:not([data-js])').forEach(function(b){b.setAttribute('data-js','');});}).observe(document.body,{childList:true,subtree:true});
+  var card=document.querySelector('.si-card');
+  function busy(btn,label,ms,cb){
+    card.classList.add('cd-busy');btn.classList.add('cd-now');
+    var old=btn.innerHTML;btn.innerHTML='<span class="cd-spin" aria-hidden="true"></span>'+UI.esc(label);btn.setAttribute('aria-busy','true');
+    setTimeout(function(){cb?cb():location.href='home.html';},ms||1100);
+    return old;
+  }
+  var bs=document.querySelectorAll('.si-stack .btn');
+  UI.wire(bs[0],function(b){busy(b,'Signing in with Google…');});
+  UI.wire(bs[1],function(b){busy(b,'Signing in with Microsoft…');});
+  var em=document.getElementById('si-email'),pw=document.getElementById('si-pass'),err=document.getElementById('cd-err');
+  function fail(msg,el){err.textContent=msg;err.hidden=false;[em,pw].forEach(function(x){x.classList.toggle('cd-bad',x===el)});el.focus();}
+  function clear(){err.hidden=true;em.classList.remove('cd-bad');pw.classList.remove('cd-bad');}
+  em.addEventListener('input',clear);pw.addEventListener('input',clear);
+  var sub=document.getElementById('cd-submit');sub.setAttribute('data-js','');
+  document.getElementById('cd-form').addEventListener('submit',function(e){
+    e.preventDefault();var v=em.value.trim();
+    if(!v)return fail('Enter your work email.',em);
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v))return fail('That email doesn’t look right. Check for a typo.',em);
+    if(!pw.value)return fail('Enter your password.',pw);
+    if(pw.value.length<8)return fail('That password is too short. Passwords are at least 8 characters.',pw);
+    busy(sub,'Signing in…',800);
+  });
+  UI.wire(bs[3],function(b){
+    var v=em.value.trim(),d=v.split('@')[1];
+    if(!d||!/\./.test(d))return fail('Enter your work email first. We use it to find your company’s sign-in.',em);
+    busy(b,'Opening '+d+' sign-in…',1300);
+  });
+  UI.wire('#cd-forgot',function(){
+    UI.modal({title:'Reset your password',body:'<p>We’ll email you a link to set a new password. The link works for 30 minutes.</p><label for="cd-fe">Work email</label><input id="cd-fe" type="email" value="'+UI.esc(em.value)+'">',
+      actions:[{label:'Cancel'},{label:'Send reset link',primary:true,onClick:function(m){var i=m.querySelector('input');if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(i.value.trim())){i.style.borderColor='#B42318';i.focus();return false;}UI.toast('Sent a reset link to '+i.value.trim()+'.');}}]});
+  });
+  var DOCS={
+    Privacy:['Privacy','<h3>What PM keeps</h3><p>For hiring teams: your name, work email and what you do in PM. For candidates: the notice they agreed to, their call recordings and transcripts, scores, and any accommodation requests.</p><h3>Who sees what</h3><p>Hiring managers see scores, recordings and transcripts. Accommodation requests go to recruiters only. Practice calls are never shared with anyone.</p><h3>How long</h3><p>Recordings are kept 12 months, then deleted. A candidate can ask the recruiter to delete theirs sooner.</p><h3>What PM never does</h3><p>PM doesn’t score voice, accent, face or pauses, and doesn’t sell or share candidate data.</p><p class="cd-upd">Last updated Sep 1, 2026 · privacy@pm.app</p>'],
+    Terms:['Terms of use','<h3>Your account</h3><p>Accounts belong to your company. Your admin can add or remove people and change what they can see.</p><h3>Hiring decisions</h3><p>PM scores calls on the skills your team sets up. A person on your team makes every hiring decision. PM doesn’t reject or advance anyone on its own.</p><h3>Candidates</h3><p>You agree to show candidates the notice before their scored call, and to offer the accommodations they ask for.</p><h3>Audits</h3><p>You can export your role’s data for an independent bias audit at any time.</p><p class="cd-upd">Last updated Sep 1, 2026 · legal@pm.app</p>'],
+    Accessibility:['Accessibility','<h3>What we support</h3><p>PM works with a keyboard and with screen readers. Text and controls meet WCAG 2.1 AA contrast.</p><h3>For candidates</h3><p>Every candidate can ask for extra time, live captions, a text version of the call or a person to interview them instead. Asking never affects their score.</p><h3>Tell us what’s not working</h3><p>Write to access@pm.app. We reply within two working days.</p><p class="cd-upd">Last reviewed Oct 2026</p>']
+  };
+  document.querySelectorAll('.si-foot a').forEach(function(a){var d=DOCS[a.textContent.trim()];UI.wire(a,function(){UI.modal({title:d[0],wide:true,body:'<div class="cd-doc">'+d[1]+'</div>'});});});
+  UI.wire(UI.byText('Book a demo')[0],function(){
+    var md=UI.modal({title:'Book a demo',body:'<p>We’ll walk you through PM with one of your open roles. It takes 30 minutes.</p><label for="cd-dn">Your name</label><input id="cd-dn" autocomplete="name"><label for="cd-de">Work email</label><input id="cd-de" type="email" autocomplete="email"><label for="cd-dc">Company</label><input id="cd-dc" autocomplete="organization"><label for="cd-dh">Sales hires in the next 12 months</label><select id="cd-dh"><option>1–5</option><option selected>6–20</option><option>21–50</option><option>More than 50</option></select><p class="cd-err" id="cd-derr" hidden></p>',
+      actions:[{label:'Cancel'},{label:'Request a demo',primary:true,onClick:function(m){
+        var n=m.querySelector('#cd-dn'),e=m.querySelector('#cd-de'),c=m.querySelector('#cd-dc'),er=m.querySelector('#cd-derr');
+        [n,e,c].forEach(function(x){x.style.borderColor=''});
+        var bad=!n.value.trim()?[n,'Add your name.']:!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e.value.trim())?[e,'Add a work email we can reply to.']:!c.value.trim()?[c,'Add your company.']:null;
+        if(bad){bad[0].style.borderColor='#B42318';bad[0].focus();er.textContent=bad[1];er.hidden=false;return false;}
+        var first=n.value.trim().split(' ')[0];
+        m.querySelector('.ui-md-b').innerHTML='<div class="cd-ok"><span>✓</span><div><p><b>Thanks, '+UI.esc(first)+'.</b></p><p>We’ll email '+UI.esc(e.value.trim())+' within one working day with times for a 30-minute demo.</p></div></div>';
+        var f=m.querySelector('.ui-md-f');f.innerHTML='';var b=document.createElement('button');b.className='ui-b pri';b.textContent='Done';b.onclick=function(){m.close();};f.appendChild(b);
+        return false;}}]});
+  });
+})();
+</script>
+
 </body>
 </html>

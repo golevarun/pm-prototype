@@ -56,7 +56,7 @@
   '.side .grp{cursor:pointer;user-select:none}',
   '.side .grp.ui-shut .chev{transform:rotate(180deg)}',
   '.side .sub.ui-hide{display:none!important}',
-  '.topbar .search{cursor:pointer}'
+  '.topbar .search{cursor:pointer}','[hidden]{display:none!important}'
   ].join('');
   document.head.appendChild(css);
 

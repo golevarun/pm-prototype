@@ -47,7 +47,42 @@ body{background:#EFEFEB;padding:20px 24px 96px}
 .oe-m b{display:block;font-weight:550}
 .oe-m span{color:var(--ink2)}
 [hidden]{display:none!important}
-</style></head><body>
+
+.fold a{cursor:pointer}
+.list .h{display:flex;align-items:baseline;justify-content:space-between}
+.cd-cnt{font-size:12px;color:var(--mute);font-weight:400}
+.cd-it{cursor:pointer}
+.cd-it:hover{background:#FAFAF9}
+.cd-it.on:hover{background:#F4F7FD}
+.cd-it:focus-visible{outline:2px solid #2A4F99;outline-offset:-2px;border-radius:0}
+.cd-rt{display:inline-flex;align-items:center;gap:4px}
+.cd-star{width:22px;height:22px;display:grid;place-items:center;border-radius:6px;color:#B9B9AE;margin-right:-4px}
+.cd-star:hover{background:var(--chip);color:var(--ink2)}
+.cd-star svg{width:14px;height:14px}
+.cd-lempty{padding:24px 16px;color:var(--mute)}
+.cd-tools{display:flex;align-items:center;gap:4px;margin:-8px -12px 12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.cd-tb{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 8px;border-radius:8px;color:var(--ink2);font-size:12.5px}
+.cd-tb:hover{background:var(--chip);color:var(--ink)}
+.cd-pos{margin-left:auto;font-size:12px;color:var(--mute)}
+.cd-empty{height:60%;display:grid;place-items:center;color:var(--mute)}
+.cd-att{cursor:pointer;background:#fff;font:inherit;color:var(--ink)}
+.cd-att:hover{background:#F7F7F5}
+.cd-toast{position:fixed;left:50%;bottom:62px;transform:translateX(-50%) translateY(6px);z-index:102;display:flex;align-items:center;gap:12px;background:#2F2F27;color:#fff;border-radius:8px;padding:6px 6px 6px 12px;font-size:13px;line-height:18px;box-shadow:0 6px 20px rgba(28,28,24,.2);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.cd-toast.on{opacity:1;transform:translateX(-50%);pointer-events:auto}
+.cd-toast button{height:26px;padding:0 10px;border-radius:6px;color:#fff;font-weight:500;background:rgba(255,255,255,.12)}
+.cd-toast button:hover{background:rgba(255,255,255,.2)}
+.cd-pdf{border:1px solid var(--line2);border-radius:8px;padding:20px 24px;background:#fff;box-shadow:0 1px 3px rgba(28,28,24,.06)}
+.cd-pdf h3{font-size:13px;font-weight:550;margin:14px 0 4px}
+.cd-pdf p{margin:0 0 6px;color:var(--ink2)}
+.cd-pdfh{display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.cd-pdfh .lg{width:28px;height:28px;border-radius:6px;background:#1F3A5F;color:#fff;display:grid;place-items:center;font-weight:600;font-size:12px}
+.cd-pdfh b{display:block;font-weight:550}
+.cd-pdfh small{display:block;color:var(--mute);font-size:12px}
+.cd-pdff{margin-top:16px!important;padding-top:10px;border-top:1px solid var(--line);font-size:12px;color:var(--mute)!important}
+.cd-pm{display:grid;grid-template-columns:44px 1fr;gap:8px;padding:6px 0}
+.cd-pm time{font-variant-numeric:tabular-nums;color:var(--mute);font-size:12px}
+.cd-pm b{font-weight:450}
+</style></head><body data-cd-mail="outcome">
 <div class="mail" aria-label="Sam's inbox">
   <nav class="fold"><div class="acct">sam.rivera@gmail.com</div><a class="on" href="#">Inbox<span>1</span></a><a href="#">Starred</a><a href="#">Sent</a><a href="#">Archive</a></nav>
   <section class="list"><div class="h">Inbox</div>
@@ -98,5 +133,5 @@ body{background:#EFEFEB;padding:20px 24px 96px}
   })});
 })();
 </script>
-<script src="ui.js"></script><script src="proto.js"></script>
+<script src="ui.js"></script><script src="proto.js"></script><script src="cd-mail.js"></script>
 </body></html>

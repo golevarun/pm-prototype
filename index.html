@@ -309,6 +309,13 @@ td.act{text-align:right}
 .hm-date b{display:block;font-size:15px;line-height:24px;font-weight:550}
 .hm-foot{display:flex;align-items:center;gap:6px;padding:10px 16px;border-top:1px solid var(--line);font-size:12px;color:var(--mute);background:var(--sub);border-radius:0 0 12px 12px}
 .hm-foot a{color:var(--ink2)}
+.rl-click{cursor:pointer}
+.hm-tbl tbody tr.rl-click:hover td{background:#FAFAF9}
+#rlComing .hm-row.rl-click:hover{background:#FAFAF9}
+.hm-row.rl-done .hm-tx b{color:var(--ink2)}
+.rl-ok{width:28px;height:28px;border-radius:50%;background:var(--green);color:var(--greenT);display:grid;place-items:center;flex:none}
+.rl-ok svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.rl-empty{padding:14px 16px;color:var(--mute);border-top:1px solid var(--line)}
 </style>
 </head>
 <body>
@@ -370,18 +377,18 @@ td.act{text-align:right}
           </div>
         </div>
 
-        <div class="hm-greet"><b>Good morning, Dana</b><span>2 candidates are waiting on you, 1 scored call is running, and your debrief with Marcus is Thursday.</span></div>
+        <div class="hm-greet"><b>Good morning, Dana</b><span id="rlGreet">2 candidates are waiting on you, 1 scored call is running, and your debrief with Marcus is Thursday.</span></div>
 
         <section class="card" aria-labelledby="hm-needs">
           <div class="ch"><h2 id="hm-needs">Needs you <span class="hm-cnt" id="hmNeedN">2</span></h2><div class="r"><span class="meta">Accommodation requests show to recruiters only</span></div></div>
           <div class="hm-list">
-            <div class="hm-row hm-flag">
+            <div class="hm-row hm-flag" id="rlNeedDev">
               <span class="pav">DK</span>
               <div class="hm-tx"><b>Dev Kapoor asked for extra time on his scored call</b><small>Account Executive, Mid-Market · Req 114 · Scored call opens Nov 30 · Approving gives him 10 minutes</small></div>
               <span class="hm-when">8:40 am</span>
               <button class="btn sm yellow" data-go="candidates.html">Review request</button>
             </div>
-            <div class="hm-row hm-flag">
+            <div class="hm-row hm-flag" id="rlNeedMia">
               <span class="pav">MB</span>
               <div class="hm-tx"><b>Mia Brandt asked for a human interviewer</b><small>Account Executive, Mid-Market · Req 114 · Assign someone to run her call in place of the AI buyer</small></div>
               <span class="hm-when">Yesterday</span>
@@ -405,18 +412,18 @@ td.act{text-align:right}
           <table class="hm-tbl">
             <thead><tr><th>Role</th><th>Status</th><th class="n">Enrolled</th><th class="n">Finished</th><th>Next action</th></tr></thead>
             <tbody>
-              <tr><td><a class="hm-role" href="candidates.html">Account Executive, Mid-Market</a><small>Req 114 · Chicago or remote (US) · Marcus Lee</small></td><td><span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span></td><td class="n">212</td><td class="n">39</td><td class="nx hm-due">Decide 2 requests · debrief Thu 2:00 pm</td></tr>
-              <tr><td><a class="hm-role" href="roles.html">SDR, Inbound</a><small>Req 117 · Chicago</small></td><td><span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span></td><td class="n">96</td><td class="n">21</td><td class="nx">Review 21 finished calls</td></tr>
-              <tr><td><a class="hm-role" href="roles.html">Account Executive, Enterprise</a><small>Req 109 · Remote (US)</small></td><td><span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span></td><td class="n">44</td><td class="n">12</td><td class="nx">Invite the next batch from the applicant tracker</td></tr>
-              <tr><td><a class="hm-role" href="roles.html">SDR, Outbound</a><small>Req 120 · Set up by you · not published</small></td><td><span class="tag gray">Draft</span></td><td class="n dim">—</td><td class="n dim">—</td><td class="nx">Finish interview setup and publish</td></tr>
-              <tr><td><a class="hm-role" href="roles.html">Sales Manager, Central</a><small>Req 101 · Closed Oct 30 · 2 hired</small></td><td><span class="tag beige">Closed</span></td><td class="n">58</td><td class="n">19</td><td class="nx">Export the audit log for the annual bias audit</td></tr>
+              <tr><td><a class="hm-role" href="overview.html">Account Executive, Mid-Market</a><small>Req 114 · Chicago or remote (US) · Marcus Lee</small></td><td><span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span></td><td class="n">212</td><td class="n">39</td><td class="nx hm-due" id="rlNx114">Decide 2 requests · debrief Thu 2:00 pm</td></tr>
+              <tr><td><a class="hm-role" href="rl-role.html?req=117">SDR, Inbound</a><small>Req 117 · Chicago</small></td><td><span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span></td><td class="n">96</td><td class="n">21</td><td class="nx">Review 21 finished calls</td></tr>
+              <tr><td><a class="hm-role" href="rl-role.html?req=109">Account Executive, Enterprise</a><small>Req 109 · Remote (US)</small></td><td><span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span></td><td class="n">44</td><td class="n">12</td><td class="nx">Invite the next batch from the applicant tracker</td></tr>
+              <tr><td><a class="hm-role" href="rl-role.html?req=120">SDR, Outbound</a><small>Req 120 · Set up by you · not published</small></td><td><span class="tag gray">Draft</span></td><td class="n dim">—</td><td class="n dim">—</td><td class="nx">Finish interview setup and publish</td></tr>
+              <tr><td><a class="hm-role" href="rl-role.html?req=101">Sales Manager, Central</a><small>Req 101 · Closed Oct 30 · 2 hired</small></td><td><span class="tag beige">Closed</span></td><td class="n">58</td><td class="n">19</td><td class="nx">Export the audit log for the annual bias audit</td></tr>
             </tbody>
           </table>
         </section>
 
         <section class="card" aria-labelledby="hm-next">
           <div class="ch"><h2 id="hm-next">Coming up</h2><div class="r"><span class="meta">Next 14 days</span></div></div>
-          <div class="hm-list">
+          <div class="hm-list" id="rlComing">
             <div class="hm-row">
               <div class="hm-date"><small>Thu</small><b>19</b></div>
               <div class="hm-tx"><b>Debrief with Marcus Lee</b><small>2:00 pm · Account Executive, Mid-Market · 9 recommended on the shortlist, Sam Rivera ranked first</small></div>
@@ -425,7 +432,7 @@ td.act{text-align:right}
             </div>
             <div class="hm-row">
               <div class="hm-date"><small>Mon</small><b>30</b></div>
-              <div class="hm-tx"><b>Dev Kapoor's scored call opens</b><small>Nov 30 · Req 114 · Extra time request still needs your decision before then</small></div>
+              <div class="hm-tx"><b>Dev Kapoor's scored call opens</b><small id="rlDevNext">Nov 30 · Req 114 · Extra time request still needs your decision before then</small></div>
               <button class="btn sm" data-go="candidates.html">View candidate</button>
             </div>
           </div>
@@ -435,5 +442,54 @@ td.act{text-align:right}
   </div>
 </div>
 <script src="ui.js"></script><script src="proto.js"></script>
+<script src="rl.js"></script>
+<script>
+(function(){
+  var OK='<span class="rl-ok"><svg viewBox="0 0 16 16"><path d="m4 8.5 2.5 2.5L12 5.5"/></svg></span>';
+  var dev=document.getElementById('rlNeedDev'),mia=document.getElementById('rlNeedMia');
+  var devHTML=dev.innerHTML,miaHTML=mia.innerHTML;
+  function undo(k){var n=RL.needs();n[k]=null;RL.set('needs',n);render();UI.toast(k==='dev'?'Dev Kapoor\'s request is open again.':'Mia Brandt\'s request is open again.');}
+  function render(){
+    var n=RL.needs(),open=RL.openNeeds();
+    if(n.dev){dev.className='hm-row rl-done';dev.innerHTML=OK+'<div class="hm-tx"><b>'+(n.dev.ok?'Approved '+n.dev.min+' minutes for Dev Kapoor':'Declined extra time for Dev Kapoor')+'</b><small>Req 114 · Dev got an email · decided by you</small></div><span class="hm-when">Just now</span><button class="btn sm ghost" data-js data-rl="undo-dev">Undo</button><button class="btn sm" data-go="candidates.html">View candidate</button>';}
+    else{dev.className='hm-row hm-flag';dev.innerHTML=devHTML;}
+    if(n.mia){mia.className='hm-row rl-done';mia.innerHTML=OK+'<div class="hm-tx"><b>'+RL.esc(n.mia.who)+' will interview Mia Brandt</b><small>Req 114 · '+RL.esc(n.mia.when)+' · Mia got a calendar invite</small></div><span class="hm-when">Just now</span><button class="btn sm ghost" data-js data-rl="undo-mia">Undo</button><button class="btn sm" data-go="candidates.html">View candidate</button>';}
+    else{mia.className='hm-row hm-flag';mia.innerHTML=miaHTML;}
+    document.getElementById('hmNeedN').textContent=open;
+    var list=dev.parentNode,em=list.querySelector('.rl-empty');
+    if(!open&&!em){em=document.createElement('div');em.className='rl-empty';em.textContent='Nothing waiting on you. Decided requests stay here until tomorrow.';list.appendChild(em);}
+    if(open&&em)em.remove();
+    var g=document.getElementById('rlGreet');
+    g.textContent=(open?open+' candidate'+(open>1?'s are':' is')+' waiting on you':'Nothing is waiting on you')+', 1 scored call is running, and your debrief with Marcus is Thursday.';
+    document.getElementById('rlNx114').textContent=(open?'Decide '+open+' request'+(open>1?'s':'')+' · ':'')+'debrief Thu 2:00 pm';
+    document.querySelectorAll('.hm-tbl tbody tr').forEach(function(tr){var a=tr.querySelector('a.hm-role'),m=a&&a.getAttribute('href').match(/req=(\d+)/);if(m&&RL.roleState(m[1],'paused')){var tg=tr.querySelector('.tag');tg.className='tag beige';tg.textContent='Invites paused';}});
+    var dn=document.getElementById('rlDevNext');
+    dn.textContent=n.dev?('Nov 30 · Req 114 · '+(n.dev.ok?'Extra time approved: '+n.dev.min+' minutes':'Extra time declined: 7 minutes')):'Nov 30 · Req 114 · Extra time request still needs your decision before then';
+    wire();
+  }
+  function wire(){
+    document.querySelectorAll('#rlNeedDev button, #rlNeedMia button').forEach(function(b){
+      var t=b.textContent.trim();
+      if(t==='Review request'){b.removeAttribute('data-go');b.setAttribute('data-js','');b.onclick=function(){RL.reviewDev(render);};}
+      if(t==='Assign interviewer'){b.removeAttribute('data-go');b.setAttribute('data-js','');b.onclick=function(){RL.assignMia(render);};}
+      if(b.dataset.rl==='undo-dev')b.onclick=function(){undo('dev');};
+      if(b.dataset.rl==='undo-mia')b.onclick=function(){undo('mia');};
+    });
+  }
+  render();
+  /* Rows open what their main link or button opens */
+  function rowNav(row,href){row.classList.add('rl-click');row.addEventListener('click',function(e){if(e.target.closest('a,button'))return;location.href=href;});}
+  document.querySelectorAll('.hm-tbl tbody tr').forEach(function(tr){var a=tr.querySelector('a.hm-role');if(a)rowNav(tr,a.getAttribute('href'));});
+  document.querySelectorAll('#rlComing .hm-row').forEach(function(r){var b=r.querySelector('[data-go]');if(b)rowNav(r,b.getAttribute('data-go'));});
+  /* The Dev row in Coming up opens his request while it's undecided */
+  var devNext=document.getElementById('rlDevNext').closest('.hm-row');
+  var vb=devNext.querySelector('button');
+  var rb=document.createElement('button');rb.className='btn sm';rb.setAttribute('data-js','');rb.textContent='Decide request';
+  vb.parentNode.insertBefore(rb,vb);
+  rb.onclick=function(){RL.reviewDev(render);};
+  function syncRb(){rb.hidden=!!RL.needs().dev;}
+  var r0=render;render=function(){r0();syncRb();};syncRb();
+})();
+</script>
 </body>
 </html>

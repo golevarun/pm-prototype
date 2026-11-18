@@ -16,6 +16,28 @@
 .opt{display:flex;align-items:center;gap:8px;height:32px;padding:0 10px;border:1px solid var(--line);border-radius:8px;margin-top:6px;cursor:pointer}
 .opt input{accent-color:#1C1C18}
 .sent{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;background:var(--green);color:var(--greenT);font-size:12.5px;line-height:18px}
+
+.steps .cd-step{cursor:pointer}
+.steps .cd-step:not(.now):hover{background:var(--chip);color:var(--ink)}
+.steps .cd-step.cd-locked{cursor:not-allowed;color:var(--faint)}
+.steps .cd-step.cd-locked:hover{background:var(--sub);color:var(--mute)}
+.steps .cd-lk{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;margin-left:-2px}
+.cd-lockpop{padding:8px 10px 10px}
+.cd-lockpop b{display:block;font-weight:550}
+.cd-lockpop p{margin:2px 0 10px;color:#535347;font-size:12.5px;line-height:18px}
+.cd-lb{display:flex;align-items:center;justify-content:center;width:100%;height:30px;border-radius:8px;background:#1C1C18;color:#fff;font:450 12.5px Inter,system-ui,sans-serif;text-decoration:none;margin-top:6px}
+.cd-lb.ghost{background:#fff;color:#1C1C18;border:1px dashed rgba(28,28,24,.24)}
+.cd-lb.ghost:hover{background:#F4F4F2}
+.cd-lockbtn{color:var(--mute)}
+.cd-lockbtn svg{width:14px;height:14px}
+.cd-textbtn{font-size:12.5px;color:var(--ink2);text-decoration:underline;text-underline-offset:2px;margin-top:8px}
+.cd-textbtn:hover{color:var(--ink)}
+
+.cd-dis{opacity:.6;cursor:default}
+.cd-ul{margin:0 0 6px;padding-left:18px}
+.cd-ul li{margin:2px 0}
+.cd-fine{font-size:12px;color:var(--mute);margin:10px 0 0!important}
+.btn[disabled]{opacity:.5;pointer-events:none}
 </style></head><body>
 <header class="ctop"><div class="co"><span class="lg">N</span><div><b>Northwind Freight</b><small>Account Executive, Mid-Market · first interview</small></div></div>
 <nav class="steps" aria-label="Your progress"><span class="now"><i>1</i>Notice</span><span class="ln"></span><span class=""><i>2</i>Practice</span><span class="ln"></span><span class=""><i>3</i>Scored call</span><span class="ln"></span><span class=""><i>4</i>Done</span></nav>
@@ -62,5 +84,5 @@
 <p class="cfoot">Interview run with PM for Northwind Freight</p>
 </main>
 
-<script src="ui.js"></script><script src="proto.js"></script>
+<script src="ui.js"></script><script src="proto.js"></script><script src="cd-cand.js"></script>
 </body></html>

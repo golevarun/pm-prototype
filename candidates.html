@@ -268,6 +268,7 @@ td.act{text-align:right}
 .pg{width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--line2);border-radius:8px;color:var(--ink2);background:var(--field)}
 .foot-note{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mute)}
 </style>
+<link rel="stylesheet" href="cx.css">
 </head>
 <body>
 <div class="app">
@@ -323,88 +324,29 @@ td.act{text-align:right}
         <h1>Account Executive, Mid-Market</h1>
         <span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span>
         <div class="ph-acts">
-          <span class="meta">All in Phone screen · synced 9:02 am</span>
-          <button class="btn" data-js onclick="protoNote('Export ready: 212 candidates, CSV. Practice details are never included.')"><svg class="i" viewBox="0 0 16 16"><path d="M8 2.5v8M5 7.5l3 3 3-3M3 12.5h10"/></svg>Export</button>
-          <button class="btn" data-js onclick="protoNote('Invite link copied: pm.app/i/northwind-ae')"><svg class="i" viewBox="0 0 16 16"><path d="M7 9a2.5 2.5 0 0 0 3.5 0l2-2a2.5 2.5 0 0 0-3.5-3.5l-.6.6M9 7a2.5 2.5 0 0 0-3.5 0l-2 2A2.5 2.5 0 0 0 7 12.5l.6-.6"/></svg>Copy invite link</button>
-          <button class="btn yellow" data-js onclick="protoNote('Invites go out from Dana at the next stage change in your applicant tracker. 3 candidates are queued for tomorrow, 9:00 am.')">Invite candidates</button>
+          <span class="meta">Applicant tracker synced 9:02 am</span>
+          <button class="btn" id="cxExport"><svg class="i" viewBox="0 0 16 16"><path d="M8 2.5v8M5 7.5l3 3 3-3M3 12.5h10"/></svg>Export</button>
+          <button class="btn" id="cxLink"><svg class="i" viewBox="0 0 16 16"><path d="M7 9a2.5 2.5 0 0 0 3.5 0l2-2a2.5 2.5 0 0 0-3.5-3.5l-.6.6M9 7a2.5 2.5 0 0 0-3.5 0l-2 2A2.5 2.5 0 0 0 7 12.5l.6-.6"/></svg>Copy invite link</button>
+          <button class="btn yellow" id="cxInvite">Invite candidates</button>
         </div>
       </div>
       <nav class="tabs" aria-label="Role"><a href="overview.html">Overview</a><a href="setup.html">Interview setup</a><a href="candidates.html" class="on" aria-current="page">Candidates</a><a href="shortlist.html">Shortlist</a><a href="role-settings.html">Settings</a></nav>
     </div>
 
-    <div class="body3">
-      <aside class="fp" aria-label="Filters">
-        <div class="fsum"><div class="on"><b>All</b><span>212</span></div><div><b>Needs you</b><span>2</span></div><div><b>Finished</b><span>39</span></div></div>
-        <div class="acc open">
-          <div class="acc-h"><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M5.8 8.2l1.5 1.5 3-3.2"/></svg>PM status<span class="car"></span></div>
-          <div class="acc-b">
-            <div class="opt"><span class="box"></span>Needs you<span class="n">2</span></div>
-            <div class="opt"><span class="box"></span>Invited<span class="n">51</span></div>
-            <div class="opt"><span class="box"></span>Notice period<span class="n">23</span></div>
-            <div class="opt"><span class="box"></span>In scored call<span class="n">1</span></div>
-            <div class="opt"><span class="box"></span>Finished<span class="n">39</span></div>
-            <div class="opt"><span class="box"></span>Reminders stopped<span class="n">34</span></div>
-            <div class="opt"><span class="box"></span>Withdrew<span class="n">62</span></div>
-          </div>
-        </div>
-        <div class="acc"><div class="acc-h"><svg class="i" viewBox="0 0 16 16"><path d="M3 4.5h10M5 8h6M7 11.5h2"/></svg>Stage in applicant tracker<span class="car"></span></div></div>
-        <div class="acc"><div class="acc-h"><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M7 6v4l3-2z"/></svg>Practice<span class="car"></span></div></div>
-        <div class="acc"><div class="acc-h"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="3.5" width="11" height="10" rx="1.5"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3"/></svg>Invited on<span class="car"></span></div></div>
-        <div class="acc"><div class="acc-h"><svg class="i" viewBox="0 0 16 16"><path d="M8 13.5s4.5-4 4.5-7.3a4.5 4.5 0 0 0-9 0C3.5 9.5 8 13.5 8 13.5z"/><circle cx="8" cy="6.2" r="1.5"/></svg>Location<span class="car"></span></div></div>
-        <div class="fp-foot"><button class="btn ghost">Clear all</button><button class="btn">More filters</button></div>
-      </aside>
-
-      <div class="tw">
-        <div class="tbar">
-          <button class="btn ghost"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="2.5" width="11" height="11" rx="1.5"/><path d="M2.5 6.5h11M6.5 6.5v7"/></svg>Default view<svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></button>
-          <button class="btn ghost"><svg class="i" viewBox="0 0 16 16"><path d="M3 4.5h10M5 8h6M7 11.5h2"/></svg>Hide filters</button>
-          <div class="srch"><svg class="i" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>Search candidates</div>
-          <div class="r">
-            <button class="btn"><svg class="i" viewBox="0 0 16 16"><path d="M5 3v10M2.5 10.5 5 13l2.5-2.5M11 13V3M8.5 5.5 11 3l2.5 2.5"/></svg>Last activity</button>
-            <button class="btn"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="3" width="3" height="10" rx="1"/><rect x="6.5" y="3" width="3" height="10" rx="1"/><rect x="10.5" y="3" width="3" height="10" rx="1"/></svg>Columns</button>
-          </div>
-        </div>
-        <div class="sel-bar"><span class="box"></span><span class="meta">0 selected</span><button class="btn sm" data-js onclick="protoNote('Reminder sent to 51 invited candidates who haven\'t started. It goes out in their working hours, from Dana.')">Send reminder</button><button class="btn sm" data-js onclick="protoNote('Select candidates first. Stage changes sync to your applicant tracker.')">Move stage</button><button class="btn sm" data-js onclick="protoNote('Select finished candidates first. Shortlists include finished calls only.')">Add to shortlist review</button></div>
-        <div class="tscroll">
-          <table>
-            <thead><tr><th class="cbx"></th><th>Candidate</th><th>PM status</th><th>Practice</th><th>Scored call</th><th>Last activity</th><th></th></tr></thead>
-            <tbody>
-<tr class="flag"><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">DK</span><div><b>Dev Kapoor</b><small>dev.kapoor@gmail.com</small></div></div></td><td><span class="st warn"><i></i>Asked for extra time</span></td><td>Started</td><td class="mono">Opens Nov 30</td><td class="dim">8:40 am</td><td class="act"><span id="devAct"><button class="btn sm" data-js onclick="devDecide(0)">Decline</button> <button class="btn sm yellow" data-js onclick="devDecide(1)">Approve</button></span></td></tr>
-<tr class="flag"><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">MB</span><div><b>Mia Brandt</b><small>mia.brandt@outlook.com</small></div></div></td><td><span class="st warn"><i></i>Asked for a human interviewer</span></td><td>Started</td><td class="mono">Opens Nov 30</td><td class="dim">Yesterday</td><td class="act"><span id="miaAct"><button class="btn sm yellow" data-js onclick="miaAssign()">Assign interviewer</button></span></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">KM</span><div><b>Kai Morgan</b><small>kai.m@proton.me</small></div></div></td><td><span class="st live"><i></i>In scored call</span></td><td>Started</td><td class="mono"><span class="dim">In progress</span></td><td class="dim">Now</td><td class="act"><button class="btn sm ghost" data-go="calls.html">View</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">SR</span><div><b>Sam Rivera</b><small>sam.rivera@gmail.com</small></div></div></td><td><span class="st done"><i></i>Finished</span></td><td>Started</td><td class="mono">Nov 17 · 7 min</td><td class="dim">9:12 am</td><td class="act"><button class="btn sm" data-go="call-review.html">Open call</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">AO</span><div><b>Ama Owusu</b><small>ama.owusu@gmail.com</small></div></div></td><td><span class="st done"><i></i>Finished</span></td><td>Started</td><td class="mono">Nov 17 · 7 min</td><td class="dim">8:55 am</td><td class="act"><button class="btn sm" data-go="call-review.html">Open call</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">PN</span><div><b>Priya Nair</b><small>priya.nair@icloud.com</small></div></div></td><td><span class="st done"><i></i>Finished</span></td><td>Started</td><td class="mono">Nov 16 · 7 min</td><td class="dim">Sun</td><td class="act"><button class="btn sm" data-go="call-review.html">Open call</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">RD</span><div><b>Rhea Das</b><small>rhea.das@gmail.com</small></div></div></td><td><span class="st done"><i></i>Finished</span></td><td>Started</td><td class="mono">Nov 14 · 7 min</td><td class="dim">Fri</td><td class="act"><button class="btn sm" data-go="call-review.html">Open call</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">BC</span><div><b>Ben Carter</b><small>ben.carter@yahoo.com</small></div></div></td><td><span class="st done"><i></i>Finished</span></td><td>Not started</td><td class="mono">Nov 13 · 7 min</td><td class="dim">Thu</td><td class="act"><button class="btn sm" data-go="call-review.html">Open call</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">LP</span><div><b>Leo Park</b><small>leo.park@gmail.com</small></div></div></td><td><span class="st wait"><i></i>Notice period</span></td><td>Started</td><td class="mono">Opens Nov 24</td><td class="dim">Mon</td><td class="act"><button class="btn sm ghost">View</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">JT</span><div><b>Jo Tanaka</b><small>jo.tanaka@gmail.com</small></div></div></td><td><span class="st wait"><i></i>Notice period</span></td><td>Not started</td><td class="mono">Opens Dec 1</td><td class="dim">Mon</td><td class="act"><button class="btn sm ghost">View</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">OH</span><div><b>Omar Haddad</b><small>omar.haddad@gmail.com</small></div></div></td><td><span class="st wait"><i></i>Invited · reminder 1 sent</span></td><td>Not started</td><td class="mono">Opens Nov 25</td><td class="dim">Nov 13</td><td class="act"><button class="btn sm ghost">View</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">GK</span><div><b>Grace Kim</b><small>grace.kim@hey.com</small></div></div></td><td><span class="st wait"><i></i>Invited</span></td><td>Not started</td><td class="mono">Opens Dec 1</td><td class="dim">Mon</td><td class="act"><button class="btn sm ghost">View</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">LO</span><div><b>Luis Ortega</b><small>luis.ortega@gmail.com</small></div></div></td><td><span class="st stop"><i></i>Reminders stopped</span></td><td>Not started</td><td class="mono"><span class="dim">Link still open</span></td><td class="dim">Nov 6</td><td class="act"><button class="btn sm ghost">View</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">HS</span><div><b>Hana Sato</b><small>hana.sato@gmail.com</small></div></div></td><td><span class="st stop"><i></i>Withdrew</span></td><td>Started</td><td class="mono"><span class="dim">—</span></td><td class="dim">Nov 5</td><td class="act"><button class="btn sm ghost">View</button></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="pager">
-          <span class="foot-note"><svg class="i" viewBox="0 0 16 16" style="width:13px;height:13px"><rect x="4" y="7.5" width="8" height="6" rx="1"/><path d="M5.5 7.5V5.5a2.5 2.5 0 0 1 5 0v2"/></svg>Accommodation requests show to recruiters only. Practice shows only whether it started.</span>
-          <span class="meta" style="margin-left:auto">1–25 of 212</span>
-          <span class="pg" aria-label="Previous page"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m10 4-4 4 4 4"/></svg></span>
-          <span class="pg" aria-label="Next page"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m6 4 4 4-4 4"/></svg></span>
-        </div>
-      </div>
-    </div>
+    <div class="cx-body" id="cxBody"></div>
   </div>
 </div>
+<script src="ui.js"></script><script src="proto.js"></script><script src="cx.js"></script>
 <script>
-function devDecide(ok){var r=document.getElementById('devAct').closest('tr');r.classList.remove('flag');
-r.querySelector('.st').className='st done';r.querySelector('.st').innerHTML='<i></i>'+(ok?'Extra time approved':'Extra time declined');
-document.getElementById('devAct').innerHTML='<span class="dim">Dana · just now</span>';needs();protoNote(ok?'Approved. Dev gets 10 minutes for his scored call and an email from Dana.':'Declined. Dana writes to Dev with the reason.');}
-function miaAssign(){var r=document.getElementById('miaAct').closest('tr');r.classList.remove('flag');
-r.querySelector('.st').className='st done';r.querySelector('.st').innerHTML='<i></i>Human interviewer: Dana, Nov 20';
-document.getElementById('miaAct').innerHTML='<span class="dim">Dana · just now</span>';needs();protoNote('Assigned. Mia gets an invite for a call with Dana on Nov 20.');}
-function needs(){var n=document.querySelectorAll('tr.flag').length;document.querySelectorAll('.fsum span')[1].textContent=n;}
+(function(){
+var T=CX.table(document.getElementById('cxBody'),{key:'114',file:'candidates-req-114',req:'114',inlineRequests:true,
+ groups:['st','stage','pr','inv','loc'],open:['st'],hide:['stage','loc','inv'],
+ views:[['def','Default view','Everyone'],['needs','Needs you','Dana'],['fin','Finished calls','Shared'],['nopr','Practice not started','Dana']],
+ viewFn:function(id,S){if(id==='needs'||id==='fin')S.f.st=[id];if(id==='nopr')S.f.pr=['n'];}});
+UI.wire('#cxExport',function(){T.exportAll();});
+UI.wire('#cxInvite',function(){CX.invite('114',function(){T.state.sort='inv';T.state.page=0;T.render();});});
+UI.wire('#cxLink',function(){var u='https://pm.app/i/northwind-ae';try{navigator.clipboard.writeText(u);}catch(e){}CX.note('Copied the invite link: pm.app/i/northwind-ae. Anyone with it can start at the notice page.');});
+})();
 </script>
-<script src="ui.js"></script><script src="proto.js"></script>
 </body>
 </html>

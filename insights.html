@@ -581,5 +581,17 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')inClose()});
 inRender('all');
 </script>
 <script src="ui.js"></script><script src="proto.js"></script>
+<style>
+/* ===== insights wiring (by-) ===== */
+.by-cr{padding:10px 10px 8px}
+.by-cr b{font-weight:550}
+.by-crr{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.by-crr label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:#535347}
+.by-crr input{height:32px;border:1px solid rgba(28,28,24,.12);border-radius:8px;padding:0 8px;font:inherit;color:#1C1C18}
+.by-cr p{margin:8px 0 0;font-size:12px;line-height:16px;color:#68685D}
+.by-cr p.by-crerr{color:#B42318;margin-top:4px}
+.by-cra{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+</style>
+<script src="by-common.js"></script><script src="by-insights.js"></script>
 </body>
 </html>

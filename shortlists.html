@@ -300,7 +300,14 @@ tbody tr.sh-hide{display:none}
 .sh-how ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px}
 .sh-how li{display:flex;gap:8px;align-items:flex-start;color:var(--ink2)}
 .sh-how li .i{margin-top:2px;color:var(--mute)}
+.tbar .srch input{border:0;outline:0;background:transparent;flex:1;min-width:0}
+.sh-empty td{height:96px;text-align:center;color:var(--mute)}
+.cx-slr{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(28,28,24,.08)}
+.cx-slr:first-child{border-top:0}
+.cx-slr b{display:block;font-weight:450}.cx-slr small{display:block;font-size:12px;color:#68685D}
+.cx-slr .tag{margin-left:auto}
 </style>
+<link rel="stylesheet" href="cx.css">
 </head>
 <body>
 <div class="app">
@@ -354,7 +361,7 @@ tbody tr.sh-hide{display:none}
         <h1>Shortlists</h1>
         <div class="ph-acts">
           <span class="meta">Shared with hiring managers from each role</span>
-          <button class="btn" data-js onclick="protoNote('Export ready: decisions with decider and time, for all 4 shortlists.')"><svg class="i" viewBox="0 0 16 16"><path d="M8 2.5v8M5 7.5l3 3 3-3M3 12.5h10"/></svg>Export decisions</button>
+          <button class="btn" id="cxExport"><svg class="i" viewBox="0 0 16 16"><path d="M8 2.5v8M5 7.5l3 3 3-3M3 12.5h10"/></svg>Export decisions</button>
         </div>
       </div>
       <nav class="tabs" aria-label="Shortlist status">
@@ -366,21 +373,21 @@ tbody tr.sh-hide{display:none}
 
     <div class="sh-body">
       <div class="tbar">
-        <div class="srch"><svg class="i" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>Search roles or req numbers</div>
-        <button class="btn sh-filter"><svg class="i" viewBox="0 0 16 16"><path d="M8 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM3 13.5c.6-2.3 2.6-3.5 5-3.5s4.4 1.2 5 3.5"/></svg>Hiring manager<em>Any</em><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></button>
-        <button class="btn sh-filter"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="4.5" width="11" height="8.5" rx="1.5"/><path d="M5.5 4.5V3.2c0-.4.3-.7.7-.7h3.6c.4 0 .7.3.7.7v1.3"/></svg>Role<em>Any</em><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></button>
+        <label class="srch"><svg class="i" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><input id="cxQ" placeholder="Search roles or req numbers" aria-label="Search shortlists"></label>
+        <button class="btn sh-filter" id="cxHm"><svg class="i" viewBox="0 0 16 16"><path d="M8 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM3 13.5c.6-2.3 2.6-3.5 5-3.5s4.4 1.2 5 3.5"/></svg>Hiring manager<em>Any</em><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></button>
+        <button class="btn sh-filter" id="cxRole"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="4.5" width="11" height="8.5" rx="1.5"/><path d="M5.5 4.5V3.2c0-.4.3-.7.7-.7h3.6c.4 0 .7.3.7.7v1.3"/></svg>Role<em>Any</em><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></button>
         <div class="r">
-          <button class="btn"><svg class="i" viewBox="0 0 16 16"><path d="M5 3v10M2.5 10.5 5 13l2.5-2.5M11 13V3M8.5 5.5 11 3l2.5 2.5"/></svg>Shared on</button>
+          <button class="btn" id="cxSort"><svg class="i" viewBox="0 0 16 16"><path d="M5 3v10M2.5 10.5 5 13l2.5-2.5M11 13V3M8.5 5.5 11 3l2.5 2.5"/></svg><span>Shared on, newest</span></button>
         </div>
       </div>
       <div class="tscroll">
         <table>
           <thead><tr><th>Role</th><th>Hiring manager</th><th class="sh-n">Recommended</th><th class="sh-n">Finished</th><th>Shared on</th><th>Decisions made</th><th>Next debrief</th><th>Status</th><th></th></tr></thead>
           <tbody>
-<tr data-st="wait"><td><div class="sh-role"><a href="shortlist.html">Account Executive, Mid-Market</a><small>Req 114 · Live</small></div></td><td><div class="sh-hm"><span class="avatar">ML</span><span>Marcus Lee</span></div></td><td class="sh-n">9</td><td class="sh-n">39</td><td class="dim">Nov 17</td><td><div class="sh-dec"><span class="sh-bar"><i style="width:0%"></i></span>0 of 9</div></td><td><div class="sh-db"><span>Thu, Nov 19</span><small>2:00 pm · with Dana</small></div></td><td><span class="tag beige">Waiting on Marcus</span></td><td class="act"><button class="btn sm" data-go="shortlist.html">Open</button></td></tr>
-<tr data-st="wait"><td><div class="sh-role"><b>SDR, Inbound</b><small>Req 117 · Live</small></div></td><td><div class="sh-hm"><span class="avatar sh-ar">AR</span><span>Alex Romero</span></div></td><td class="sh-n">5</td><td class="sh-n">21</td><td class="dim">Nov 12</td><td><div class="sh-dec"><span class="sh-bar"><i style="width:60%"></i></span>3 of 5</div></td><td><span class="dim">Not scheduled</span></td><td><span class="tag beige">2 left to decide</span></td><td class="act"><button class="btn sm">Open</button></td></tr>
-<tr data-st="done"><td><div class="sh-role"><b>Account Executive, Enterprise</b><small>Req 109 · Live</small></div></td><td><div class="sh-hm"><span class="avatar">ML</span><span>Marcus Lee</span></div></td><td class="sh-n">3</td><td class="sh-n">12</td><td class="dim">Nov 10</td><td><div class="sh-dec"><span class="sh-bar"><i class="sh-full" style="width:100%"></i></span>3 of 3</div></td><td><span class="dim">—</span></td><td><span class="tag green">Decided</span></td><td class="act"><button class="btn sm">Open</button></td></tr>
-<tr data-st="done"><td><div class="sh-role"><b>Sales Manager, Central</b><small>Req 101 · Closed Oct 30</small></div></td><td><div class="sh-hm"><span class="avatar sh-ar">AR</span><span>Alex Romero</span></div></td><td class="sh-n">4</td><td class="sh-n">19</td><td class="dim">Oct 22</td><td><div class="sh-dec"><span class="sh-bar"><i class="sh-full" style="width:100%"></i></span>4 of 4</div></td><td><span class="dim">—</span></td><td><span class="tag gray">Closed · 2 hired</span></td><td class="act"><button class="btn sm">Open</button></td></tr>
+<tr data-st="wait" data-req="114" data-hm="Marcus Lee" data-d="17"><td><div class="sh-role"><a href="shortlist.html">Account Executive, Mid-Market</a><small>Req 114 · Live</small></div></td><td><div class="sh-hm"><span class="avatar">ML</span><span>Marcus Lee</span></div></td><td class="sh-n">9</td><td class="sh-n">39</td><td class="dim">Nov 17</td><td><div class="sh-dec" id="cxDec114"><span class="sh-bar"><i style="width:0%"></i></span>0 of 9</div></td><td><div class="sh-db"><span>Thu, Nov 19</span><small>2:00 pm · with Dana</small></div></td><td id="cxSt114"><span class="tag beige">Waiting on Marcus</span></td><td class="act"><button class="btn sm" data-go="shortlist.html">Open</button></td></tr>
+<tr data-st="wait" data-req="117" data-hm="Alex Romero" data-d="12"><td><div class="sh-role"><b>SDR, Inbound</b><small>Req 117 · Live</small></div></td><td><div class="sh-hm"><span class="avatar sh-ar">AR</span><span>Alex Romero</span></div></td><td class="sh-n">5</td><td class="sh-n">21</td><td class="dim">Nov 12</td><td><div class="sh-dec"><span class="sh-bar"><i style="width:60%"></i></span>3 of 5</div></td><td><span class="dim">Not scheduled</span></td><td><span class="tag beige">2 left to decide</span></td><td class="act"><button class="btn sm" data-js data-open>Open</button></td></tr>
+<tr data-st="done" data-req="109" data-hm="Marcus Lee" data-d="10"><td><div class="sh-role"><b>Account Executive, Enterprise</b><small>Req 109 · Live</small></div></td><td><div class="sh-hm"><span class="avatar">ML</span><span>Marcus Lee</span></div></td><td class="sh-n">3</td><td class="sh-n">12</td><td class="dim">Nov 10</td><td><div class="sh-dec"><span class="sh-bar"><i class="sh-full" style="width:100%"></i></span>3 of 3</div></td><td><span class="dim">—</span></td><td><span class="tag green">Decided</span></td><td class="act"><button class="btn sm" data-js data-open>Open</button></td></tr>
+<tr data-st="done" data-req="101" data-hm="Alex Romero" data-d="-26"><td><div class="sh-role"><b>Sales Manager, Central</b><small>Req 101 · Closed Oct 30</small></div></td><td><div class="sh-hm"><span class="avatar sh-ar">AR</span><span>Alex Romero</span></div></td><td class="sh-n">4</td><td class="sh-n">19</td><td class="dim">Oct 22</td><td><div class="sh-dec"><span class="sh-bar"><i class="sh-full" style="width:100%"></i></span>4 of 4</div></td><td><span class="dim">—</span></td><td><span class="tag gray">Closed · 2 hired</span></td><td class="act"><button class="btn sm" data-js data-open>Open</button></td></tr>
           </tbody>
         </table>
         <div class="sh-below">
@@ -397,20 +404,61 @@ tbody tr.sh-hide{display:none}
       <div class="pager">
         <span class="foot-note"><svg class="i" viewBox="0 0 16 16" style="width:13px;height:13px"><rect x="4" y="7.5" width="8" height="6" rx="1"/><path d="M5.5 7.5V5.5a2.5 2.5 0 0 1 5 0v2"/></svg>Every decision is logged with who made it and when.</span>
         <span class="meta" style="margin-left:auto;margin-right:0" id="shCount">1–2 of 2</span>
-        <span class="pg" aria-label="Previous page"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m10 4-4 4 4 4"/></svg></span>
-        <span class="pg" aria-label="Next page"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m6 4 4 4-4 4"/></svg></span>
+        <button class="pg" data-js disabled aria-label="Previous page"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m10 4-4 4 4 4"/></svg></button>
+        <button class="pg" data-js disabled aria-label="Next page" title="All shortlists fit on one page"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m6 4 4 4-4 4"/></svg></button>
       </div>
     </div>
   </div>
 </div>
+
+<script src="ui.js"></script><script src="proto.js"></script><script src="cx.js"></script>
 <script>
-function shTab(k){var n=0;
-document.querySelectorAll('[data-tab]').forEach(function(x){var on=x.getAttribute('data-tab')===k;x.classList.toggle('on',on);if(on)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current');});
-document.querySelectorAll('.sh-body tbody tr').forEach(function(r){var show=k==='all'||r.getAttribute('data-st')===k;r.classList.toggle('sh-hide',!show);if(show)n++;});
-document.getElementById('shCount').textContent=(n?'1–'+n:'0')+' of '+n;}
-document.querySelectorAll('[data-tab]').forEach(function(t){t.addEventListener('click',function(e){e.preventDefault();shTab(t.getAttribute('data-tab'));});});
-shTab('wait');
+(function(){
+var tab='wait',hm='',role='',sortDir=-1,q='';
+var tb=document.querySelector('.sh-body tbody');
+var SLD={
+ '117':{hm:'Alex Romero',list:[['Kim Ross','6.5–8.0','adv'],['Noel Park','6.0–7.5','adv'],['Bea Lund','6.0–7.0','dec','Other candidates were a closer fit for this role'],['Ivy Shah','5.5–7.0',''],['Tom Rees','5.5–6.5','']]},
+ '109':{hm:'Marcus Lee',list:[['Marta Silva','6.5–7.5','adv'],['Gus Hill','6.0–7.0','adv'],['Pia Moretti','5.5–7.0','dec','Role requirements outside the call (location, start date)']]},
+ '101':{hm:'Alex Romero',list:[['Raj Iyer','7.0–8.0','hired'],['Dee Cole','6.5–7.5','hired'],['Max Ortiz','6.0–7.5','dec','Other candidates were a closer fit for this role'],['Lea Brun','6.0–7.0','dec','Needs more experience with this kind of buyer']]}
+};
+var RN={'114':'Account Executive, Mid-Market','117':'SDR, Inbound','109':'Account Executive, Enterprise','101':'Sales Manager, Central'};
+/* Req 114 decisions come from the shortlist screen */
+function sync114(){var dec=CX.ss('cx-dec')||{},n=0;CX.SL.forEach(function(c){if(c.rec&&dec[c.id])n++;});
+ document.getElementById('cxDec114').innerHTML='<span class="sh-bar"><i'+(n===9?' class="sh-full"':'')+' style="width:'+Math.round(n/9*100)+'%"></i></span>'+n+' of 9';
+ var tr=tb.querySelector('tr[data-req="114"]');tr.setAttribute('data-st',n===9?'done':'wait');
+ document.getElementById('cxSt114').innerHTML=n===9?'<span class="tag green">Decided</span>':'<span class="tag beige">'+(n?(9-n)+' left to decide':'Waiting on Marcus')+'</span>';}
+function draw(){
+ var rows=[].slice.call(tb.querySelectorAll('tr[data-req]')),n=0,c={wait:0,done:0,all:0};
+ rows.sort(function(a,b){return sortDir*(+a.getAttribute('data-d')- +b.getAttribute('data-d'));}).forEach(function(r){tb.appendChild(r);});
+ rows.forEach(function(r){
+  var base=(!hm||r.getAttribute('data-hm')===hm)&&(!role||r.getAttribute('data-req')===role)&&(!q||r.textContent.toLowerCase().indexOf(q)>=0);
+  if(base){c.all++;c[r.getAttribute('data-st')]++;}
+  var show=base&&(tab==='all'||r.getAttribute('data-st')===tab);r.classList.toggle('sh-hide',!show);if(show)n++;});
+ var e=tb.querySelector('.sh-empty');if(e)e.remove();
+ if(!n){var t=document.createElement('tr');t.className='sh-empty';t.innerHTML='<td colspan="9">No shortlists match. <button class="btn sm ghost" data-js id="cxClr">Clear filters</button></td>';tb.appendChild(t);t.querySelector('button').onclick=function(){hm='';role='';q='';document.getElementById('cxQ').value='';labels();draw();};}
+ document.querySelectorAll('[data-tab]').forEach(function(x){var on=x.getAttribute('data-tab')===tab;x.classList.toggle('on',on);if(on)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current');x.querySelector('.sh-tabn').textContent=c[x.getAttribute('data-tab')];});
+ document.getElementById('shCount').textContent=(n?'1–'+n:'0')+' of '+n;}
+function labels(){document.querySelector('#cxHm em').textContent=hm||'Any';document.querySelector('#cxRole em').textContent=role?'Req '+role:'Any';document.querySelector('#cxSort span').textContent='Shared on, '+(sortDir<0?'newest':'oldest');}
+document.querySelectorAll('[data-tab]').forEach(function(t){t.addEventListener('click',function(e){e.preventDefault();tab=t.getAttribute('data-tab');draw();});});
+document.getElementById('cxQ').addEventListener('input',function(e){q=e.target.value.trim().toLowerCase();draw();});
+UI.wire('#cxHm',function(b){UI.menu(b,[{label:'Any',check:!hm,onClick:function(){hm='';labels();draw();}},{label:'Marcus Lee',small:'2 roles',check:hm==='Marcus Lee',onClick:function(){hm='Marcus Lee';labels();draw();}},{label:'Alex Romero',small:'2 roles',check:hm==='Alex Romero',onClick:function(){hm='Alex Romero';labels();draw();}}],{align:'left'});});
+UI.wire('#cxRole',function(b){UI.menu(b,[{label:'Any',check:!role,onClick:function(){role='';labels();draw();}}].concat(['114','117','109','101'].map(function(r){return {label:'Req '+r,small:RN[r],check:role===r,onClick:function(){role=r;labels();draw();}};})),{align:'left'});});
+UI.wire('#cxSort',function(b){UI.menu(b,[{label:'Shared on, newest first',check:sortDir<0,onClick:function(){sortDir=-1;labels();draw();}},{label:'Shared on, oldest first',check:sortDir>0,onClick:function(){sortDir=1;labels();draw();}}]);});
+function lbl(s){return s==='adv'?'<span class="tag green">Final round</span>':s==='hired'?'<span class="tag green">Hired</span>':s==='dec'?'<span class="tag gray">Declined</span>':'<span class="tag beige">Waiting</span>';}
+tb.addEventListener('click',function(e){var b=e.target.closest('[data-open]');if(!b)return;var req=b.closest('tr').getAttribute('data-req'),D=SLD[req],wait=D.list.filter(function(x){return !x[2];}).length;
+ var acts=[{label:'Close'},{label:'Export decisions',onClick:function(){exp([req]);return false;}}];
+ if(wait)acts.push({label:'Remind '+D.hm.split(' ')[0],primary:true,onClick:function(){CX.note('Sent '+D.hm+' a reminder about the '+wait+' candidates still waiting on a decision.');}});
+ UI.drawer({title:'Req '+req+' · '+RN[req],body:'<p class="dim" style="margin-top:0">Shared with '+D.hm+', hiring manager. '+(wait?wait+' of '+D.list.length+' recommended still need a decision. Only '+D.hm.split(' ')[0]+' can advance or decline them.':'Every recommended candidate has a decision.')+'</p><h3 class="cx-h3">Recommended</h3>'+
+  D.list.map(function(x,i){return '<div class="cx-slr"><span class="pav">'+CX.ini(x[0])+'</span><div><b>'+(i+1)+'. '+x[0]+'</b><small>Overall '+x[1]+(x[3]?' · '+x[3]:'')+'</small></div>'+lbl(x[2])+'</div>';}).join('')+
+  '<p class="cx-mnote">Every decision is logged with who made it, when, and the reason for a decline. Candidates don\'t see the reason.</p>',actions:acts});
+});
+function exp(reqs){var dec=CX.ss('cx-dec')||{},rows=[CX.csvRow(['Req','Role','Hiring manager','Candidate','Overall range','Decision','Decided by','Reason'])];
+ reqs.forEach(function(r){if(r==='114'){CX.SL.filter(function(c){return c.rec;}).forEach(function(c){var d=dec[c.id];rows.push(CX.csvRow(['114',RN['114'],'Marcus Lee',c.name,c.ov[0].toFixed(1)+'–'+c.ov[1].toFixed(1),d==='adv'?'Final round':d==='dec'?'Declined':'Waiting',d?'Marcus Lee':'','']));});return;}
+  SLD[r].list.forEach(function(x){rows.push(CX.csvRow([r,RN[r],SLD[r].hm,x[0],x[1],x[2]==='adv'?'Final round':x[2]==='hired'?'Hired':x[2]==='dec'?'Declined':'Waiting',x[2]?SLD[r].hm:'',x[3]||'']));});});
+ UI.download(reqs.length>1?'shortlist-decisions-all.csv':'shortlist-decisions-req-'+reqs[0]+'.csv',rows.join('\n'));}
+UI.wire('#cxExport',function(){exp(['114','117','109','101']);});
+sync114();labels();draw();
+})();
 </script>
-<script src="ui.js"></script><script src="proto.js"></script>
 </body>
 </html>

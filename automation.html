@@ -294,6 +294,65 @@ b,strong{font-weight:550}
 .rp-f .meta{margin-right:auto}
 .sw.locked{background:#9A9A8E}
 </style>
+<style>
+.zoom button,.zoom span{height:28px;min-width:30px;display:grid;place-items:center;padding:0 8px;border-left:1px solid var(--line);font-size:12.5px;color:var(--ink2)}
+.zoom>*:first-child{border-left:0}
+.zoom button:hover{background:var(--hover)}
+.zoom #auZl{min-width:48px;font-variant-numeric:tabular-nums}
+.flow{transform-origin:top center;transition:transform .15s}
+.node{cursor:pointer}
+.node:hover{border-color:rgba(28,28,24,.24)}
+.node.sel:hover{border-color:#2A4F99}
+.node.au-run{border-color:#3E8E56;box-shadow:0 0 0 3px rgba(62,142,86,.18)}
+.node.au-done{border-color:#3E8E56}
+.flow.au-col .nb p,.flow.au-col .nb .chips{display:none}
+button.plus{cursor:pointer}
+button.plus:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.body2.au-norp{grid-template-columns:minmax(0,1fr) 0}
+.body2.au-norp .rp{display:none}
+.inp[data-dd]{cursor:pointer}
+.inp[data-dd]:hover{border-color:rgba(28,28,24,.24)}
+input.inp{width:100%;outline:none}
+input.inp:focus,textarea.au-ta:focus{border-color:#7C9BD6;box-shadow:0 0 0 3px rgba(42,79,153,.12)}
+textarea.au-ta{width:100%;min-height:72px;resize:vertical;border:1px solid var(--line2);border-radius:8px;background:var(--field);padding:6px 10px;line-height:20px;outline:none}
+.optrow .sw{cursor:pointer}
+.optrow .sw.locked{cursor:not-allowed}
+.au-dirty{color:#8A5A12!important}
+.au-pane{flex:1;min-height:0;overflow:auto;background:var(--sub)}
+.au-pw{max-width:1100px;margin:0 auto;padding:16px 24px 72px;display:flex;flex-direction:column;gap:12px}
+.au-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.au-kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.au-kpi small{display:block;font-size:12px;color:var(--mute);line-height:16px}
+.au-kpi b{display:block;font-size:20px;line-height:28px;font-weight:500;font-variant-numeric:tabular-nums}
+.au-ht{width:100%;border-collapse:separate;border-spacing:0}
+.au-ht th{text-align:left;font-weight:450;font-size:12px;color:var(--mute);height:36px;padding:0 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+.au-ht td{height:44px;padding:0 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+.au-ht tr:last-child td{border-bottom:0}
+.au-ht th:first-child,.au-ht td:first-child{padding-left:16px}
+.au-ht .n{text-align:right;font-variant-numeric:tabular-nums}
+.au-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.au-bar h2{margin:0;font-size:15px;font-weight:550;margin-right:8px}
+.au-srch{display:flex;align-items:center;gap:8px;height:32px;width:220px;border:1px solid var(--line2);border-radius:8px;padding:0 10px;color:var(--mute);background:#fff}
+.au-srch input{border:0;outline:none;flex:1;min-width:0;background:none}
+.au-seg{display:flex;gap:2px;border:1px solid var(--line2);border-radius:8px;padding:2px;background:var(--field)}
+.au-seg button{height:26px;padding:0 10px;border-radius:6px;color:var(--ink2);font-size:12.5px}
+.au-seg button.on{background:var(--active);color:var(--ink);font-weight:450}
+.au-form{display:grid;grid-template-columns:200px minmax(0,1fr);gap:14px 20px;padding:16px;align-items:start}
+.au-form>.lab{margin:6px 0 0}
+.au-form .inp,.au-form input.inp{max-width:420px}
+.au-log{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:8px}
+.au-log li{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-top:1px solid var(--line);opacity:.35;transition:opacity .2s}
+.au-log li:first-child{border-top:0}
+.au-log li.on{opacity:1}
+.au-log li i{width:16px;height:16px;border-radius:50%;border:1.5px dashed #B9B9AE;flex:none;margin-top:2px}
+.au-log li.on i{background:#3E8E56;border:0}
+.au-log small{display:block;color:var(--mute);font-size:12px;line-height:16px}
+.au-act{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);border-radius:8px}
+.au-act div{padding:8px 10px;border-top:1px solid var(--line)}
+.au-act div:first-child{border-top:0}
+.au-act small{display:block;color:var(--mute);font-size:12px}
+.au-empty{color:var(--mute);text-align:center;height:72px!important}
+</style>
 </head>
 <body>
 <div class="app">
@@ -346,34 +405,34 @@ b,strong{font-weight:550}
     <div class="ph">
       <div class="crumb"><a href="automations.html">Automations</a><svg class="i" viewBox="0 0 16 16" style="width:12px;height:12px"><path d="m6 4 4 4-4 4"/></svg><span>Account Executive, Mid-Market</span></div>
       <div class="ph-row">
-        <h1>Invite after phone screen</h1>
-        <span class="tag green"><span class="dot" style="margin-right:2px"></span>Active</span>
+        <h1 id="auName">Invite after phone screen</h1>
+        <span class="tag green" id="auStatus"><span class="dot" style="margin-right:2px"></span>Active</span>
         <div class="ph-acts">
           <span class="meta">Edited by Dana Whitfield, Nov 10</span>
-          <button class="btn" id="auPause" data-js onclick="var t=document.querySelector('.ph .tag.green, .ph .tag.beige');var on=this.dataset.p!=='1';this.dataset.p=on?'1':'0';this.lastChild.textContent=on?'Resume':'Pause';if(t){t.className=on?'tag beige':'tag green';t.innerHTML=on?'Paused':'<span class=dot style=margin-right:2px></span>Active';}protoNote(on?'Paused. No invites or reminders go out until you resume.':'Resumed. Sending picks up in working hours.')"><svg class="i" viewBox="0 0 16 16"><path d="M5.5 3.5v9M10.5 3.5v9"/></svg>Pause</button>
-          <button class="btn" data-go="email.html"><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M7 6v4l3-2z"/></svg>Test with a candidate</button>
-          <button class="btn yellow" data-js onclick="protoNote('Saved. Changes apply to new candidates.')">Save changes</button>
+          <button class="btn" id="auPause" data-js><svg class="i" viewBox="0 0 16 16"><path d="M5.5 3.5v9M10.5 3.5v9"/></svg>Pause</button>
+          <button class="btn" id="auTest" data-js><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M7 6v4l3-2z"/></svg>Test with a candidate</button>
+          <button class="btn yellow" id="auSaveAll" data-js>Save changes</button>
         </div>
       </div>
       <nav class="tabs" aria-label="Automation">
-        <a href="#" class="on" aria-current="page">Editor</a>
-        <a data-js onclick="protoNote('Run history: 212 enrolled since Oct 27, last run 9:14 am, 0 failed sends.')">Run history</a>
-        <a href="role-settings.html">Settings</a>
+        <a href="#editor" class="on" aria-current="page" data-js data-au-tab="editor">Editor</a>
+        <a href="#history" data-js data-au-tab="history">Run history</a>
+        <a href="#settings" data-js data-au-tab="settings">Settings</a>
       </nav>
     </div>
 
-    <div class="body2">
+    <div class="body2" id="auEditor">
       <!-- Canvas -->
       <div class="canvas" aria-label="Automation steps">
         <div class="cv-top">
           <span class="cv-stat">Running since Oct 27<span class="sep"></span><b>212</b> candidates enrolled<span class="sep"></span><b>46</b> invites this week</span>
           <span class="cv-stat"><span class="dot"></span>Last run 9:14 am</span>
-          <div class="r"><button class="btn sm" data-js onclick="protoNote('Steps collapsed.')">Collapse all</button></div>
+          <div class="r"><button class="btn sm" id="auCollapse" data-js>Collapse all</button></div>
         </div>
 
-        <div class="flow">
+        <div class="flow" id="auFlow">
           <!-- Trigger -->
-          <div class="node">
+          <div data-step="trigger" class="node">
             <div class="nh"><span class="nk trig"><svg class="i" viewBox="0 0 16 16"><path d="M9 2 4 9h4l-1 5 5-7H8z"/></svg>Trigger</span><span class="ncount"><svg class="i" viewBox="0 0 16 16"><circle cx="6" cy="5.5" r="2.2"/><path d="M2 13c.4-2.2 2-3.4 4-3.4s3.6 1.2 4 3.4M10.5 3.6a2.2 2.2 0 0 1 0 4.2M12 9.8c1 .5 1.8 1.6 2 3.2"/></svg>212</span></div>
             <div class="nb">
               <h3>When a candidate moves to a stage</h3>
@@ -381,10 +440,10 @@ b,strong{font-weight:550}
               <div class="chips"><span class="chipk"><em>Stage is</em> Phone screen</span><span class="chipk"><em>Role is</em> Account Executive, Mid-Market</span></div>
             </div>
           </div>
-          <div class="cstack"><div class="conn"></div><span class="plus"><svg class="i" viewBox="0 0 16 16"><path d="M8 3.5v9M3.5 8h9"/></svg></span><div class="conn"></div></div>
+          <div class="cstack"><div class="conn"></div><button class="plus" data-js aria-label="Add a step here"><svg class="i" viewBox="0 0 16 16"><path d="M8 3.5v9M3.5 8h9"/></svg></button><div class="conn"></div></div>
 
           <!-- Send (selected) -->
-          <div class="node sel" aria-current="true">
+          <div data-step="invite" class="node sel" aria-current="true">
             <div class="nh"><span class="nk act"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="3.5" width="11" height="9" rx="1.5"/><path d="m3 4.5 5 4 5-4"/></svg>Send email</span><span class="ncount">212 sent</span></div>
             <div class="nb">
               <h3>Send the candidate notice and invite</h3>
@@ -392,20 +451,20 @@ b,strong{font-weight:550}
               <div class="chips"><span class="chipk"><em>Template</em> AE invite, v2</span><span class="chipk"><em>Includes</em> Candidate notice</span></div>
             </div>
           </div>
-          <div class="cstack"><div class="conn"></div><span class="plus"><svg class="i" viewBox="0 0 16 16"><path d="M8 3.5v9M3.5 8h9"/></svg></span><div class="conn"></div></div>
+          <div class="cstack"><div class="conn"></div><button class="plus" data-js aria-label="Add a step here"><svg class="i" viewBox="0 0 16 16"><path d="M8 3.5v9M3.5 8h9"/></svg></button><div class="conn"></div></div>
 
           <!-- Wait -->
-          <div class="node">
+          <div data-step="wait" class="node">
             <div class="nh"><span class="nk wait"><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 1.5"/></svg>Wait</span><span class="ncount">23 waiting</span></div>
             <div class="nb">
               <h3>Hold the scored call for 10 business days</h3>
               <p>The notice period for this role. Practice calls are open the whole time.</p>
             </div>
           </div>
-          <div class="cstack"><div class="conn"></div><span class="plus"><svg class="i" viewBox="0 0 16 16"><path d="M8 3.5v9M3.5 8h9"/></svg></span><div class="conn"></div></div>
+          <div class="cstack"><div class="conn"></div><button class="plus" data-js aria-label="Add a step here"><svg class="i" viewBox="0 0 16 16"><path d="M8 3.5v9M3.5 8h9"/></svg></button><div class="conn"></div></div>
 
           <!-- Condition -->
-          <div class="node">
+          <div data-step="cond" class="node">
             <div class="nh"><span class="nk cond"><svg class="i" viewBox="0 0 16 16"><circle cx="4.5" cy="4" r="1.5"/><circle cx="4.5" cy="12" r="1.5"/><circle cx="11.5" cy="8" r="1.5"/><path d="M4.5 5.5v5M4.5 8c0-2 2-2.6 5.5 0"/></svg>Condition</span></div>
             <div class="nb">
               <h3>Has the candidate started a call?</h3>
@@ -420,7 +479,7 @@ b,strong{font-weight:550}
               <div class="conn"></div>
               <span class="btag yes">Yes · 128</span>
               <div class="conn"></div>
-              <div class="node exit">
+              <div data-step="exitY" class="node exit">
                 <div class="nh"><span class="nk exit"><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="m6 6 4 4M10 6l-4 4"/></svg>Exit</span></div>
                 <div class="nb"><h3>Leave this automation</h3><p>No reminders. The candidate carries on in PM.</p></div>
               </div>
@@ -430,17 +489,17 @@ b,strong{font-weight:550}
               <div class="conn"></div>
               <span class="btag no">No · 61</span>
               <div class="conn"></div>
-              <div class="node">
+              <div data-step="rem1" class="node">
                 <div class="nh"><span class="nk act"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="3.5" width="11" height="9" rx="1.5"/><path d="m3 4.5 5 4 5-4"/></svg>Send email</span><span class="ncount">61 sent</span></div>
                 <div class="nb"><h3>Reminder 1, after 2 days</h3><div class="chips"><span class="chipk"><em>Template</em> Gentle reminder</span></div></div>
               </div>
               <div class="cstack"><div class="conn"></div></div>
-              <div class="node">
+              <div data-step="rem2" class="node">
                 <div class="nh"><span class="nk act"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="3.5" width="11" height="9" rx="1.5"/><path d="m3 4.5 5 4 5-4"/></svg>Send email</span><span class="ncount">34 sent</span></div>
                 <div class="nb"><h3>Reminder 2, after 4 more days</h3><div class="chips"><span class="chipk"><em>Template</em> Last reminder</span></div></div>
               </div>
               <div class="cstack"><div class="conn"></div></div>
-              <div class="node exit">
+              <div data-step="exitN" class="node exit">
                 <div class="nh"><span class="nk exit"><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="m6 6 4 4M10 6l-4 4"/></svg>Exit</span></div>
                 <div class="nb"><h3>Stop. No more emails</h3><p>The invite link keeps working until the role closes.</p></div>
               </div>
@@ -448,17 +507,17 @@ b,strong{font-weight:550}
           </div>
         </div>
 
-        <div class="zoom" aria-label="Zoom"><span>−</span><span>100%</span><span>+</span><span>Fit</span></div>
+        <div class="zoom" aria-label="Zoom"><button data-js data-z="out" aria-label="Zoom out">−</button><span id="auZl">100%</span><button data-js data-z="in" aria-label="Zoom in">+</button><button data-js data-z="fit">Fit</button></div>
       </div>
 
       <!-- Right panel: selected step -->
-      <aside class="rp" aria-label="Step settings">
+      <aside class="rp" id="auRp" aria-label="Step settings">
         <div class="rp-h">
-          <div><h2>Send the candidate notice and invite</h2><p>Step 2 of 7 · Send email</p></div>
-          <button class="x" aria-label="Close"><svg class="i" viewBox="0 0 16 16"><path d="m4.5 4.5 7 7M11.5 4.5l-7 7"/></svg></button>
+          <div><h2 id="auRpT">Send the candidate notice and invite</h2><p id="auRpS">Step 2 of 7 · Send email</p></div>
+          <button class="x" id="auRpX" data-js aria-label="Close"><svg class="i" viewBox="0 0 16 16"><path d="m4.5 4.5 7 7M11.5 4.5l-7 7"/></svg></button>
         </div>
-        <nav class="rp-tabs"><a href="#" class="on">Setup</a><a data-go="email.html">Preview</a><a data-js onclick="protoNote('This step sent 212 emails. 0 bounced.')">Activity</a></nav>
-        <div class="rp-b">
+        <nav class="rp-tabs"><a href="#setup" class="on" data-js data-rp="setup">Setup</a><a href="#preview" data-js data-rp="preview">Preview</a><a href="#activity" data-js data-rp="activity">Activity</a></nav>
+        <div class="rp-b" id="auRpB">
           <div class="fld">
             <span class="lab">From</span>
             <div class="inp"><span class="mini-av">DW</span><span class="t">Dana Whitfield</span><span class="s">dana@northwindfreight.com</span><svg class="i end" viewBox="0 0 16 16"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></div>
@@ -494,11 +553,15 @@ b,strong{font-weight:550}
           </div>
           <div class="note"><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 7.2v3.3M8 5.3v.1"/></svg><span>Accommodation requests pause this automation for that candidate until Dana answers.</span></div>
         </div>
-        <div class="rp-f"><span class="meta">Changes apply to new candidates</span><button class="btn" data-js onclick="protoNote('Changes discarded.')">Cancel</button><button class="btn yellow" data-js onclick="protoNote('Step saved.')">Save step</button></div>
+        <div class="rp-f" id="auRpF"><span class="meta" id="auRpM">Changes apply to new candidates</span><button class="btn" id="auRpCancel" data-js>Cancel</button><button class="btn yellow" id="auRpSave" data-js>Save step</button></div>
       </aside>
     </div>
+    <div class="au-pane" id="auHist" hidden></div>
+    <div class="au-pane" id="auSet" hidden></div>
   </div>
 </div>
 <script src="ui.js"></script><script src="proto.js"></script>
+<script src="au-shim.js"></script>
+<script src="au-flow.js"></script>
 </body>
 </html>

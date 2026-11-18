@@ -267,6 +267,16 @@ td.act{text-align:right}
 .pager .meta{margin-right:auto}
 .pg{width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--line2);border-radius:8px;color:var(--ink2);background:var(--field)}
 .foot-note{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mute)}
+.rl-clk{cursor:pointer}
+.rl-gx{margin-left:auto;border:0;background:none;color:var(--mute);cursor:pointer;font-size:15px;line-height:1}
+.rl-gx:hover{color:var(--ink)}
+.rl-vbar{height:3px;border-radius:2px;background:var(--chip);margin-top:6px;overflow:hidden}
+.rl-vbar[hidden]{display:none}
+.rl-vbar i{display:block;height:100%;width:0;background:var(--ink);transition:width .1s linear}
+#rlVoice{cursor:pointer}
+.tc-moodl span{padding:0 2px;border-radius:4px}
+.tc-moodl span:hover{background:var(--chip)}
+.tc-mood{cursor:pointer}
 </style>
 </head>
 <body>
@@ -412,16 +422,16 @@ td.act{text-align:right}
     <div class="ph tc-ph" id="tcPh">
       <div class="crumb"><a href="roles.html">Roles</a><svg class="i" viewBox="0 0 16 16" style="width:12px;height:12px"><path d="m6 4 4 4-4 4"/></svg><a href="overview.html">Req 114</a><svg class="i" viewBox="0 0 16 16" style="width:12px;height:12px"><path d="m6 4 4 4-4 4"/></svg><a href="setup.html">Interview setup</a><svg class="i" viewBox="0 0 16 16" style="width:12px;height:12px"><path d="m6 4 4 4-4 4"/></svg><span>Test call</span></div>
       <div class="ph-row">
-        <h1>Test call with Rosa Lin</h1>
+        <h1>Test call with <span class="rl-nm">Rosa Lin</span></h1>
         <span class="tag beige">Draft buyer</span>
         <div class="ph-acts">
           <span class="meta">Account Executive, Mid-Market</span>
           <button class="btn" data-go="setup.html"><svg class="i" viewBox="0 0 16 16"><path d="M10 4 6 8l4 4"/></svg>Back to setup</button>
-          <button class="btn yellow" id="tcMark" data-js onclick="tcMarkTested()">Mark Rosa as tested</button>
+          <button class="btn yellow" id="tcMark" data-js onclick="tcMarkTested()"><span>Mark <span class="rl-fn">Rosa</span> as tested</span></button>
           <span class="tc-tested"><span class="tag green"><svg class="i" viewBox="0 0 16 16" style="width:12px;height:12px;stroke-width:2"><path d="m4 8.5 2.5 2.5L12 5.5"/></svg>Tested</span></span>
         </div>
       </div>
-      <div class="tc-banner" role="status"><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="m5.8 8.2 1.5 1.5 3-3.2"/></svg><span>Rosa is marked as tested by Dana Whitfield, today at <span id="tcAt">10:14 am</span>. She joins the buyer mix when you publish the role.</span></div>
+      <div class="tc-banner" role="status"><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="m5.8 8.2 1.5 1.5 3-3.2"/></svg><span><span class="rl-fn">Rosa</span> is marked as tested by Dana Whitfield, today at <span id="tcAt">10:14 am</span>. She joins the buyer mix when you publish the role.</span></div>
     </div>
 
     <div class="tc-body">
@@ -433,8 +443,8 @@ td.act{text-align:right}
         </div>
 
         <div class="tc-stage">
-          <div class="tc-av" id="tcAv">RL</div>
-          <div class="tc-name"><b>Rosa Lin</b><small>Fleet manager · 45 vans · short on time</small></div>
+          <div class="tc-av rl-ini" id="tcAv">RL</div>
+          <div class="tc-name"><b class="rl-nm">Rosa Lin</b><small>Fleet manager · 45 vans · short on time</small></div>
           <div class="tc-state tc-s-idle" id="tcState"><span class="tc-bars"><span></span><span></span><span></span><span></span></span><span id="tcStateTx">Connecting</span><span class="tc-time" id="tcTime">00:00</span></div>
           <div class="tc-cap tc-dim" id="tcCap" aria-live="polite">Captions show here as Rosa talks.</div>
         </div>
@@ -454,7 +464,7 @@ td.act{text-align:right}
       <aside class="tc-right" aria-label="Buyer settings">
         <div class="tc-sec">
           <div class="tc-sech"><h2>Buyer settings</h2><span class="meta">Changes apply on restart</span></div>
-          <div class="tc-who"><span class="av a2">RL</span><div><b>Rosa Lin</b><small>Fleet manager · 45 vans</small></div><button class="btn sm ghost" style="margin-left:auto">Rename</button></div>
+          <div class="tc-who"><span class="av a2 rl-ini">RL</span><div><b class="rl-nm">Rosa Lin</b><small>Fleet manager · 45 vans</small></div><button class="btn sm ghost" style="margin-left:auto" id="rlRename" data-js>Rename</button></div>
 
           <div class="tc-f"><label class="lab" for="tcConcern">Concern</label>
             <textarea class="ta" id="tcConcern">Routes break when a driver calls in sick, and she rebuilds them by hand before 6 am. She'll listen if it gives her that hour back.</textarea></div>
@@ -474,11 +484,11 @@ td.act{text-align:right}
               <div><span class="box on"><svg viewBox="0 0 16 16"><path d="m4 8.5 2.5 2.5L12 5.5"/></svg></span>Never comments on how the candidate is doing</div>
               <div><span class="box on"><svg viewBox="0 0 16 16"><path d="m4 8.5 2.5 2.5L12 5.5"/></svg></span>Ends the call politely at 7 minutes</div>
             </div>
-            <button class="tc-add"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="M8 3.5v9M3.5 8h9"/></svg>Add guardrail</button>
+            <button class="tc-add" id="rlAddG" data-js><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="M8 3.5v9M3.5 8h9"/></svg>Add guardrail</button>
             <div class="help">Locked guardrails apply to every buyer in the workspace.</div></div>
 
           <div class="tc-f"><span class="lab">Voice</span>
-            <div class="tc-voice"><div class="select">Lena · quick, even pace<svg class="i" viewBox="0 0 16 16"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></div><button class="btn"><svg class="i" viewBox="0 0 16 16"><path d="M5.5 4v8l6-4z"/></svg>Preview</button></div></div>
+            <div class="tc-voice" id="rlVoiceRow"><div class="select" id="rlVoice" role="button" tabindex="0"><span>Lena · quick, even pace</span><svg class="i" viewBox="0 0 16 16"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></div><button class="btn"><svg class="i" viewBox="0 0 16 16"><path d="M5.5 4v8l6-4z"/></svg>Preview</button></div><div class="rl-vbar" id="rlVbar" hidden><i></i></div></div>
 
           <div class="tc-f"><span class="lab">Difficulty</span>
             <div class="seg"><span>Easy</span><span class="on">Medium</span><span>Hard</span></div>
@@ -500,6 +510,7 @@ td.act{text-align:right}
 </div>
 <script>
 (function(){
+  var END_HTML=document.getElementById('tcEnd').innerHTML,START_HTML='<svg class="i" viewBox="0 0 16 16"><path d="M5.5 2.5h-2v2.2c0 4.8 3.9 8.8 8.8 8.8h2.2v-2l-2.6-1.2-1.3 1.3a7 7 0 0 1-3.9-3.9l1.3-1.3z"/></svg>Start test call';
   var OK='<span class="ok"><svg viewBox="0 0 16 16"><path d="m4 8.5 2.5 2.5L12 5.5"/></svg></span>';
   // who: R = Rosa, D = Dana (as candidate), P = pause event. d = delay before this line in ms, s = speaking time in ms
   var SCRIPT=[
@@ -513,24 +524,26 @@ td.act{text-align:right}
     {w:'R',d:800,s:4200,t:"Be on the floor with my drivers. Look, send me something short and I'll read it tonight."}
   ];
   var i=0,sec=0,tick=null,step=null,muted=false,ended=false,pending=null;
+  window.tcNm=window.tcNm||'Rosa Lin';function NM(){return window.tcNm;}function FN(){return window.tcNm.split(' ')[0];}function INI(){return window.tcNm.split(/\s+/).map(function(w){return w[0]}).join('').slice(0,2).toUpperCase();}
+  function TX(t){return t.replace(/Rosa Lin/g,NM()).replace(/Rosa/g,FN());}
   var $=function(id){return document.getElementById(id)};
   function fmt(s){return ('0'+Math.floor(s/60)).slice(-2)+':'+('0'+s%60).slice(-2)}
   function state(cls,tx){var e=$('tcState');e.className='tc-state '+cls;$('tcStateTx').textContent=tx;$('tcAv').classList.toggle('tc-speak',cls==='tc-s-speak');}
   function check(n){var r=$('tcC'+n);if(r.dataset.on)return;r.dataset.on=1;r.firstElementChild.outerHTML=OK;var s=r.querySelector('.tc-res');s.textContent='Seen at '+fmt(sec);s.className='tc-res tc-pass';
     var c=document.querySelectorAll('.tc-chk [data-on]').length;$('tcChkN').textContent=c+' of 3 seen';}
   function add(l){var el=document.createElement('div');
-    if(l.w==='P'){el.className='tc-ln tc-ev';el.innerHTML='<span class="tc-ts">'+fmt(sec)+'</span><span class="tc-evt"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="M6 4.5v7M10 4.5v7"/></svg>'+l.t+'</span>';}
-    else{var r=l.w==='R';el.className='tc-ln';el.innerHTML='<span class="tc-ts">'+fmt(sec)+'</span><span class="pav '+(r?'tc-rl':'tc-dw')+'">'+(r?'RL':'DW')+'</span><div><b>'+(r?'Rosa Lin':'You, as candidate')+'</b><p>'+l.t+'</p></div>';}
+    if(l.w==='P'){el.className='tc-ln tc-ev';el.innerHTML='<span class="tc-ts">'+fmt(sec)+'</span><span class="tc-evt"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="M6 4.5v7M10 4.5v7"/></svg>'+TX(l.t)+'</span>';}
+    else{var r=l.w==='R';el.className='tc-ln';el.innerHTML='<span class="tc-ts">'+fmt(sec)+'</span><span class="pav '+(r?'tc-rl':'tc-dw')+'">'+(r?INI():'DW')+'</span><div><b>'+(r?NM():'You, as candidate')+'</b><p>'+TX(l.t)+'</p></div>';}
     $('tcList').appendChild(el);var box=document.querySelector('.tc-tx');setTimeout(function(){box.scrollTop=box.scrollHeight+100;},300);}
   function next(){
     if(ended||muted)return;
-    if(i>=SCRIPT.length){state('tc-s-listen','Rosa is listening');$('tcCap').className='tc-cap tc-dim';$('tcCap').textContent='End of script. Say something, or end the call.';return;}
+    if(i>=SCRIPT.length){state('tc-s-listen',FN()+' is listening');$('tcCap').className='tc-cap tc-dim';$('tcCap').textContent='End of script. Say something, or end the call.';return;}
     var l=SCRIPT[i];
     step=setTimeout(function(){
       if(ended)return;
-      if(l.w==='R'){state('tc-s-speak','Rosa is speaking');$('tcCap').className='tc-cap';$('tcCap').innerHTML='<small>Rosa</small>'+l.t;}
-      else if(l.w==='D'){state('tc-s-listen','Listening to you');$('tcCap').className='tc-cap';$('tcCap').innerHTML='<small>You</small>'+l.t;}
-      else{state('tc-s-listen','Rosa is waiting');$('tcCap').className='tc-cap tc-dim';$('tcCap').textContent='…';}
+      if(l.w==='R'){state('tc-s-speak',FN()+' is speaking');$('tcCap').className='tc-cap';$('tcCap').innerHTML='<small>'+FN()+'</small>'+TX(l.t);}
+      else if(l.w==='D'){state('tc-s-listen','Listening to you');$('tcCap').className='tc-cap';$('tcCap').innerHTML='<small>You</small>'+TX(l.t);}
+      else{state('tc-s-listen',FN()+' is waiting');$('tcCap').className='tc-cap tc-dim';$('tcCap').textContent='…';}
       pending=setTimeout(function(){
         add(l);if(l.c)check(l.c);
         if(l.w==='R'&&i===0)check(1);
@@ -540,18 +553,18 @@ td.act{text-align:right}
     },l.d);
   }
   function start(){ended=false;muted=false;i=0;sec=0;$('tcList').innerHTML='';$('tcTime').textContent='00:00';
-    $('tcCap').className='tc-cap tc-dim';$('tcCap').textContent='Captions show here as Rosa talks.';
+    $('tcCap').className='tc-cap tc-dim';$('tcCap').textContent='Captions show here as '+FN()+' talks.';
     [1,2,3].forEach(function(n){var r=$('tcC'+n);delete r.dataset.on;r.firstElementChild.outerHTML='<span class="todo"></span>';var s=r.querySelector('.tc-res');s.textContent='Waiting';s.className='tc-res';});
     $('tcChkN').textContent='0 of 3 seen';
-    var m=$('tcMute');m.classList.remove('tc-muted');m.querySelector('span').textContent='Mute';$('tcEnd').disabled=false;
+    var m=$('tcMute');m.classList.remove('tc-muted');m.querySelector('span').textContent='Mute';var eb=$('tcEnd');eb.disabled=false;eb.classList.add('tc-end');eb.classList.remove('yellow');eb.innerHTML=END_HTML;
     state('tc-s-idle','Connecting');
     clearInterval(tick);tick=setInterval(function(){if(!ended){sec++;$('tcTime').textContent=fmt(sec);}},1000);
     next();}
   function stopTimers(){clearTimeout(step);clearTimeout(pending);}
   window.tcMute=function(){if(ended)return;var m=$('tcMute');muted=!muted;m.classList.toggle('tc-muted',muted);m.querySelector('span').textContent=muted?'Unmute':'Mute';
-    if(muted){stopTimers();state('tc-s-idle','Your mic is muted. Rosa is waiting.');}else{state('tc-s-listen','Listening to you');next();}};
-  window.tcRestart=function(){stopTimers();start();protoNote('Test call restarted with the current buyer settings.');};
-  window.tcEnd=function(){if(ended)return;ended=true;stopTimers();clearInterval(tick);state('tc-s-idle','Call ended');$('tcEnd').disabled=true;
+    if(muted){stopTimers();state('tc-s-idle','Your mic is muted. '+FN()+' is waiting.');}else{state('tc-s-listen','Listening to you');next();}};
+  window.tcRestart=function(){stopTimers();start();document.querySelector('.tc-sech .meta').textContent='Changes apply on restart';protoNote('Test call restarted with the current buyer settings.');};
+  window.tcEnd=function(){if(ended){start();protoNote('Started a new test call with '+NM()+'.');return;}ended=true;stopTimers();clearInterval(tick);state('tc-s-idle','Call ended');var eb=$('tcEnd');eb.classList.remove('tc-end');eb.classList.add('yellow');eb.innerHTML=START_HTML;
     $('tcCap').className='tc-cap tc-dim';$('tcCap').textContent='Test call ended at '+fmt(sec)+'. Nothing was saved to the role or a candidate.';};
   window.tcMarkTested=function(){var d=new Date(),h=d.getHours(),m=('0'+d.getMinutes()).slice(-2);
     $('tcAt').textContent=((h%12)||12)+':'+m+' '+(h<12?'am':'pm');document.querySelector('.app').classList.add('tc-done');};
@@ -559,5 +572,72 @@ td.act{text-align:right}
 })();
 </script>
 <script src="ui.js"></script><script src="proto.js"></script>
+<script src="rl.js"></script>
+<script>
+(function(){
+  var E=RL.esc,$=function(id){return document.getElementById(id);};
+  var CK='<svg viewBox="0 0 16 16"><path d="m4 8.5 2.5 2.5L12 5.5"/></svg>';
+  var dirty=document.querySelector('.tc-sech .meta');
+  function changed(){dirty.textContent='Unsaved changes apply on restart';}
+  document.querySelectorAll('.tc-right textarea').forEach(function(t){t.addEventListener('input',changed);});
+  /* Rename */
+  UI.wire('#rlRename',function(){var cur=window.tcNm;
+    UI.modal({title:'Rename buyer',body:'<label for="rlBn">Name</label><input id="rlBn" value="'+E(cur)+'"><p style="margin-top:8px;color:#68685D;font-size:12px">The new name shows to candidates in the scored call and in practice.</p>',
+      actions:[{label:'Cancel'},{label:'Rename',primary:true,onClick:function(md){var v=md.querySelector('#rlBn').value.trim().replace(/\s+/g,' ');
+        if(!v){UI.toast('Type a name.');return false;}
+        window.tcNm=v;var fn=v.split(' ')[0],ini=v.split(' ').map(function(w){return w[0]}).join('').slice(0,2).toUpperCase();
+        document.querySelectorAll('.rl-nm').forEach(function(e){e.textContent=v;});
+        document.querySelectorAll('.rl-fn').forEach(function(e){e.textContent=fn;});
+        document.querySelectorAll('.rl-ini').forEach(function(e){e.textContent=ini;});
+        document.querySelectorAll('#tcList .tc-rl').forEach(function(e){e.textContent=ini;});
+        document.querySelectorAll('#tcList .tc-ln b').forEach(function(e){if(e.textContent===cur)e.textContent=v;});
+        document.title='Test call with '+v+' · PM';
+        var sm=document.querySelector('.tc-name small');
+        UI.toast('Renamed '+cur+' to '+v+'.');}}]});});
+  /* Guardrails */
+  var guard=document.querySelector('.tc-guard');
+  function wireBox(row){var b=row.querySelector('.box');if(row.querySelector('.tc-lock')){row.title='Set for every buyer in workspace settings';return;}
+    row.classList.add('rl-clk');row.setAttribute('role','checkbox');row.setAttribute('tabindex','0');row.setAttribute('aria-checked',b.classList.contains('on'));
+    function t(e){if(e&&e.target.closest('.rl-gx'))return;var on=!b.classList.contains('on');b.classList.toggle('on',on);b.innerHTML=on?CK:'';row.setAttribute('aria-checked',on);changed();UI.toast((on?'Turned on: ':'Turned off: ')+row.textContent.replace('×','').trim()+'.');}
+    row.addEventListener('click',t);row.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();t();}});}
+  guard.querySelectorAll(':scope>div').forEach(wireBox);
+  document.querySelectorAll('.tc-lock').forEach(function(l){var row=l.parentNode;row.addEventListener('click',function(){UI.toast('Locked. This guardrail applies to every buyer in the workspace.');});row.style.cursor='default';});
+  UI.wire('#rlAddG',function(){UI.modal({title:'Add a guardrail',body:'<label for="rlGt">'+E(window.tcNm.split(' ')[0])+' never…</label><input id="rlGt" placeholder="e.g. mentions a competitor by name"><p style="margin-top:8px;color:#68685D;font-size:12px">Guardrails are things the buyer never says or does. They apply from the next test call and to every candidate after you publish.</p>',
+    actions:[{label:'Cancel'},{label:'Add guardrail',primary:true,onClick:function(md){var v=md.querySelector('#rlGt').value.trim();if(!v){UI.toast('Write the guardrail first.');return false;}
+      v=v.charAt(0).toUpperCase()+v.slice(1);if(!/^never/i.test(v))v='Never '+v.charAt(0).toLowerCase()+v.slice(1);
+      var d=document.createElement('div');d.innerHTML='<span class="box on">'+CK+'</span><span>'+E(v)+'</span><button class="rl-gx" data-js aria-label="Remove guardrail">×</button>';guard.appendChild(d);wireBox(d);
+      d.querySelector('.rl-gx').onclick=function(){d.remove();changed();UI.toast('Removed the guardrail.');};
+      changed();UI.toast('Added the guardrail. Restart the test call to try it.');}}]});});
+  /* Voice */
+  var VOICES=[['Lena · quick, even pace'],['Maya · warm, slower'],['Ruth · low, direct'],['Ines · bright, brisk']];
+  var vsel=$('rlVoice');
+  function vmenu(){var cur=vsel.querySelector('span').textContent;UI.menu(vsel,VOICES.map(function(v){return {label:v[0],check:v[0]===cur,onClick:function(){vsel.querySelector('span').textContent=v[0];changed();UI.toast('Voice set to '+v[0].split(' ·')[0]+'.');}};}),{align:'left'});}
+  vsel.addEventListener('click',vmenu);vsel.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();vmenu();}});
+  var pv=document.querySelector('#rlVoiceRow .btn'),vbar=$('rlVbar'),vt=null,PLAY=pv.innerHTML;
+  UI.wire(pv,function(){
+    if(vt){clearInterval(vt);vt=null;pv.innerHTML=PLAY;vbar.hidden=true;return;}
+    var p=0,name=vsel.querySelector('span').textContent.split(' ·')[0];vbar.hidden=false;
+    pv.innerHTML='<svg class="i" viewBox="0 0 16 16"><rect x="4.5" y="4" width="2.5" height="8" rx=".5"/><rect x="9" y="4" width="2.5" height="8" rx=".5"/></svg>0:00';
+    vt=setInterval(function(){p+=1;vbar.querySelector('i').style.width=(p/40*100)+'%';pv.lastChild.textContent='0:0'+Math.floor(p/10);
+      if(p>=40){clearInterval(vt);vt=null;pv.innerHTML=PLAY;vbar.hidden=true;vbar.querySelector('i').style.width=0;}},100);
+    UI.toast('Playing a sample of '+name+': "I have about five minutes, so go ahead."');
+  });
+  /* Mood range */
+  var lab=document.querySelectorAll('.tc-moodl span'),M=['Cold','Rushed','Neutral','Warm'],lo=1,hi=2;
+  function drawMood(){var pos=function(i){return (i/3*100).toFixed(1)+'%';};var k=document.querySelectorAll('.tc-knob');
+    k[0].style.left=pos(lo);k[1].style.left=pos(hi);var f=document.querySelector('.tc-fill');f.style.left=pos(lo);f.style.width=((hi-lo)/3*100).toFixed(1)+'%';
+    lab.forEach(function(l,i){l.classList.toggle('on',i===lo||i===hi);});
+    var fn=window.tcNm.split(' ')[0];
+    document.querySelector('.tc-mood').parentNode.querySelector('.lab small').textContent=lo===hi?M[lo]+' only':M[lo]+' to '+M[hi].toLowerCase();
+    document.querySelector('.tc-mood').parentNode.querySelector('.help').textContent=lo===hi?fn+' stays '+M[lo].toLowerCase()+' the whole call.':fn+' starts '+M[lo].toLowerCase()+'. Good questions can move her to '+M[hi].toLowerCase()+', never past it.';}
+  lab.forEach(function(l,i){l.classList.add('rl-clk');l.setAttribute('role','button');l.setAttribute('tabindex','0');
+    function set(){if(i<lo)lo=i;else if(i>hi)hi=i;else if(i===lo&&lo<hi)lo++;else if(i===hi&&hi>lo)hi--;else if(i-lo<=hi-i)lo=i;else hi=i;drawMood();changed();}
+    l.addEventListener('click',set);l.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();set();}});});
+  document.querySelector('.tc-mood').addEventListener('click',function(e){var r=this.getBoundingClientRect(),i=Math.round((e.clientX-r.left)/r.width*3);i=Math.max(0,Math.min(3,i));
+    if(Math.abs(i-lo)<=Math.abs(i-hi)&&i<=hi)lo=i;else hi=i;drawMood();changed();});
+  /* Difficulty is set by the role */
+  document.querySelectorAll('.tc-right .seg span').forEach(function(s){s.style.cursor='pointer';s.addEventListener('click',function(){if(s.classList.contains('on'))return;UI.toast('Difficulty is set for the whole role so every candidate gets the same. Change it in interview setup.');});});
+})();
+</script>
 </body>
 </html>

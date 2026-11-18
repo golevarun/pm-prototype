@@ -541,5 +541,70 @@ td.act{text-align:right}
 })();
 </script>
 <script src="ui.js"></script><script src="proto.js"></script>
+<script src="rl.js"></script>
+<script>
+(function(){
+  var E=RL.esc;
+  UI.wire(UI.byText('Copy invite link'),function(){RL.copyLink('northwind-ae');});
+  UI.wire(UI.byText('Invite candidates'),function(){RL.inviteModal(RL.ROLES['114']);});
+  /* Applicant tracker record */
+  UI.wire(UI.byText('Open in applicant tracker'),function(){
+    UI.modal({title:'Req 114 in the applicant tracker',wide:true,body:
+      '<p>This is the record PM reads from the applicant tracker. Title, location and people change there and sync here.</p>'+
+      '<table style="width:100%;border-collapse:collapse;font-size:13px">'+[['Title','Account Executive, Mid-Market'],['Req','114 · Sales'],['Location','Chicago or remote (US)'],['Hiring manager','Marcus Lee'],['Recruiter','Dana Whitfield'],['Opened','Oct 6, 2026']].map(function(r){return '<tr><td style="padding:6px 0;color:#68685D;width:160px;border-bottom:1px solid rgba(28,28,24,.08)">'+r[0]+'</td><td style="padding:6px 0;border-bottom:1px solid rgba(28,28,24,.08)">'+r[1]+'</td></tr>';}).join('')+'</table>'+
+      '<label>Candidates by stage</label><div style="display:flex;gap:6px;flex-wrap:wrap">'+[['Applied',418],['Phone screen',212],['Hiring manager review',9],['Final round',0],['Offer',0]].map(function(s){return '<span style="border:1px solid rgba(28,28,24,.12);border-radius:8px;padding:2px 8px">'+s[0]+' <b style="font-weight:550">'+s[1]+'</b></span>';}).join('')+'</div>',
+      actions:[{label:'Close'},{label:'Sync now',primary:true,onClick:function(md){
+        var b=md.querySelector('.ui-md-f .pri');b.textContent='Syncing…';b.disabled=true;
+        setTimeout(function(){document.querySelectorAll('.sync').forEach(function(s){s.innerHTML='<span class="dot"></span>Last sync just now';});md.close();UI.toast('Synced Req 114. Nothing changed in the applicant tracker since 9:02 am.');},900);return false;}}]});
+  });
+  /* Team access */
+  var save=document.getElementById('rsSave'),list=document.querySelector('#rs-team-h').closest('.card').querySelector('.rs-list');
+  UI.wire(UI.byText('Add person'),function(){
+    UI.modal({title:'Add a person to this role',body:
+      '<label for="rlPn">Name or email</label><input id="rlPn" list="rlPeople" placeholder="Search your workspace"><datalist id="rlPeople"><option value="Jess Park"><option value="Tyler Grant"><option value="Morgan Diaz"></datalist>'+
+      '<label for="rlPa">Access</label><select id="rlPa"><option>Viewer</option><option>Reviewer</option><option>Editor</option></select>'+
+      '<p style="margin-top:10px;color:#68685D;font-size:12px">Viewers see the shortlist and scores. Reviewers also watch scored calls and record decisions. Nobody on the team sees practice calls or accommodation requests.</p>',
+      actions:[{label:'Cancel'},{label:'Add person',primary:true,onClick:function(md){
+        var n=md.querySelector('#rlPn').value.trim(),a=md.querySelector('#rlPa').value;
+        if(!n){UI.toast('Type a name or email first.');return false;}
+        var name=n.indexOf('@')>-1?n.split('@')[0].replace(/[._]/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();}):n;
+        var email=n.indexOf('@')>-1?n:name.toLowerCase().replace(/\s+/g,'.')+'@northwindfreight.com';
+        var ini=name.split(/\s+/).map(function(w){return w[0]}).join('').slice(0,2).toUpperCase();
+        var row=document.createElement('div');row.className='rs-row';
+        row.innerHTML='<span class="rs-av" style="background:#F4F4F2;color:#535347">'+E(ini)+'</span><div class="rs-who"><b>'+E(name)+' <span class="tag gray">Invited</span></b><small>'+E(email)+'</small></div>'+
+          '<select class="rs-sel" aria-label="Access for '+E(name)+'"><option'+(a==='Editor'?' selected':'')+'>Editor</option><option'+(a==='Reviewer'?' selected':'')+'>Reviewer</option><option'+(a==='Viewer'?' selected':'')+'>Viewer</option><option value="remove">Remove</option></select>';
+        list.appendChild(row);
+        row.querySelector('select').addEventListener('change',function(){if(this.value==='remove'){row.remove();UI.toast('Removed '+name+' from this role.');}else UI.toast(name+' is now '+this.value.toLowerCase()+' on this role.');});
+        UI.toast('Added '+name+' as '+a.toLowerCase()+'. They get an email with a link to this role.');}}]});
+  });
+  /* Decision emails */
+  var EM={
+    adv:{subject:'Next step: final round with Marcus Lee',body:'Hi {first name},\n\nThanks for taking the time to do the first interview for Account Executive, Mid-Market. Marcus Lee, the hiring manager, would like to meet you for the final round.\n\nPick a time that works for you here: {scheduling link}\n\nIf you need any adjustment for the interview, reply to this email and I\'ll set it up.\n\nDana Whitfield\nRecruiter, Northwind Freight'},
+    dec:{subject:'Your application for Account Executive, Mid-Market',body:'Hi {first name},\n\nThanks for doing the first interview for Account Executive, Mid-Market. We\'ve decided not to move forward with your application for this role.\n\nA person on our hiring team reviewed your call and made this decision. If you\'d like a short summary of how your call went, reply to this email and I\'ll send it.\n\nDana Whitfield\nRecruiter, Northwind Freight'}
+  };
+  var rows=document.querySelectorAll('#rs-com-h');rows=document.querySelector('#rs-com-h').closest('.card').querySelectorAll('.rs-list .rs-row');
+  [['adv',rows[0]],['dec',rows[1]]].forEach(function(p){
+    var k=p[0],row=p[1],btns=row.querySelectorAll('button');
+    UI.wire(btns[0],function(){var e=EM[k];
+      UI.modal({title:'Preview: '+(k==='adv'?'advance':'decline')+' email',wide:true,body:
+        '<div style="font-size:12px;color:#68685D;line-height:18px">From Dana Whitfield &lt;dana.whitfield@northwindfreight.com&gt;<br>To Sam Rivera &lt;sam.rivera@gmail.com&gt;</div>'+
+        '<div style="font-size:15px;font-weight:550;margin:10px 0 8px">'+E(e.subject)+'</div>'+
+        '<div style="white-space:pre-wrap;border:1px solid rgba(28,28,24,.08);border-radius:8px;padding:12px 14px;background:#FAFAF9">'+E(e.body.replace(/\{first name\}/g,'Sam').replace('{scheduling link}','pm.app/s/northwind-final'))+'</div>'+
+        '<p style="margin-top:10px;color:#68685D;font-size:12px">Shown with Sam Rivera\'s details. Goes out only after a person records the decision.</p>',
+        actions:[{label:'Close'},{label:'Edit',onClick:function(){setTimeout(function(){btns[1].click();},0);}}]});});
+    UI.wire(btns[1],function(){var e=EM[k];
+      UI.modal({title:'Edit '+(k==='adv'?'advance':'decline')+' email',wide:true,body:
+        '<label for="rlEs">Subject</label><input id="rlEs" value="'+E(e.subject)+'">'+
+        '<label for="rlEb">Message</label><textarea id="rlEb" style="min-height:220px">'+E(e.body)+'</textarea>'+
+        '<p style="margin-top:6px;color:#68685D;font-size:12px">{first name} and {scheduling link} fill in for each candidate.</p>',
+        actions:[{label:'Cancel'},{label:'Save email',primary:true,onClick:function(md){
+          var s=md.querySelector('#rlEs').value.trim(),b=md.querySelector('#rlEb').value;
+          if(!s){UI.toast('Add a subject line.');return false;}
+          e.subject=s;e.body=b;row.querySelector('.rs-who b').textContent=s;
+          row.querySelector('.rs-who small').textContent=(k==='adv'?'Sent when a candidate is advanced. ':'Sent when a candidate is declined. ')+'Edited by you just now.';
+          UI.toast('Saved the '+(k==='adv'?'advance':'decline')+' email.');}}]});});
+  });
+})();
+</script>
 </body>
 </html>

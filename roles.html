@@ -291,6 +291,20 @@ th.rl-n{text-align:right}
 .rl-chk{width:14px;height:14px;color:var(--greenT)}
 tbody tr.rl-hide{display:none}
 .rl-live{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mute)}
+.rl-filter.rl-act{border-color:var(--ink);}
+.rl-filter.rl-act em{color:var(--ink)}
+.tbar .srch input{border:0;outline:0;flex:1;min-width:0;background:transparent;font:inherit;color:var(--ink)}
+.rl-bulk{display:flex;align-items:center;gap:8px;padding:8px 16px;background:#F5F8FE;border-bottom:1px solid var(--line)}
+.rl-bulk[hidden]{display:none}
+.rl-bulk b{font-weight:450;margin-right:8px}
+.box[role=checkbox]{cursor:pointer}
+tbody tr[data-req]{cursor:pointer}
+tbody tr[data-req]:hover td{background:#FAFAF9}
+tbody tr.rl-on td{background:#F5F8FE!important}
+.rl-pgoff{opacity:.45}
+.rl-empty td{text-align:center;color:var(--mute);height:72px}
+.rl-hc{display:none!important}
+.tag.rl-paused{background:#FDF3E1;color:#8A5A12}
 </style>
 </head>
 <body>
@@ -359,42 +373,152 @@ tbody tr.rl-hide{display:none}
 
     <div class="rl-body">
       <div class="tbar">
-        <div class="srch"><svg class="i" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>Search roles or req numbers</div>
-        <button class="btn rl-filter"><svg class="i" viewBox="0 0 16 16"><path d="M8 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM3 13.5c.6-2.3 2.6-3.5 5-3.5s4.4 1.2 5 3.5"/></svg>Owner<em>Any</em><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></button>
-        <button class="btn rl-filter"><svg class="i" viewBox="0 0 16 16"><path d="M8 2.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11zM5.8 8.2l1.5 1.5 3-3.2"/></svg>Status<em>Any</em><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></button>
+        <label class="srch"><svg class="i" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><input id="rlQ" type="text" placeholder="Search roles or req numbers" aria-label="Search roles or req numbers"></label>
+        <button class="btn rl-filter" id="rlOwner" data-js><svg class="i" viewBox="0 0 16 16"><path d="M8 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM3 13.5c.6-2.3 2.6-3.5 5-3.5s4.4 1.2 5 3.5"/></svg>Owner<em>Any</em><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></button>
+        <button class="btn rl-filter" id="rlStatus" data-js><svg class="i" viewBox="0 0 16 16"><path d="M8 2.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11zM5.8 8.2l1.5 1.5 3-3.2"/></svg>Status<em>Any</em><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></button>
+        <button class="btn ghost sm" id="rlClear" data-js hidden>Clear all</button>
         <div class="r">
-          <button class="btn"><svg class="i" viewBox="0 0 16 16"><path d="M5 3v10M2.5 10.5 5 13l2.5-2.5M11 13V3M8.5 5.5 11 3l2.5 2.5"/></svg>Last updated</button>
-          <button class="btn"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="3" width="3" height="10" rx="1"/><rect x="6.5" y="3" width="3" height="10" rx="1"/><rect x="10.5" y="3" width="3" height="10" rx="1"/></svg>Columns</button>
+          <button class="btn" id="rlSort" data-js><svg class="i" viewBox="0 0 16 16"><path d="M5 3v10M2.5 10.5 5 13l2.5-2.5M11 13V3M8.5 5.5 11 3l2.5 2.5"/></svg><span>Last updated</span></button>
+          <button class="btn" id="rlCols" data-js><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="3" width="3" height="10" rx="1"/><rect x="6.5" y="3" width="3" height="10" rx="1"/><rect x="10.5" y="3" width="3" height="10" rx="1"/></svg>Columns</button>
         </div>
+      </div>
+      <div class="rl-bulk" id="rlBulk" hidden>
+        <b id="rlSelN">1 selected</b>
+        <button class="btn sm" data-js id="rlBExport"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="M8 2.5v8M5 7.5l3 3 3-3M3 12.5h10"/></svg>Export CSV</button>
+        <button class="btn sm" data-js id="rlBPause">Pause invites</button>
+        <button class="btn sm" data-js id="rlBResume">Resume invites</button>
+        <button class="btn sm" data-js id="rlBDup">Duplicate</button>
+        <button class="btn sm ghost" data-js id="rlBClear" style="margin-left:auto">Clear selection</button>
       </div>
       <div class="tscroll">
         <table>
-          <thead><tr><th class="cbx"><span class="box"></span></th><th>Role</th><th>Status</th><th>Owner</th><th class="rl-n">Enrolled</th><th class="rl-n">Finished</th><th class="rl-n">Recommended</th><th>Fairness check</th><th>Updated</th><th></th></tr></thead>
-          <tbody>
-<tr data-st="live"><td class="cbx"><span class="box"></span></td><td><div class="rl-role"><a href="overview.html">Account Executive, Mid-Market</a><small>Req 114 · Chicago or remote (US)</small></div></td><td><div class="rl-stc"><span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span><div class="rl-live"><span class="dot"></span>1 in a scored call now</div></div></td><td><div class="rl-own"><span class="avatar">DW</span><div><span>Dana Whitfield</span><small>with Marcus Lee</small></div></div></td><td class="rl-n">212</td><td class="rl-n">39</td><td class="rl-n">9</td><td><span class="tag green"><svg class="i rl-chk" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Buyer mix logged</span></td><td class="dim">9:12 am</td><td class="act"><button class="btn sm" data-go="overview.html">Open</button></td></tr>
-<tr data-st="live"><td class="cbx"><span class="box"></span></td><td><div class="rl-role"><b>SDR, Inbound</b><small>Req 117 · Chicago, IL</small></div></td><td><div class="rl-stc"><span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span></div></td><td><div class="rl-own"><span class="avatar">DW</span><div><span>Dana Whitfield</span></div></div></td><td class="rl-n">96</td><td class="rl-n">21</td><td class="rl-n">5</td><td><span class="tag green"><svg class="i rl-chk" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Buyer mix logged</span></td><td class="dim">Yesterday</td><td class="act"><button class="btn sm ghost">View</button></td></tr>
-<tr data-st="live"><td class="cbx"><span class="box"></span></td><td><div class="rl-role"><b>Account Executive, Enterprise</b><small>Req 109 · Chicago, IL</small></div></td><td><div class="rl-stc"><span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span></div></td><td><div class="rl-own"><span class="avatar">DW</span><div><span>Dana Whitfield</span></div></div></td><td class="rl-n">44</td><td class="rl-n">12</td><td class="rl-n">3</td><td><span class="tag green"><svg class="i rl-chk" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Buyer mix logged</span></td><td class="dim">Nov 13</td><td class="act"><button class="btn sm ghost">View</button></td></tr>
-<tr data-st="draft"><td class="cbx"><span class="box"></span></td><td><div class="rl-role"><b>SDR, Outbound</b><small>Req 120 · Remote (US)</small></div></td><td><div class="rl-stc"><span class="tag beige">Draft</span></div></td><td><div class="rl-own"><span class="avatar">DW</span><div><span>Dana Whitfield</span></div></div></td><td class="rl-n dim">—</td><td class="rl-n dim">—</td><td class="rl-n dim">—</td><td><span class="tag gray">Checked when published</span></td><td class="dim">Nov 16</td><td class="act"><button class="btn sm yellow" data-go="setup.html">Finish setup</button></td></tr>
-<tr data-st="closed"><td class="cbx"><span class="box"></span></td><td><div class="rl-role"><b>Sales Manager, Central</b><small>Req 101 · Chicago, IL</small></div></td><td><div class="rl-stc"><span class="tag gray">Closed Oct 30</span><div class="meta">2 hired</div></div></td><td><div class="rl-own"><span class="avatar">DW</span><div><span>Dana Whitfield</span></div></div></td><td class="rl-n">58</td><td class="rl-n">19</td><td class="rl-n">4</td><td><span class="tag blue">Audit record kept</span></td><td class="dim">Oct 30</td><td class="act"><button class="btn sm ghost">View</button></td></tr>
-          </tbody>
+          <thead><tr><th class="cbx"><span class="box" id="rlAll" role="checkbox" aria-checked="false" tabindex="0" aria-label="Select all roles"></span></th><th>Role</th><th>Status</th><th data-c="owner">Owner</th><th class="rl-n" data-c="enr">Enrolled</th><th class="rl-n" data-c="fin">Finished</th><th class="rl-n" data-c="rec">Recommended</th><th data-c="fair">Fairness check</th><th data-c="upd">Updated</th><th></th></tr></thead>
+          <tbody id="rlRows"></tbody>
         </table>
       </div>
       <div class="pager">
         <span class="foot-note"><svg class="i" viewBox="0 0 16 16" style="width:13px;height:13px"><rect x="4" y="7.5" width="8" height="6" rx="1"/><path d="M5.5 7.5V5.5a2.5 2.5 0 0 1 5 0v2"/></svg>Every role keeps its own notice text and audit record.</span>
         <span class="meta" style="margin-left:auto" id="rlCount">1–5 of 5</span>
-        <span class="pg" aria-label="Previous page"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m10 4-4 4 4 4"/></svg></span>
-        <span class="pg" aria-label="Next page"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m6 4 4 4-4 4"/></svg></span>
+        <span class="pg rl-pgoff" aria-disabled="true" aria-label="Previous page"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m10 4-4 4 4 4"/></svg></span>
+        <span class="pg rl-pgoff" aria-disabled="true" aria-label="Next page"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m6 4 4 4-4 4"/></svg></span>
       </div>
     </div>
   </div>
 </div>
-<script>
-document.querySelectorAll('[data-tab]').forEach(function(t){t.addEventListener('click',function(e){e.preventDefault();
-var k=t.getAttribute('data-tab'),n=0;
-document.querySelectorAll('[data-tab]').forEach(function(x){x.classList.toggle('on',x===t);x.removeAttribute('aria-current');});t.setAttribute('aria-current','page');
-document.querySelectorAll('tbody tr').forEach(function(r){var show=k==='all'||r.getAttribute('data-st')===k;r.classList.toggle('rl-hide',!show);if(show)n++;});
-document.getElementById('rlCount').textContent=(n?'1–'+n:'0')+' of '+n;});});
-</script>
 <script src="ui.js"></script><script src="proto.js"></script>
+<script src="rl.js"></script>
+<script>
+(function(){
+  var CHK='<svg viewBox="0 0 10 10"><path d="m2.5 5.2 1.7 1.7 3.3-3.4"/></svg>';
+  var FAIR={live:'<span class="tag green"><svg class="i rl-chk" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Buyer mix logged</span>',draft:'<span class="tag gray">Checked when published</span>',closed:'<span class="tag blue">Audit record kept</span>'};
+  /* updK: bigger is more recent */
+  var rows=[
+    {req:'114',t:'Account Executive, Mid-Market',loc:'Chicago or remote (US)',st:'live',co:'Marcus Lee',enr:212,fin:39,rec:9,upd:'9:12 am',k:100,extra:'<div class="rl-live"><span class="dot"></span>1 in a scored call now</div>'},
+    {req:'117',t:'SDR, Inbound',loc:'Chicago',st:'live',co:'Alex Romero',enr:96,fin:21,rec:5,upd:'Yesterday',k:90},
+    {req:'109',t:'Account Executive, Enterprise',loc:'Remote (US)',st:'live',co:'Marcus Lee',enr:44,fin:12,rec:3,upd:'Nov 13',k:80},
+    {req:'120',t:'SDR, Outbound',loc:'Remote (US)',st:'draft',co:'Alex Romero',enr:null,fin:null,rec:null,upd:'Nov 16',k:85},
+    {req:'101',t:'Sales Manager, Central',loc:'Chicago',st:'closed',co:'Alex Romero',enr:58,fin:19,rec:4,upd:'Oct 30',k:10,closed:'Oct 30',extra:'<div class="meta">2 hired</div>'}
+  ];
+  RL.newRoles().forEach(function(r){rows.push({req:r.req,t:r.t,loc:r.loc||'',st:'draft',co:r.hm||'',enr:null,fin:null,rec:null,upd:'Just now',k:200,isNew:1});});
+  rows=rows.filter(function(r){return !RL.roleState(r.req,'deleted');});
+  rows.forEach(function(r){var p=RL.roleState(r.req,'paused');if(p)r.paused=true;});
+  var F={q:'',owner:'Any',st:[],sort:'upd'},sel={},hidden={},dupN=0;
+  var tb=document.getElementById('rlRows');
+  function href(r){return r.dup?'setup.html':RL.roleHref(r.req);}
+  function status(r){
+    if(r.st==='live')return r.paused?'<span class="tag rl-paused">Invites paused</span>':'<span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span>';
+    if(r.st==='draft')return '<span class="tag beige">Draft</span>';
+    return '<span class="tag gray">Closed '+r.closed+'</span>';
+  }
+  function n(v){return v==null?'<td class="rl-n dim">—</td>':'<td class="rl-n">'+v+'</td>';}
+  function act(r){
+    if(r.st==='draft')return '<button class="btn sm yellow" data-go="setup.html">Finish setup</button>';
+    if(r.req==='114')return '<button class="btn sm" data-go="overview.html">Open</button>';
+    return '<button class="btn sm ghost" data-go="'+href(r)+'">View</button>';
+  }
+  function visible(){
+    var q=F.q.toLowerCase();
+    return rows.filter(function(r){
+      if(q&&(r.t+' req '+r.req+' '+r.loc).toLowerCase().indexOf(q)<0)return false;
+      if(F.owner!=='Any'&&F.owner!=='Dana Whitfield'&&r.co!==F.owner)return false;
+      if(F.st.length&&F.st.indexOf(r.st)<0)return false;
+      return true;});
+  }
+  function sorted(l){
+    var f={upd:function(a,b){return b.k-a.k},name:function(a,b){return a.t.localeCompare(b.t)},enr:function(a,b){return (b.enr||-1)-(a.enr||-1)},fin:function(a,b){return (b.fin||-1)-(a.fin||-1)},req:function(a,b){return (a.req>b.req?1:-1)}}[F.sort];
+    return l.slice().sort(f);
+  }
+  var SORTS={upd:'Last updated',name:'Role name, A to Z',enr:'Most enrolled',fin:'Most finished',req:'Req number'};
+  function render(){
+    var l=sorted(visible());
+    tb.innerHTML=l.map(function(r){var on=!!sel[r.req];
+      return '<tr data-req="'+r.req+'" data-st="'+r.st+'"'+(on?' class="rl-on"':'')+'><td class="cbx"><span class="box'+(on?' on':'')+'" role="checkbox" aria-checked="'+on+'" tabindex="0" aria-label="Select '+RL.esc(r.t)+'">'+(on?CHK:'')+'</span></td>'+
+      '<td><div class="rl-role"><a href="'+href(r)+'">'+RL.esc(r.t)+'</a><small>'+(r.req.charAt(0)==='C'?'No req linked':'Req '+r.req)+(r.loc?' · '+RL.esc(r.loc):'')+'</small></div></td>'+
+      '<td><div class="rl-stc">'+status(r)+(r.extra||'')+'</div></td>'+
+      '<td data-c="owner"><div class="rl-own"><span class="avatar">DW</span><div><span>Dana Whitfield</span>'+(r.co?'<small>with '+RL.esc(r.co)+'</small>':'')+'</div></div></td>'+
+      n(r.enr).replace('<td','<td data-c="enr"')+n(r.fin).replace('<td','<td data-c="fin"')+n(r.rec).replace('<td','<td data-c="rec"')+
+      '<td data-c="fair">'+FAIR[r.st]+'</td><td class="dim" data-c="upd">'+r.upd+'</td><td class="act">'+act(r)+'</td></tr>';}).join('')||
+      '<tr class="rl-empty"><td colspan="10">No roles match these filters. <a href="#" data-js id="rlClear2">Clear all</a></td></tr>';
+    var c2=document.getElementById('rlClear2');if(c2)c2.onclick=function(e){e.preventDefault();clearAll();};
+    document.getElementById('rlCount').textContent=(l.length?'1–'+l.length:'0')+' of '+l.length;
+    // tab counts and state
+    var cnt={all:rows.length,live:0,draft:0,closed:0};rows.forEach(function(r){cnt[r.st]++;});
+    document.querySelectorAll('[data-tab]').forEach(function(t){var k=t.getAttribute('data-tab');t.querySelector('.rl-tabn').textContent=cnt[k];
+      var on=(k==='all'&&!F.st.length)||(F.st.length===1&&F.st[0]===k);t.classList.toggle('on',on);if(on)t.setAttribute('aria-current','page');else t.removeAttribute('aria-current');});
+    // filter buttons
+    var ob=document.getElementById('rlOwner'),sb=document.getElementById('rlStatus');
+    ob.querySelector('em').textContent=F.owner;ob.classList.toggle('rl-act',F.owner!=='Any');
+    sb.querySelector('em').textContent=F.st.length?F.st.map(function(x){return x.charAt(0).toUpperCase()+x.slice(1)}).join(', '):'Any';sb.classList.toggle('rl-act',F.st.length>0);
+    document.getElementById('rlClear').hidden=!(F.q||F.owner!=='Any'||F.st.length);
+    document.querySelector('#rlSort span').textContent=SORTS[F.sort];
+    applyCols();bulk();
+  }
+  function applyCols(){document.querySelectorAll('[data-c]').forEach(function(el){el.classList.toggle('rl-hc',!!hidden[el.getAttribute('data-c')]);});}
+  function selList(){return rows.filter(function(r){return sel[r.req];});}
+  function bulk(){
+    var l=selList(),b=document.getElementById('rlBulk');b.hidden=!l.length;
+    document.getElementById('rlSelN').textContent=l.length+' selected';
+    var live=l.filter(function(r){return r.st==='live'&&!r.paused}).length,paused=l.filter(function(r){return r.paused}).length;
+    document.getElementById('rlBPause').hidden=!live;document.getElementById('rlBResume').hidden=!paused;
+    var vis=visible(),all=document.getElementById('rlAll'),allOn=vis.length&&vis.every(function(r){return sel[r.req];});
+    all.className='box'+(allOn?' on':'');all.innerHTML=allOn?CHK:'';all.setAttribute('aria-checked',allOn?'true':'false');
+  }
+  function clearAll(){F.q='';F.owner='Any';F.st=[];document.getElementById('rlQ').value='';render();}
+  // rows: checkbox, row click
+  tb.addEventListener('click',function(e){
+    var tr=e.target.closest('tr[data-req]');if(!tr)return;
+    var box=e.target.closest('.box');
+    if(box){var k=tr.getAttribute('data-req');sel[k]=!sel[k];if(!sel[k])delete sel[k];render();return;}
+    if(e.target.closest('a,button'))return;
+    var r=rows.filter(function(x){return x.req===tr.getAttribute('data-req')})[0];location.href=href(r);
+  });
+  tb.addEventListener('keydown',function(e){if((e.key===' '||e.key==='Enter')&&e.target.classList.contains('box')){e.preventDefault();e.target.click();}});
+  document.getElementById('rlAll').addEventListener('click',function(){var vis=visible(),allOn=vis.every(function(r){return sel[r.req];});vis.forEach(function(r){if(allOn)delete sel[r.req];else sel[r.req]=true;});render();});
+  // tabs
+  document.querySelectorAll('[data-tab]').forEach(function(t){t.addEventListener('click',function(e){e.preventDefault();var k=t.getAttribute('data-tab');F.st=k==='all'?[]:[k];render();});});
+  // search
+  document.getElementById('rlQ').addEventListener('input',function(){F.q=this.value.trim();render();});
+  // owner
+  UI.wire('#rlOwner',function(el){UI.menu(el,[{header:'Owner or hiring manager'}].concat(['Any','Dana Whitfield','Marcus Lee','Alex Romero'].map(function(o){return {label:o,check:F.owner===o,onClick:function(){F.owner=o;render();}};})),{align:'left'});});
+  UI.wire('#rlStatus',function(el){UI.menu(el,[{header:'Show roles that are'}].concat([['live','Live'],['draft','Draft'],['closed','Closed']].map(function(o){var on=F.st.indexOf(o[0])>-1;
+    return {label:o[1],check:on,onClick:function(){if(on)F.st=F.st.filter(function(x){return x!==o[0]});else F.st=F.st.concat([o[0]]);if(F.st.length===3)F.st=[];render();}};})).concat([{sep:true},{label:'Any status',onClick:function(){F.st=[];render();}}]),{align:'left'});});
+  UI.wire('#rlClear',clearAll);
+  UI.wire('#rlSort',function(el){UI.menu(el,[{header:'Sort by'}].concat(Object.keys(SORTS).map(function(k){return {label:SORTS[k],check:F.sort===k,onClick:function(){F.sort=k;render();UI.toast('Sorted by '+SORTS[k].toLowerCase()+'.');}};})));});
+  var COLS=[['owner','Owner'],['enr','Enrolled'],['fin','Finished'],['rec','Recommended'],['fair','Fairness check'],['upd','Updated']];
+  UI.wire('#rlCols',function(el){UI.menu(el,[{header:'Show columns'}].concat(COLS.map(function(c){return {label:c[1],check:!hidden[c[0]],onClick:function(){hidden[c[0]]=!hidden[c[0]];applyCols();setTimeout(function(){el.click();},0);}};})).concat([{sep:true},{label:'Show all columns',onClick:function(){hidden={};applyCols();}}]));});
+  // bulk actions
+  UI.wire('#rlBClear',function(){sel={};render();});
+  UI.wire('#rlBExport',function(){var l=selList();var csv='Role,Req,Status,Location,Owner,Hiring manager,Enrolled,Finished,Recommended,Updated\n'+
+    l.map(function(r){return ['"'+r.t+'"',r.req,r.paused?'Invites paused':r.st,'"'+r.loc+'"','Dana Whitfield',r.co,r.enr==null?'':r.enr,r.fin==null?'':r.fin,r.rec==null?'':r.rec,r.upd].join(',');}).join('\n');
+    UI.download('northwind-roles.csv',csv);});
+  UI.wire('#rlBPause',function(){var l=selList().filter(function(r){return r.st==='live'&&!r.paused;});
+    UI.confirm('Pause invites for '+l.length+' role'+(l.length>1?'s':'')+'?','New invites stop going out. Candidates already invited keep their links and can still practice and take the scored call.','Pause invites',function(){
+      l.forEach(function(r){r.paused=true;r.upd='Just now';r.k=300;RL.setRoleState(r.req,'paused',true);});sel={};render();UI.toast('Paused invites for '+l.length+' role'+(l.length>1?'s':'')+'.');});});
+  UI.wire('#rlBResume',function(){var l=selList().filter(function(r){return r.paused;});l.forEach(function(r){r.paused=false;r.upd='Just now';r.k=300;RL.setRoleState(r.req,'paused',false);});sel={};render();UI.toast('Invites are going out again for '+l.length+' role'+(l.length>1?'s':'')+'.');});
+  UI.wire('#rlBDup',function(){var l=selList();l.forEach(function(r){dupN++;rows.push({req:'C'+dupN+r.req,t:r.t+' (copy)',loc:r.loc,st:'draft',co:r.co,enr:null,fin:null,rec:null,upd:'Just now',k:400+dupN,dup:1});});
+    sel={};render();UI.toast('Duplicated '+l.length+' role'+(l.length>1?'s':'')+' as draft'+(l.length>1?'s':'')+'. Buyers, skills and call settings were copied. Candidates were not.');});
+  render();
+})();
+</script>
 </body>
 </html>

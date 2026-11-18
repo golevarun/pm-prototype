@@ -321,6 +321,11 @@ td.act{text-align:right}
 .ov-info{color:var(--mute);margin-top:2px;display:flex}
 .ov-ml{background:#E3ECFC;color:#2A4F99}
 .ov-debrief{display:flex;align-items:center;gap:8px;padding:10px 16px;border-top:1px solid var(--line);background:var(--sub);color:var(--ink2);border-radius:0 0 12px 12px}
+.rl-click{cursor:pointer}
+.ov-fs.rl-click:hover{background:var(--sub)}
+.ov-auto.rl-click:hover,.ov-li.rl-click:hover{background:var(--sub)}
+.rl-ok{width:28px;height:28px;border-radius:50%;background:var(--green);color:var(--greenT);display:grid;place-items:center;flex:none}
+.rl-ok svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 </style>
 </head>
 <body>
@@ -378,8 +383,8 @@ td.act{text-align:right}
         <span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span>
         <div class="ph-acts">
           <span class="meta">Published Oct 27 · Chicago or remote (US)</span>
-          <button class="btn" data-js onclick="protoNote('Invite link copied: pm.app/i/northwind-ae')"><svg class="i" viewBox="0 0 16 16"><path d="M7 9a2.5 2.5 0 0 0 3.5 0l2-2a2.5 2.5 0 0 0-3.5-3.5l-.6.6M9 7a2.5 2.5 0 0 0-3.5 0l-2 2A2.5 2.5 0 0 0 7 12.5l.6-.6"/></svg>Copy invite link</button>
-          <button class="btn yellow" data-js onclick="protoNote('Invites go out from Dana at the next stage change in your applicant tracker. 3 candidates are queued for tomorrow, 9:00 am.')">Invite candidates</button>
+          <button class="btn" data-js id="rlCopy"><svg class="i" viewBox="0 0 16 16"><path d="M7 9a2.5 2.5 0 0 0 3.5 0l2-2a2.5 2.5 0 0 0-3.5-3.5l-.6.6M9 7a2.5 2.5 0 0 0-3.5 0l-2 2A2.5 2.5 0 0 0 7 12.5l.6-.6"/></svg>Copy invite link</button>
+          <button class="btn yellow" data-js id="rlInvite">Invite candidates</button>
         </div>
       </div>
       <nav class="tabs" aria-label="Role"><a href="overview.html" class="on" aria-current="page">Overview</a><a href="setup.html">Interview setup</a><a href="candidates.html">Candidates</a><a href="shortlist.html">Shortlist</a><a href="role-settings.html">Settings</a></nav>
@@ -420,10 +425,10 @@ td.act{text-align:right}
             </section>
 
             <section class="card" aria-labelledby="ov-nd-h">
-              <div class="ch"><h2 id="ov-nd-h">Needs you <span class="tag gray">2</span></h2></div>
+              <div class="ch"><h2 id="ov-nd-h">Needs you <span class="tag gray" id="rlNeedN">2</span></h2></div>
               <div class="ov-list">
-                <div class="ov-li"><span class="pav">DK</span><div class="ov-who"><b>Dev Kapoor</b><small>Asked for extra time on the scored call · 8:40 am</small></div><button class="btn sm" data-go="candidates.html">Review request</button></div>
-                <div class="ov-li"><span class="pav">MB</span><div class="ov-who"><b>Mia Brandt</b><small>Asked for a human interviewer · Yesterday</small></div><button class="btn sm" data-go="candidates.html">Assign interviewer</button></div>
+                <div class="ov-li" id="rlNeedDev"><span class="pav">DK</span><div class="ov-who"><b>Dev Kapoor</b><small>Asked for extra time on the scored call · 8:40 am</small></div><button class="btn sm" data-go="candidates.html">Review request</button></div>
+                <div class="ov-li" id="rlNeedMia"><span class="pav">MB</span><div class="ov-who"><b>Mia Brandt</b><small>Asked for a human interviewer · Yesterday</small></div><button class="btn sm" data-go="candidates.html">Assign interviewer</button></div>
               </div>
             </section>
 
@@ -482,5 +487,34 @@ td.act{text-align:right}
   </div>
 </div>
 <script src="ui.js"></script><script src="proto.js"></script>
+<script src="rl.js"></script>
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  $('rlCopy').onclick=function(){RL.copyLink('northwind-ae');};
+  $('rlInvite').onclick=function(){RL.inviteModal(RL.ROLES['114']);};
+  var OK='<span class="rl-ok"><svg viewBox="0 0 16 16"><path d="m4 8.5 2.5 2.5L12 5.5"/></svg></span>';
+  var dev=$('rlNeedDev'),mia=$('rlNeedMia'),dH=dev.innerHTML,mH=mia.innerHTML;
+  function render(){var n=RL.needs();
+    dev.innerHTML=n.dev?OK+'<div class="ov-who"><b>Dev Kapoor</b><small>'+(n.dev.ok?'Extra time approved: '+n.dev.min+' minutes':'Extra time declined')+' · just now</small></div><button class="btn sm ghost" data-js data-u="dev">Undo</button>':dH;
+    mia.innerHTML=n.mia?OK+'<div class="ov-who"><b>Mia Brandt</b><small>'+RL.esc(n.mia.who)+' interviews her '+RL.esc(n.mia.when)+'</small></div><button class="btn sm ghost" data-js data-u="mia">Undo</button>':mH;
+    $('rlNeedN').textContent=RL.openNeeds();
+    [dev,mia].forEach(function(r){r.querySelectorAll('button').forEach(function(b){
+      var t=b.textContent.trim();b.removeAttribute('data-go');b.setAttribute('data-js','');
+      if(t==='Review request')b.onclick=function(){RL.reviewDev(render);};
+      if(t==='Assign interviewer')b.onclick=function(){RL.assignMia(render);};
+      if(b.dataset.u)b.onclick=function(){var x=RL.needs();x[b.dataset.u]=null;RL.set('needs',x);render();UI.toast('The request is open again.');};
+    });});
+    var note=document.querySelector('.ov-fnote');note.textContent=note.textContent.replace(/\d+ needs? you/,RL.openNeeds()+(RL.openNeeds()===1?' needs you':' need you'));
+  }
+  render();
+  function nav(el,href){el.classList.add('rl-click');el.addEventListener('click',function(e){if(e.target.closest('a,button'))return;location.href=href;});}
+  document.querySelectorAll('.ov-fs').forEach(function(f){nav(f,f.querySelector('small').textContent==='Recommended'||f.querySelector('small').textContent==='Advanced'?'shortlist.html':'candidates.html');});
+  document.querySelectorAll('.ov-auto').forEach(function(a){nav(a,'automation.html');});
+  document.querySelectorAll('.ov-by').forEach(function(b){b.classList.add('rl-click');b.addEventListener('click',function(){location.href='buyers.html';});});
+  document.querySelectorAll('#ov-tm-h').forEach(function(h){h.closest('.card').querySelectorAll('.ov-li').forEach(function(li){nav(li,'role-settings.html');});});
+  var chart=document.querySelector('.ov-chart');if(chart){chart.classList.add('rl-click');chart.addEventListener('click',function(){location.href='calls.html';});}
+})();
+</script>
 </body>
 </html>

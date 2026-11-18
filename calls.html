@@ -311,7 +311,28 @@ td.act{text-align:right}
 .cl-tbl th.cl-sc{min-width:118px}
 .cl-scale{font-size:11px;color:var(--faint);margin-left:4px;font-weight:400}
 .cl-empty td{height:120px;text-align:center;color:var(--mute)}
+.btn[hidden]{display:none!important}
 .cl-hide{display:none}
+.cl-qin{border:0;outline:none;background:none;flex:1;min-width:0;height:28px;color:var(--ink)}
+.cl-srch:focus-within{border-color:#7C9BD6;box-shadow:0 0 0 3px rgba(42,79,153,.12)}
+.cl-f.au-fon{background:#EEF3FC;border-color:#C9D6EF}
+.cl-tbl .box{cursor:pointer}
+.cl-tbl .box svg{display:none}.cl-tbl .box.on svg{display:block}
+.cl-tbl .box.au-mix{background:var(--ink);border-color:var(--ink)}
+.cl-tbl .box.au-mix::after{content:"";width:8px;height:2px;background:#fff;border-radius:1px}
+.cl-tbl tbody tr{cursor:pointer}
+.cl-tbl tbody tr.au-sel td{background:#F3F6FC}
+.cl-selbar{display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid var(--line);background:var(--sub)}
+.cl-selbar[hidden]{display:none}
+.cl-selbar .meta{margin-right:8px;color:var(--ink);font-weight:450}
+.cl-hc{display:none}
+button.pg:hover{background:#F4F4F2}
+button.pg:disabled{opacity:.4;cursor:default}
+.au-rev{display:inline-flex;margin-left:6px;vertical-align:1px}
+.au-dl{display:grid;grid-template-columns:110px minmax(0,1fr);gap:6px 10px;margin:0 0 14px}
+.au-dl dt{color:#68685D}.au-dl dd{margin:0}
+.au-big{font-size:24px;line-height:32px;font-weight:500;font-variant-numeric:tabular-nums}
+
 </style>
 </head>
 <body>
@@ -368,7 +389,7 @@ td.act{text-align:right}
         <h1>Calls</h1>
         <div class="ph-acts">
           <span class="meta">All roles · recordings kept 12 months</span>
-          <button class="btn" data-js onclick="protoNote('Export ready: 72 scored calls, CSV with ranges and moments. Practice calls are never included.')"><svg class="i" viewBox="0 0 16 16"><path d="M8 2.5v8M5 7.5l3 3 3-3M3 12.5h10"/></svg>Export</button>
+          <button class="btn" id="clExport" data-js><svg class="i" viewBox="0 0 16 16"><path d="M8 2.5v8M5 7.5l3 3 3-3M3 12.5h10"/></svg>Export</button>
           <button class="btn yellow" data-go="test-call.html"><svg class="i" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></svg>Start test call</button>
         </div>
       </div>
@@ -381,67 +402,36 @@ td.act{text-align:right}
 
     <div class="cl-body">
       <div class="cl-bar">
-        <div class="cl-srch"><svg class="i" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>Search candidates or buyers</div>
-        <button class="btn cl-f"><em>Role</em> All roles<svg class="i cl-car" viewBox="0 0 16 16"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></button>
-        <button class="btn cl-f"><em>Buyer</em> Any<svg class="i cl-car" viewBox="0 0 16 16"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></button>
-        <button class="btn cl-f"><em>Date</em> This week<svg class="i cl-car" viewBox="0 0 16 16"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></button>
-        <button class="cl-live" id="clLive" data-js aria-pressed="false"><span class="dot"></span>Live now <span class="cl-n">1</span></button>
+        <label class="cl-srch"><svg class="i" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><input id="clQ" class="cl-qin" placeholder="Search candidates or buyers" aria-label="Search candidates or buyers"></label>
+        <button class="btn cl-f" id="clFRole"><em>Role</em> <span>All roles</span><svg class="i cl-car" viewBox="0 0 16 16"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></button>
+        <button class="btn cl-f" id="clFBuyer"><em>Buyer</em> <span>Any</span><svg class="i cl-car" viewBox="0 0 16 16"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></button>
+        <button class="btn cl-f" id="clFDate"><em>Date</em> <span>Last 30 days</span><svg class="i cl-car" viewBox="0 0 16 16"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></button>
+        <button class="cl-live" id="clLive" data-js aria-pressed="false"><span class="dot"></span>Live now <span class="cl-n">1</span></button><button class="btn ghost" id="clClear" data-js hidden>Clear all</button>
         <div class="cl-r">
-          <button class="btn"><svg class="i" viewBox="0 0 16 16"><path d="M5 3v10M2.5 10.5 5 13l2.5-2.5M11 13V3M8.5 5.5 11 3l2.5 2.5"/></svg>Started</button>
-          <button class="btn"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="3" width="3" height="10" rx="1"/><rect x="6.5" y="3" width="3" height="10" rx="1"/><rect x="10.5" y="3" width="3" height="10" rx="1"/></svg>Columns</button>
+          <button class="btn" id="clSort"><svg class="i" viewBox="0 0 16 16"><path d="M5 3v10M2.5 10.5 5 13l2.5-2.5M11 13V3M8.5 5.5 11 3l2.5 2.5"/></svg><span id="clSortL">Started, newest</span></button>
+          <button class="btn" id="clCols"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="3" width="3" height="10" rx="1"/><rect x="6.5" y="3" width="3" height="10" rx="1"/><rect x="10.5" y="3" width="3" height="10" rx="1"/></svg>Columns</button>
         </div>
       </div>
+      <div class="cl-selbar" id="clSel" hidden><span class="meta" id="clSelN">0 selected</span><button class="btn sm" id="clSelX" data-js>Export selected</button><button class="btn sm" id="clSelR" data-js>Ask for a second review</button><button class="btn sm" id="clSelC" data-js>Copy links</button><button class="btn sm ghost" id="clSelZ" data-js>Clear selection</button></div>
       <div class="cl-scroll">
         <table class="cl-tbl">
-          <thead><tr><th class="cbx"><span class="box"></span></th><th>Candidate</th><th>Role</th><th>Buyer</th><th>Difficulty</th><th>Started</th><th>Length</th><th class="cl-sc" title="Overall range on a 4 to 10 scale">Overall range</th><th>Status</th><th></th></tr></thead>
-          <tbody id="clScored">
-<tr class="cl-now" data-live><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">KM</span><div><b>Kai Morgan</b></div></div></td><td><div class="cl-role"><b>Account Executive, Mid-Market</b><small>Req 114</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b2">RL</span>Rosa Lin</div></td><td><span class="tag beige">Medium</span></td><td class="mono">Today 10:05 am</td><td class="mono"><span class="dim">Live</span></td><td><span class="cl-pend">Pending</span></td><td><div class="cl-st cl-on"><i></i><div>In progress<small>Scores after it ends</small></div></div></td><td class="act"><button class="btn sm ghost" title="Opens when the call ends">Review</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">LO</span><div><b>Lena Ortiz</b></div></div></td><td><div class="cl-role"><b>SDR, Inbound</b><small>Req 117</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b4">MC</span>Maya Chen</div></td><td><span class="tag beige">Medium</span></td><td class="mono">Today 9:55 am</td><td class="mono">7:00</td><td><div class="cl-rng" title="Overall 6.5 to 7.5 on a 4 to 10 scale"><span class="cl-track"><i style="left:41.67%;width:16.67%"></i></span><span>6.5–7.5</span></div></td><td><div class="cl-st "><i></i><div>Finished<small>Ended 10:02 am</small></div></div></td><td class="act"><button class="btn sm">Review</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">SR</span><div><b>Sam Rivera</b></div></div></td><td><div class="cl-role"><b>Account Executive, Mid-Market</b><small>Req 114</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b1">JE</span>Jordan Ellis</div></td><td><span class="tag beige">Medium</span></td><td class="mono">Today 9:05 am</td><td class="mono">7:00</td><td><div class="cl-rng" title="Overall 7.0 to 8.0 on a 4 to 10 scale"><span class="cl-track"><i style="left:50.00%;width:16.67%"></i></span><span>7.0–8.0</span></div></td><td><div class="cl-st "><i></i><div>Finished<small>Ended 9:12 am</small></div></div></td><td class="act"><button class="btn sm" data-go="call-review.html">Review</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">AO</span><div><b>Ama Owusu</b></div></div></td><td><div class="cl-role"><b>Account Executive, Mid-Market</b><small>Req 114</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b3">TB</span>Tom Becker</div></td><td><span class="tag beige">Medium</span></td><td class="mono">Today 8:48 am</td><td class="mono">7:00</td><td><div class="cl-rng" title="Overall 6.0 to 7.5 on a 4 to 10 scale"><span class="cl-track"><i style="left:33.33%;width:25.00%"></i></span><span>6.0–7.5</span></div></td><td><div class="cl-st "><i></i><div>Finished<small>Ended 8:55 am</small></div></div></td><td class="act"><button class="btn sm" data-go="shortlist.html#ama">Review</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">PN</span><div><b>Priya Nair</b></div></div></td><td><div class="cl-role"><b>Account Executive, Mid-Market</b><small>Req 114</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b2">RL</span>Rosa Lin</div></td><td><span class="tag beige">Medium</span></td><td class="mono">Nov 16, 4:31 pm</td><td class="mono">7:00</td><td><div class="cl-rng" title="Overall 6.5 to 8.0 on a 4 to 10 scale"><span class="cl-track"><i style="left:41.67%;width:25.00%"></i></span><span>6.5–8.0</span></div></td><td><div class="cl-st "><i></i><div>Finished<small>Ended 4:38 pm</small></div></div></td><td class="act"><button class="btn sm" data-go="shortlist.html#priya">Review</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">MS</span><div><b>Marta Silva</b></div></div></td><td><div class="cl-role"><b>Account Executive, Enterprise</b><small>Req 109</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b5">PS</span>Priya Shah</div></td><td><span class="tag pink">Hard</span></td><td class="mono">Nov 16, 11:20 am</td><td class="mono">7:00</td><td><div class="cl-rng" title="Overall 6.0 to 7.0 on a 4 to 10 scale"><span class="cl-track"><i style="left:33.33%;width:16.67%"></i></span><span>6.0–7.0</span></div></td><td><div class="cl-st "><i></i><div>Finished<small>Ended 11:27 am</small></div></div></td><td class="act"><button class="btn sm">Review</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">RD</span><div><b>Rhea Das</b></div></div></td><td><div class="cl-role"><b>Account Executive, Mid-Market</b><small>Req 114</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b1">JE</span>Jordan Ellis</div></td><td><span class="tag beige">Medium</span></td><td class="mono">Nov 14, 2:15 pm</td><td class="mono">7:00</td><td><div class="cl-rng" title="Overall 6.0 to 7.0 on a 4 to 10 scale"><span class="cl-track"><i style="left:33.33%;width:16.67%"></i></span><span>6.0–7.0</span></div></td><td><div class="cl-st "><i></i><div>Finished<small>Ended 2:22 pm</small></div></div></td><td class="act"><button class="btn sm" data-go="shortlist.html#rhea">Review</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">NB</span><div><b>Nia Brooks</b></div></div></td><td><div class="cl-role"><b>Account Executive, Mid-Market</b><small>Req 114</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b3">TB</span>Tom Becker</div></td><td><span class="tag beige">Medium</span></td><td class="mono">Nov 14, 10:40 am</td><td class="mono">7:00</td><td><div class="cl-rng" title="Overall 5.5 to 7.0 on a 4 to 10 scale"><span class="cl-track"><i style="left:25.00%;width:25.00%"></i></span><span>5.5–7.0</span></div></td><td><div class="cl-st cl-re"><i></i><div>Dropped and reconnected<small>Back in 40 s at 3:18</small></div></div></td><td class="act"><button class="btn sm" data-go="shortlist.html#nia">Review</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">BC</span><div><b>Ben Carter</b></div></div></td><td><div class="cl-role"><b>Account Executive, Mid-Market</b><small>Req 114</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b2">RL</span>Rosa Lin</div></td><td><span class="tag beige">Medium</span></td><td class="mono">Nov 13, 6:02 pm</td><td class="mono">7:00</td><td><div class="cl-rng" title="Overall 5.5 to 7.0 on a 4 to 10 scale"><span class="cl-track"><i style="left:25.00%;width:25.00%"></i></span><span>5.5–7.0</span></div></td><td><div class="cl-st "><i></i><div>Finished<small>Ended 6:09 pm</small></div></div></td><td class="act"><button class="btn sm" data-go="shortlist.html#ben">Review</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">TG</span><div><b>Theo Grant</b></div></div></td><td><div class="cl-role"><b>Account Executive, Mid-Market</b><small>Req 114</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b1">JE</span>Jordan Ellis</div></td><td><span class="tag beige">Medium</span></td><td class="mono">Nov 13, 1:10 pm</td><td class="mono">7:00</td><td><div class="cl-rng" title="Overall 5.5 to 6.5 on a 4 to 10 scale"><span class="cl-track"><i style="left:25.00%;width:16.67%"></i></span><span>5.5–6.5</span></div></td><td><div class="cl-st "><i></i><div>Finished<small>Ended 1:17 pm</small></div></div></td><td class="act"><button class="btn sm" data-go="shortlist.html#theo">Review</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">JR</span><div><b>Jon Reyes</b></div></div></td><td><div class="cl-role"><b>SDR, Inbound</b><small>Req 117</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b4">MC</span>Maya Chen</div></td><td><span class="tag beige">Medium</span></td><td class="mono">Nov 12, 9:30 am</td><td class="mono">7:00</td><td><div class="cl-rng" title="Overall 5.0 to 6.5 on a 4 to 10 scale"><span class="cl-track"><i style="left:16.67%;width:25.00%"></i></span><span>5.0–6.5</span></div></td><td><div class="cl-st "><i></i><div>Finished<small>Ended 9:37 am</small></div></div></td><td class="act"><button class="btn sm">Review</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">CR</span><div><b>Carmen Ruiz</b></div></div></td><td><div class="cl-role"><b>Account Executive, Mid-Market</b><small>Req 114</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b3">TB</span>Tom Becker</div></td><td><span class="tag beige">Medium</span></td><td class="mono">Nov 12, 8:15 am</td><td class="mono">7:00</td><td><div class="cl-rng" title="Overall 5.0 to 6.5 on a 4 to 10 scale"><span class="cl-track"><i style="left:16.67%;width:25.00%"></i></span><span>5.0–6.5</span></div></td><td><div class="cl-st cl-re"><i></i><div>Dropped and reconnected<small>Back in 1 min at 5:02</small></div></div></td><td class="act"><button class="btn sm" data-go="shortlist.html#carmen">Review</button></td></tr>
-          </tbody>
-          <tbody id="clTest" class="cl-hide">
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">DW</span><div><b>Dana Whitfield</b><small>Recruiter · test call</small></div></div></td><td><div class="cl-role"><b>Account Executive, Mid-Market</b><small>Req 114</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b2">RL</span>Rosa Lin</div></td><td><span class="tag beige">Medium</span></td><td class="mono">Today 8:20 am</td><td class="mono">4:36</td><td><span class="cl-pend">Not scored</span></td><td><div class="cl-st"><i></i><div>Finished<small>Not saved to a candidate</small></div></div></td><td class="act"><button class="btn sm" data-go="test-call.html">Open</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">DW</span><div><b>Dana Whitfield</b><small>Recruiter · test call</small></div></div></td><td><div class="cl-role"><b>Account Executive, Mid-Market</b><small>Req 114</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b3">TB</span>Tom Becker</div></td><td><span class="tag beige">Medium</span></td><td class="mono">Nov 16, 3:05 pm</td><td class="mono">7:00</td><td><span class="cl-pend">Not scored</span></td><td><div class="cl-st"><i></i><div>Finished<small>Not saved to a candidate</small></div></div></td><td class="act"><button class="btn sm">Open</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">ML</span><div><b>Marcus Lee</b><small>Hiring manager · test call</small></div></div></td><td><div class="cl-role"><b>Account Executive, Mid-Market</b><small>Req 114</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b1">JE</span>Jordan Ellis</div></td><td><span class="tag beige">Medium</span></td><td class="mono">Nov 16, 2:40 pm</td><td class="mono">6:12</td><td><span class="cl-pend">Not scored</span></td><td><div class="cl-st"><i></i><div>Finished<small>Not saved to a candidate</small></div></div></td><td class="act"><button class="btn sm">Open</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">AR</span><div><b>Alex Romero</b><small>Head of sales · test call</small></div></div></td><td><div class="cl-role"><b>Account Executive, Enterprise</b><small>Req 109</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b5">PS</span>Priya Shah</div></td><td><span class="tag pink">Hard</span></td><td class="mono">Nov 13, 5:30 pm</td><td class="mono">7:00</td><td><span class="cl-pend">Not scored</span></td><td><div class="cl-st"><i></i><div>Finished<small>Not saved to a candidate</small></div></div></td><td class="act"><button class="btn sm">Open</button></td></tr>
-<tr><td class="cbx"><span class="box"></span></td><td><div class="person"><span class="pav">DW</span><div><b>Dana Whitfield</b><small>Recruiter · test call</small></div></div></td><td><div class="cl-role"><b>SDR, Inbound</b><small>Req 117</small></div></td><td><div class="cl-buyer"><span class="cl-bav cl-b4">MC</span>Maya Chen</div></td><td><span class="tag beige">Medium</span></td><td class="mono">Nov 12, 4:10 pm</td><td class="mono">3:48</td><td><span class="cl-pend">Not scored</span></td><td><div class="cl-st"><i></i><div>Finished<small>Not saved to a candidate</small></div></div></td><td class="act"><button class="btn sm">Open</button></td></tr>
-          </tbody>
+          <thead><tr><th class="cbx"><span class="box" id="clAll" role="checkbox" tabindex="0" aria-checked="false" aria-label="Select all on this page"></span></th><th>Candidate</th><th data-col="role">Role</th><th data-col="buyer">Buyer</th><th data-col="diff">Difficulty</th><th data-col="started">Started</th><th data-col="len">Length</th><th class="cl-sc" data-col="range" title="Overall range on a 4 to 10 scale">Overall range</th><th data-col="status">Status</th><th></th></tr></thead>
+          <tbody id="clScored"></tbody>
+          <tbody id="clTest" class="cl-hide"></tbody>
         </table>
       </div>
       <div class="pager">
         <span class="foot-note"><svg class="i" viewBox="0 0 16 16" style="width:13px;height:13px"><rect x="4" y="7.5" width="8" height="6" rx="1"/><path d="M5.5 7.5V5.5a2.5 2.5 0 0 1 5 0v2"/></svg><span id="clFoot">Ranges use the scored skills only. A person decides.</span></span>
         <span class="meta" style="margin-left:auto" id="clCount">1–12 of 72 · last 30 days</span>
-        <span class="pg" aria-label="Previous page"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m10 4-4 4 4 4"/></svg></span>
-        <span class="pg" aria-label="Next page"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m6 4 4 4-4 4"/></svg></span>
+        <button class="pg" id="clPrev" data-js aria-label="Previous page"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m10 4-4 4 4 4"/></svg></button>
+        <button class="pg" id="clNext" data-js aria-label="Next page"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m6 4 4 4-4 4"/></svg></button>
       </div>
     </div>
   </div>
 </div>
-<script>
-(function(){
-  var live=document.getElementById('clLive'),sc=document.getElementById('clScored'),te=document.getElementById('clTest'),cnt=document.getElementById('clCount'),foot=document.getElementById('clFoot');
-  var tab='scored';
-  function apply(){
-    var on=live.classList.contains('on');
-    sc.classList.toggle('cl-hide',tab!=='scored');te.classList.toggle('cl-hide',tab!=='test');
-    [].forEach.call(sc.rows,function(r){r.style.display=(on&&!r.hasAttribute('data-live'))?'none':'';});
-    if(tab==='test'){cnt.textContent='1–5 of 5 this week';foot.textContent='Test calls by the hiring team. Not scored.';}
-    else{cnt.textContent=on?'1 live now':'1–12 of 72 · last 30 days';foot.textContent='Ranges use the scored skills only. A person decides.';}
-  }
-  live.addEventListener('click',function(){live.classList.toggle('on');live.setAttribute('aria-pressed',live.classList.contains('on'));if(tab!=='scored'){tab='scored';setTab();}apply();});
-  function setTab(){[].forEach.call(document.querySelectorAll('[data-tab]'),function(a){var m=a.getAttribute('data-tab')===tab;a.classList.toggle('on',m);if(m)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});}
-  [].forEach.call(document.querySelectorAll('[data-tab]'),function(a){a.addEventListener('click',function(e){e.preventDefault();tab=a.getAttribute('data-tab');if(tab==='test'){live.classList.remove('on');}setTab();apply();});});
-})();
-</script>
+
 <script src="ui.js"></script><script src="proto.js"></script>
+<script src="au-shim.js"></script>
+<script src="au-calls.js"></script>
 </body>
 </html>

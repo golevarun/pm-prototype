@@ -344,6 +344,11 @@ td.act{text-align:right}
 .cr-facts dt{color:var(--mute);margin:0}.cr-facts dd{margin:0}
 .cr-note{display:flex;gap:8px;padding:10px 12px;border-radius:8px;background:var(--chip);color:var(--ink2);font-size:12.5px;line-height:18px}
 .cr-note svg{margin-top:1px}
+.cr-ln.on{background:#F7F7F3;border-left-color:var(--ink)}
+.cr-track{user-select:none}
+.cr-track.au-drag .cr-head{transition:none}
+.cr-spd{min-width:40px;justify-content:center;font-variant-numeric:tabular-nums}
+.cr-play:focus-visible{border-radius:50%}
 </style>
 
 </head>
@@ -412,8 +417,8 @@ td.act{text-align:right}
             <button class="cr-play" id="cr-play" data-js aria-label="Play"><svg viewBox="0 0 16 16" id="cr-pi"><path d="M5 3.5v9l7-4.5z"/></svg></button>
             <div><b>Scored call with Jordan Ellis</b><span class="meta">Nov 17, 9:05–9:12 am · 7 min · medium</span></div>
             <span class="cr-time"><span id="cr-now">03:12</span> / 07:00</span>
-            <button class="btn sm cr-spd">1x</button>
-            <button class="btn sm"><svg class="i" viewBox="0 0 16 16"><path d="M8 2.5v8M5 7.5l3 3 3-3M3 12.5h10"/></svg>Download</button>
+            <button class="btn sm cr-spd" id="cr-spd" data-js aria-label="Playback speed">1x</button>
+            <button class="btn sm" id="cr-dl" data-js><svg class="i" viewBox="0 0 16 16"><path d="M8 2.5v8M5 7.5l3 3 3-3M3 12.5h10"/></svg>Download</button>
           </div>
           <div class="cr-track" id="cr-track">
             <div class="cr-wave" id="cr-wave"><i class="j" style="height:52%"></i><i class="j" style="height:94%"></i><i class="j" style="height:34%"></i><i class="" style="height:65%"></i><i class="" style="height:53%"></i><i class="" style="height:28%"></i><i class="j" style="height:41%"></i><i class="" style="height:88%"></i><i class="" style="height:89%"></i><i class="" style="height:88%"></i><i class="" style="height:59%"></i><i class="j" style="height:96%"></i><i class="j" style="height:30%"></i><i class="j" style="height:90%"></i><i class="j" style="height:69%"></i><i class="j" style="height:65%"></i><i class="" style="height:35%"></i><i class="" style="height:33%"></i><i class="j" style="height:81%"></i><i class="j" style="height:72%"></i><i class="j" style="height:36%"></i><i class="j" style="height:89%"></i><i class="j" style="height:60%"></i><i class="j" style="height:69%"></i><i class="j" style="height:89%"></i><i class="j" style="height:77%"></i><i class="j" style="height:80%"></i><i class="j" style="height:51%"></i><i class="j" style="height:83%"></i><i class="j" style="height:50%"></i><i class="j" style="height:64%"></i><i class="j" style="height:94%"></i><i class="" style="height:60%"></i><i class="" style="height:34%"></i><i class="j" style="height:32%"></i><i class="j" style="height:39%"></i><i class="j" style="height:95%"></i><i class="j" style="height:54%"></i><i class="j" style="height:66%"></i><i class="j" style="height:43%"></i><i class="j" style="height:88%"></i><i class="j" style="height:46%"></i><i class="j" style="height:83%"></i><i class="j" style="height:65%"></i><i class="j" style="height:32%"></i><i class="" style="height:89%"></i><i class="" style="height:39%"></i><i class="" style="height:34%"></i><i class="" style="height:60%"></i><i class="" style="height:64%"></i><i class="" style="height:29%"></i><i class="" style="height:48%"></i><i class="" style="height:77%"></i><i class="" style="height:32%"></i><i class="j" style="height:56%"></i><i class="j" style="height:65%"></i><i class="j" style="height:33%"></i><i class="j" style="height:49%"></i><i class="j" style="height:52%"></i><i class="j" style="height:48%"></i><i class="j" style="height:78%"></i><i class="j" style="height:32%"></i><i class="j" style="height:40%"></i><i class="j" style="height:94%"></i><i class="" style="height:82%"></i><i class="" style="height:75%"></i><i class="" style="height:67%"></i><i class="j" style="height:68%"></i><i class="j" style="height:35%"></i><i class="j" style="height:66%"></i><i class="j" style="height:76%"></i><i class="" style="height:94%"></i><i class="" style="height:31%"></i><i class="j" style="height:39%"></i><i class="j" style="height:22%"></i><i class="j" style="height:55%"></i><i class="j" style="height:86%"></i><i class="j" style="height:91%"></i><i class="j" style="height:29%"></i><i class="j" style="height:84%"></i><i class="j" style="height:26%"></i><i class="" style="height:23%"></i><i class="" style="height:62%"></i><i class="j" style="height:67%"></i><i class="j" style="height:56%"></i><i class="j" style="height:26%"></i><i class="j" style="height:82%"></i><i class="j" style="height:39%"></i><i class="j" style="height:55%"></i><i class="j" style="height:55%"></i><i class="j" style="height:87%"></i><i class="j" style="height:91%"></i><i class="j" style="height:79%"></i><i class="j" style="height:78%"></i><i class="j" style="height:55%"></i><i class="j" style="height:65%"></i><i class="j" style="height:26%"></i><i class="j" style="height:36%"></i><i class="j" style="height:41%"></i><i class="j" style="height:86%"></i><i class="j" style="height:56%"></i><i class="" style="height:73%"></i><i class="" style="height:36%"></i><i class="" style="height:78%"></i><i class="j" style="height:87%"></i><i class="j" style="height:30%"></i><i class="j" style="height:79%"></i><i class="j" style="height:76%"></i><i class="j" style="height:90%"></i><i class="j" style="height:74%"></i><i class="j" style="height:49%"></i><i class="j" style="height:81%"></i><i class="j" style="height:87%"></i><i class="j" style="height:44%"></i><i class="" style="height:44%"></i><i class="" style="height:96%"></i><i class="" style="height:73%"></i><i class="" style="height:36%"></i><i class="" style="height:29%"></i><i class="" style="height:65%"></i><i class="j" style="height:78%"></i><i class="j" style="height:78%"></i><i class="" style="height:75%"></i><i class="" style="height:37%"></i><i class="j" style="height:63%"></i><i class="j" style="height:65%"></i><i class="j" style="height:66%"></i><i class="j" style="height:67%"></i><i class="j" style="height:35%"></i><i class="j" style="height:27%"></i><i class="j" style="height:32%"></i><i class="j" style="height:44%"></i><i class="j" style="height:24%"></i><i class="j" style="height:70%"></i><i class="j" style="height:88%"></i><i class="j" style="height:67%"></i><i class="j" style="height:46%"></i><i class="j" style="height:40%"></i><i class="j" style="height:28%"></i><i class="" style="height:60%"></i></div>
@@ -488,36 +493,9 @@ td.act{text-align:right}
     </div>
   </div>
 </div>
-<script>
-(function(){
-var D=document,head=D.getElementById('cr-head'),now=D.getElementById('cr-now'),bars=D.querySelectorAll('#cr-wave i'),left=D.getElementById('cr-left'),cur=192,tm=null;
-var M=[192,340,415];
-function fmt(s){s=Math.round(s);return ('0'+Math.floor(s/60)).slice(-2)+':'+('0'+s%60).slice(-2);}
-function paint(s){cur=s;head.style.left=(s/420*100)+'%';now.textContent=fmt(s);
- var n=Math.round(s/420*bars.length);for(var i=0;i<bars.length;i++)bars[i].classList.toggle('p',i<n);}
-function lineAt(s){var ls=D.querySelectorAll('.cr-ln'),best=ls[0];for(var i=0;i<ls.length;i++){if(+ls[i].dataset.t<=s)best=ls[i];}return best;}
-function mark(s){var mi=M.indexOf(s);
- D.querySelectorAll('.cr-mo').forEach(function(e,i){e.classList.toggle('on',i===mi)});
- D.querySelectorAll('.cr-mk').forEach(function(e,i){e.classList.toggle('on',i===mi)});
- D.querySelectorAll('.cr-ln.on').forEach(function(e){e.classList.remove('on')});
- var l=lineAt(s);l.classList.add('on');
- var off=l.getBoundingClientRect().top-left.getBoundingClientRect().top+left.scrollTop-D.querySelector('.cr-player').offsetHeight-40;
- left.scrollTo({top:Math.max(0,off),behavior:'smooth'});}
-function seek(s){stop();paint(s);mark(s);}
-function stop(){if(tm){clearInterval(tm);tm=null;D.getElementById('cr-pi').innerHTML='<path d="M5 3.5v9l7-4.5z"/>';D.getElementById('cr-play').setAttribute('aria-label','Play');}}
-D.addEventListener('click',function(e){var el=e.target.closest('[data-seek]');if(el){seek(+el.dataset.seek);}});
-D.getElementById('cr-track').addEventListener('click',function(e){if(e.target.closest('[data-seek]'))return;var r=this.getBoundingClientRect();var s=Math.round((e.clientX-r.left)/r.width*420);seek(s);});
-D.getElementById('cr-play').addEventListener('click',function(){
- if(tm){stop();return;}
- if(cur>=420)cur=0;
- D.getElementById('cr-pi').innerHTML='<rect x="4" y="3.5" width="2.6" height="9"/><rect x="9.4" y="3.5" width="2.6" height="9"/>';this.setAttribute('aria-label','Pause');
- tm=setInterval(function(){var s=Math.min(420,cur+1);paint(s);
-  var l=lineAt(s);if(!l.classList.contains('on')){D.querySelectorAll('.cr-ln.on').forEach(function(e){e.classList.remove('on')});l.classList.add('on');}
-  if(s>=420)stop();},250);
-});
-paint(192);D.getElementById('cr-l192').classList.add('on');
-})();
-</script>
+
 <script src="ui.js"></script><script src="proto.js"></script>
+<script src="au-shim.js"></script>
+<script src="au-review.js"></script>
 </body>
 </html>

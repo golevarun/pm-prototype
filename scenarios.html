@@ -491,5 +491,25 @@ function scRegen(){var s=scFind(scCur);scDraft[s.id]=true;scRows();scPanel(s);pr
 scRows();scPanel(scFind(scCur));
 </script>
 <script src="ui.js"></script><script src="proto.js"></script>
+<style>
+/* ===== scenarios wiring (by-) ===== */
+.sc-srch input{border:0;outline:0;background:transparent;font:inherit;color:var(--ink);flex:1;min-width:0;height:28px;padding:0}
+.sc-srch:focus-within{border-color:#7C9BD6;box-shadow:0 0 0 3px rgba(42,79,153,.12)}
+.btn.by-act{background:#F5F8FE;border-color:#A9BFE8;color:#2A4F99}
+td.by-none{height:72px;color:var(--mute);text-align:center;cursor:default}
+.by-link{color:var(--ink);text-decoration:underline;text-underline-offset:2px;background:none;border:0;padding:0;font:inherit;cursor:pointer}
+.by-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.by-dim{color:#8A8A7E;font-weight:400}
+.by-bl{display:flex;flex-direction:column;border:1px solid rgba(28,28,24,.12);border-radius:8px;max-height:220px;overflow:auto}
+.ui-md-b label.by-bo{display:grid;grid-template-columns:16px 24px minmax(0,1fr);gap:10px;align-items:center;margin:0;padding:8px 12px;border-top:1px solid rgba(28,28,24,.08);font-size:13px;color:#1C1C18;cursor:pointer}
+.by-bo:first-child{border-top:0!important}
+.by-bo:hover{background:#FAFAF9}
+.ui-md-b .by-bo input{width:16px;height:16px;margin:0;accent-color:#1C1C18}
+.by-bo .sc-av{margin:0;border:0}
+.by-bo b{display:block;font-weight:450;line-height:18px}
+.by-bo small{display:block;font-size:12px;color:#68685D;line-height:16px}
+.by-err{color:#B42318;font-size:12.5px;margin:8px 0 0!important;min-height:18px}
+</style>
+<script src="by-common.js"></script><script src="by-scenarios.js"></script>
 </body>
 </html>
