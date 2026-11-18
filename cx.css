@@ -98,3 +98,6 @@ button.pg:disabled{opacity:.4;cursor:default}
 .cx-table td.act{padding-right:16px;width:1%}
 .cx-table td.cx-stc{max-width:170px;min-width:130px}
 .cx-table .person small{max-width:200px;overflow:hidden;text-overflow:ellipsis}
+.cx-body .tbar{flex-wrap:wrap;row-gap:8px}
+.cx-body .cx-chips{order:10;flex-basis:100%}
+.cx-body .cx-chips:empty{display:none}

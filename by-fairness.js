@@ -142,7 +142,7 @@
     setTimeout(function(){b.disabled=false;b.lastChild.textContent='Export';
       UI.download('pm-audit-'+R.req.replace(' ','-').toLowerCase()+'-2026-11-17.csv',csvFor(cur));
       var parts=[];if(inc[0])parts.push('CSV');if(inc[1])parts.push('notices');if(inc[2])parts.push(R.draws+' draw logs');
-      var ex=BYC.get('pm-by-exports',[]);ex.unshift(['2026-11-17T'+new Date().toTimeString().slice(0,5),'Export','Audit export downloaded',R.req,'','Dana Whitfield',rg.replace(', 2026','')+' · '+parts.join(', ')]);BYC.set('pm-by-exports',ex);
+      var ex=BYC.get('pm-by-exports',[]);ex.unshift(['2026-11-17T10:'+String(20+Math.min(ex.length,39)),'Export','Audit export downloaded',R.req,'','Dana Whitfield',rg.replace(', 2026','')+' · '+parts.join(', ')]);BYC.set('pm-by-exports',ex);
       BY_LOG.unshift({id:'EV-'+(10481+ex.length),t:ex[0][0],type:'Export',ev:'Audit export downloaded',role:R.req,cand:'',by:'Dana Whitfield',det:ex[0][6]});
       logBody.insertAdjacentHTML('afterbegin','<tr class="by-new"><td class="mono dim">Nov 17, '+byFmtTime(ex[0][0]).split(', ')[1]+'</td><td>Audit export downloaded</td><td>–</td><td>Dana Whitfield</td><td class="dim">'+esc(ex[0][6])+'</td></tr>');
     },600);

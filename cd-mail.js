@@ -1,8 +1,6 @@
 /* Sam's mail client on email.html and outcome-email.html: folders, stars, archive with undo,
    opening other messages, and attachment previews. Owned by the candidate-journey pages (cd- prefix). */
 (function(){
-  /* ui.js modal, menu and popover buttons have no data-js, so proto.js shows its "not built" note after they run. Mark them. */
-  new MutationObserver(function(){document.querySelectorAll('.ui-ov button:not([data-js]),.ui-dr-ov button:not([data-js]),.ui-pop button:not([data-js])').forEach(function(b){b.setAttribute('data-js','');});}).observe(document.body,{childList:true,subtree:true});
   var PAGE=document.body.getAttribute('data-cd-mail')||'invite';
   var OUT=PAGE==='outcome';
   function $(id){return document.getElementById(id)}

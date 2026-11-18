@@ -72,7 +72,7 @@ var SL=buildSL();
 
 /* ---------- People ---------- */
 var FIRST=['Aaron','Abby','Adam','Aisha','Alan','Alice','Amir','Ana','Andre','Anya','Ari','Beth','Blake','Bruno','Caleb','Cara','Cole','Dara','Derek','Diana','Eli','Emma','Ethan','Eva','Finn','Gia','Hassan','Holly','Ivan','Jade','Jack','Jen','Joel','Kara','Kyle','Lana','Liam','Lily','Mason','Mila','Nate','Nina','Oscar','Petra','Quinn','Rosa','Ruth','Sami','Tess','Vik'];
-var LAST=['Abbott','Bauer','Bishop','Byrne','Chavez','Clarke','Diaz','Ellis','Evans','Ford','Garcia','Gill','Gomez','Hale','Hayes','Hughes','Ibrahim','Jensen','Joshi','Kane','Khan','Klein','Lopez','Lowe','Mehta','Meyer','Miller','Moss','Nash','Nolan','Ochoa','Price','Reyes','Rossi','Shah','Shaw','Silva','Soto','Stone','Tran','Vance','Vega','Wade','Ward','Webb','West','Wong','Young','Yusuf','Zimmer'];
+var LAST=['Abbott','Bauer','Bishop','Byrne','Chavez','Clarke','Diaz','Elder','Evans','Ford','Garcia','Gill','Gomez','Hale','Hayes','Hughes','Ibrahim','Jensen','Joshi','Kane','Khan','Klein','Lopez','Lowe','Mehta','Meyer','Miller','Moss','Nash','Nolan','Ochoa','Price','Reyes','Rossi','Shah','Shaw','Silva','Soto','Stone','Tran','Vance','Vega','Wade','Ward','Webb','West','Wong','Young','Yusuf','Zimmer'];
 var DOM=['gmail.com','outlook.com','icloud.com','hey.com','proton.me','yahoo.com','gmail.com','gmail.com'];
 var GEN_TARGET={'114':{needs:2,inv:51,notice:23,call:1,fin:39,stop:34,wd:62},'117':{inv:28,notice:15,fin:21,stop:12,wd:20},'109':{inv:12,notice:7,fin:12,stop:5,wd:8}};
 var PR_TARGET={'114':90,'117':43,'109':20};
@@ -437,7 +437,7 @@ function table(root,cfg){
    var ok=list.filter(function(p){return p.st==='fin';}),skip=list.length-ok.length;
    if(!ok.length){note('Only finished candidates can go on a shortlist review. None of the selected have finished.');return;}
    var hms={};ok.forEach(function(p){hms[ROLES[p.req].hm]=1;save(p.id,{review:true});});
-   S.sel={};render();note('Added '+ok.length+' finished candidate'+(ok.length>1?'s':'')+' to the shortlist review for '+Object.keys(hms).join(' and ')+'.'+(skip?' Skipped '+skip+' who haven\'t finished.':''));
+   S.sel={};render();note('Added '+ok.length+' finished candidate'+(ok.length>1?'s':'')+' to the shortlist review for '+Object.keys(hms).join(' and ')+'.'+(skip?' Skipped '+skip+' who '+(skip>1?'haven\'t':'hasn\'t')+' finished.':''));
   }
   if(a==='b-stage'){
    UI.menu(btn,[{header:'Move '+list.length+' in your applicant tracker'}].concat(['Phone screen','Review','Final round'].map(function(s){return {label:s,onClick:function(){

@@ -1,8 +1,6 @@
 /* Candidate journey (consent → prep → practice → lookback → scored → done).
    Shared state in localStorage, the step control at the top, and each page's controls. Prefix: cd-. */
 (function(){
-  /* ui.js modal, menu and popover buttons have no data-js, so proto.js shows its "not built" note after they run. Mark them. */
-  new MutationObserver(function(){document.querySelectorAll('.ui-ov button:not([data-js]),.ui-dr-ov button:not([data-js]),.ui-pop button:not([data-js])').forEach(function(b){b.setAttribute('data-js','');});}).observe(document.body,{childList:true,subtree:true});
   var KEY='cd-journey';
   var file=(location.pathname.split('/').pop()||'').replace('.html','');
   function load(){try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};}}

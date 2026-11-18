@@ -1,13 +1,4 @@
 /* Shared helpers for buyer, scenario, insights, fairness and settings screens (prefix by-). */
-/* ui.js menus, modals and drawers create plain buttons; proto.js would treat clicks on them as "not built".
-   Mark every button inside those overlays as wired. */
-(function(){
-  function mark(root){if(!root.querySelectorAll)return;
-    if(root.matches&&root.matches('.ui-pop button,.ui-ov button,.ui-dr-ov button'))root.setAttribute('data-js','');
-    root.querySelectorAll('.ui-pop button,.ui-ov button,.ui-dr-ov button').forEach(function(b){b.setAttribute('data-js','')});
-    if(root.matches&&root.matches('.ui-pop,.ui-ov,.ui-dr-ov'))root.querySelectorAll('button').forEach(function(b){b.setAttribute('data-js','')});}
-  new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1)mark(n);});});}).observe(document.documentElement,{childList:true,subtree:true});
-})();
 var BYC=(function(){
   var VOICES=[
     {id:'lena',name:'Lena',desc:'Quick, even pace · American English',len:8},

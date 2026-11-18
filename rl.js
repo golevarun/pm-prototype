@@ -3,13 +3,6 @@
 (function(){
   var RL=window.RL={};
 
-  /* Buttons inside UI modals, menus and drawers are built by ui.js without data-js.
-     Mark them before proto.js sees the click so it doesn't show its "not built" note over our toast. */
-  document.addEventListener('click',function(e){
-    var el=e.target.closest&&e.target.closest('a,button');
-    if(el&&el.closest('.ui-ov,.ui-pop,.ui-dr-ov'))el.setAttribute('data-js','');
-  },true);
-
   var KEY='rl-state';
   function all(){try{return JSON.parse(sessionStorage.getItem(KEY))||{};}catch(e){return {};}}
   RL.get=function(k,d){var v=all()[k];return v===undefined?d:v;};
