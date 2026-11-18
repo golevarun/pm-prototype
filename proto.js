@@ -1,7 +1,7 @@
 /* Prototype helpers: demo step bar and a note for things outside this prototype. */
 (function(){
   var STEPS=[
-    ['home.html','Recruiter','Dana opens Warmcall'],
+    ['home.html','Recruiter','Dana opens PM'],
     ['new-role.html','Recruiter','Dana creates the role from the applicant tracker'],
     ['setup.html','Recruiter','Dana sets up the interview'],
     ['automation.html','Recruiter','Dana checks the invite automation'],

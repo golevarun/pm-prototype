@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>New role · Warmcall</title>
+<title>New role · PM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
@@ -275,7 +275,7 @@ td.act{text-align:right}
   <!-- Sidebar -->
   <aside class="side" aria-label="Main navigation">
     <div class="side-top">
-      <a class="logo" href="home.html" style="text-decoration:none;color:inherit"><i></i>Warmcall</a>
+      <a class="logo" href="home.html" style="text-decoration:none;color:inherit"><i></i>PM</a>
       <button class="collapse" aria-label="Collapse sidebar"><svg class="i" viewBox="0 0 16 16"><path d="M8.5 4.5 5 8l3.5 3.5M12 4.5 8.5 8l3.5 3.5"/></svg></button>
     </div>
     <nav class="nav">
@@ -423,17 +423,17 @@ td.act{text-align:right}
                 </div>
                 <div class="nr-tbl">
                   <table>
-                    <thead><tr><th style="width:44px;padding-left:14px"></th><th>Job</th><th>Location</th><th>Hiring manager</th><th>In Warmcall</th></tr></thead>
+                    <thead><tr><th style="width:44px;padding-left:14px"></th><th>Job</th><th>Location</th><th>Hiring manager</th><th>In PM</th></tr></thead>
                     <tbody id="nr-rows">
-                      <tr class="nr-sel" data-js data-req="114" tabindex="0" aria-selected="true"><td style="padding-left:14px"><span class="nr-rad"></span></td><td><div class="nr-job"><b>Account Executive, Mid-Market</b><small>Req 114 · Sales</small></div></td><td class="nr-loc">Chicago or remote (US)</td><td>Marcus Lee</td><td><div class="nr-job"><b style="font-weight:400">Not in Warmcall yet</b><small>0 candidates</small></div></td></tr>
-                      <tr data-js data-req="122" tabindex="0"><td style="padding-left:14px"><span class="nr-rad"></span></td><td><div class="nr-job"><b>Customer Success Manager</b><small>Req 122 · Customer success</small></div></td><td class="nr-loc">Chicago</td><td>Alex Romero</td><td><div class="nr-job"><b style="font-weight:400">Not in Warmcall yet</b><small>0 candidates</small></div></td></tr>
-                      <tr class="nr-dis" data-req="120" aria-disabled="true"><td style="padding-left:14px"><span class="nr-rad"></span></td><td><div class="nr-job"><b>SDR, Outbound</b><small>Req 120 · Sales</small></div></td><td class="nr-loc">Remote (US)</td><td>Alex Romero</td><td><div class="nr-job"><b>Already in Warmcall (draft)</b><small>Set up by Dana</small></div></td></tr>
-                      <tr data-js data-req="118" tabindex="0"><td style="padding-left:14px"><span class="nr-rad"></span></td><td><div class="nr-job"><b>Solutions Engineer</b><small>Req 118 · Sales engineering</small></div></td><td class="nr-loc">Chicago or remote (US)</td><td>Marcus Lee</td><td><div class="nr-job"><b style="font-weight:400">Not in Warmcall yet</b><small>0 candidates</small></div></td></tr>
+                      <tr class="nr-sel" data-js data-req="114" tabindex="0" aria-selected="true"><td style="padding-left:14px"><span class="nr-rad"></span></td><td><div class="nr-job"><b>Account Executive, Mid-Market</b><small>Req 114 · Sales</small></div></td><td class="nr-loc">Chicago or remote (US)</td><td>Marcus Lee</td><td><div class="nr-job"><b style="font-weight:400">Not in PM yet</b><small>0 candidates</small></div></td></tr>
+                      <tr data-js data-req="122" tabindex="0"><td style="padding-left:14px"><span class="nr-rad"></span></td><td><div class="nr-job"><b>Customer Success Manager</b><small>Req 122 · Customer success</small></div></td><td class="nr-loc">Chicago</td><td>Alex Romero</td><td><div class="nr-job"><b style="font-weight:400">Not in PM yet</b><small>0 candidates</small></div></td></tr>
+                      <tr class="nr-dis" data-req="120" aria-disabled="true"><td style="padding-left:14px"><span class="nr-rad"></span></td><td><div class="nr-job"><b>SDR, Outbound</b><small>Req 120 · Sales</small></div></td><td class="nr-loc">Remote (US)</td><td>Alex Romero</td><td><div class="nr-job"><b>Already in PM (draft)</b><small>Set up by Dana</small></div></td></tr>
+                      <tr data-js data-req="118" tabindex="0"><td style="padding-left:14px"><span class="nr-rad"></span></td><td><div class="nr-job"><b>Solutions Engineer</b><small>Req 118 · Sales engineering</small></div></td><td class="nr-loc">Chicago or remote (US)</td><td>Marcus Lee</td><td><div class="nr-job"><b style="font-weight:400">Not in PM yet</b><small>0 candidates</small></div></td></tr>
                       <tr id="nr-none" hidden><td colspan="5" class="dim" style="text-align:center">No open reqs match that search.</td></tr>
                     </tbody>
                   </table>
                 </div>
-                <p class="help">Only open reqs show here. Closed reqs and reqs already in Warmcall can't be picked.</p>
+                <p class="help">Only open reqs show here. Closed reqs and reqs already in PM can't be picked.</p>
               </div>
 
               <aside class="nr-right" aria-label="Selected job" id="nr-panel"></aside>
@@ -444,7 +444,7 @@ td.act{text-align:right}
             <div class="nr-paste">
               <div>
                 <label class="lab" for="nr-jd">Job description</label>
-                <textarea id="nr-jd" class="ta nr-ta" placeholder="Paste the full job description, including what the role sells, who it sells to and what the quota looks like. Warmcall uses this to draft buyers and a scenario."></textarea>
+                <textarea id="nr-jd" class="ta nr-ta" placeholder="Paste the full job description, including what the role sells, who it sells to and what the quota looks like. PM uses this to draft buyers and a scenario."></textarea>
                 <div class="help">This role won't sync with the applicant tracker. You can link it to a req later in the role's Settings.</div>
               </div>
               <div class="nr-fields">
@@ -459,7 +459,7 @@ td.act{text-align:right}
         <section class="card nr-next">
           <h2>What happens next</h2>
           <ol>
-            <li><span class="nr-n">1</span>Warmcall drafts buyers and a scenario from the job and your notes.</li>
+            <li><span class="nr-n">1</span>PM drafts buyers and a scenario from the job and your notes.</li>
             <li><span class="nr-n">2</span>You edit them and take a test call.</li>
             <li><span class="nr-n">3</span>Nothing goes to candidates until you publish.</li>
           </ol>
@@ -487,9 +487,9 @@ var J={
 var panel=document.getElementById('nr-panel'),chosen=document.getElementById('nr-chosen');
 function show(r){var j=J[r];
  panel.innerHTML='<div><h3>'+j.t+'</h3><div class="meta">Req '+r+' · opened '+j.opened+' in the applicant tracker</div></div>'+
- '<div class="nr-facts"><div><small>Hiring manager</small><span><span class="nr-mav">'+j.ini+'</span>'+j.hm+'</span></div><div><small>Location</small><span>'+j.loc+'</span></div><div><small>Team</small><span>'+j.team+'</span></div><div><small>In Warmcall</small><span>Not yet</span></div></div>'+
+ '<div class="nr-facts"><div><small>Hiring manager</small><span><span class="nr-mav">'+j.ini+'</span>'+j.hm+'</span></div><div><small>Location</small><span>'+j.loc+'</span></div><div><small>Team</small><span>'+j.team+'</span></div><div><small>In PM</small><span>Not yet</span></div></div>'+
  '<div><div class="lab">Job description</div><div class="nr-jd">'+j.jd+'</div></div>'+
- '<div><div class="lab">Warmcall will pull in</div><div class="nr-pull"><div>'+ok+'Title<em>'+j.t+'</em></div><div>'+ok+'Location<em>'+j.loc+'</em></div><div>'+ok+'Team<em>'+j.team+'</em></div><div>'+ok+'Stages<em>'+j.stages.split(', ').length+' stages</em></div></div><div class="help">Stages: '+j.stages+'. You choose later which stage sends the invite.</div></div>';
+ '<div><div class="lab">PM will pull in</div><div class="nr-pull"><div>'+ok+'Title<em>'+j.t+'</em></div><div>'+ok+'Location<em>'+j.loc+'</em></div><div>'+ok+'Team<em>'+j.team+'</em></div><div>'+ok+'Stages<em>'+j.stages.split(', ').length+' stages</em></div></div><div class="help">Stages: '+j.stages+'. You choose later which stage sends the invite.</div></div>';
  chosen.textContent='Selected: '+j.t+' · Req '+r;}
 var rows=document.querySelectorAll('#nr-rows tr[data-req]');
 function pick(tr){if(tr.classList.contains('nr-dis'))return;rows.forEach(function(x){x.classList.remove('nr-sel');x.removeAttribute('aria-selected')});tr.classList.add('nr-sel');tr.setAttribute('aria-selected','true');show(tr.getAttribute('data-req'));}
