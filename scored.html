@@ -65,5 +65,5 @@ cap.textContent=(them?'Jordan: ':'You: ')+l[1];orb.classList.toggle('talk',them)
 if(k<L.length)setTimeout(add,them?2600:3200);}
 var tm=document.getElementById('tm'),m=tm.textContent.match(/(\d+):(\d+)/),sec=+m[1]*60+ +m[2];setInterval(function(){sec++;tm.firstChild.textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0')+' ';},1000);
 if(matchMedia('(prefers-reduced-motion: reduce)').matches){L.forEach(function(){add()});return;}add();})();</script>
-<script src="proto.js"></script>
+<script src="ui.js"></script><script src="proto.js"></script>
 </body></html>

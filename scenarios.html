@@ -490,6 +490,6 @@ function scSel(id){scCur=id;scRows();scPanel(scFind(id));var r=document.querySel
 function scRegen(){var s=scFind(scCur);scDraft[s.id]=true;scRows();scPanel(s);protoNote('Draft v'+(s.ver+1)+' saved. Calls stay on v'+s.ver+' until you publish.');}
 scRows();scPanel(scFind(scCur));
 </script>
-<script src="proto.js"></script>
+<script src="ui.js"></script><script src="proto.js"></script>
 </body>
 </html>

@@ -488,6 +488,6 @@ document.addEventListener('click',function(e){var b=e.target.closest('.ac-chk');
 document.addEventListener('keydown',function(e){var b=e.target.closest&&e.target.closest('.ac-chk');if(b&&(e.key===' '||e.key==='Enter')){e.preventDefault();acPick(b);}});
 document.getElementById('acSel').addEventListener('click',function(e){var b=e.target.closest('.btn');if(b&&!this.classList.contains('ac-live')){e.stopImmediatePropagation();e.preventDefault();protoNote('Select candidates first.');}},true);
 </script>
-<script src="proto.js"></script>
+<script src="ui.js"></script><script src="proto.js"></script>
 </body>
 </html>
