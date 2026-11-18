@@ -1,24 +1,439 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Warmcall prototype · Account Executive, Mid-Market</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet"><link rel="stylesheet" href="cand.css"><style>
-.wrap{max-width:960px;margin:0 auto;padding:48px 24px 80px}
-.brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px}.brand i{width:18px;height:18px;border-radius:50%;background:#D97757}
-.list{margin-top:28px;display:flex;flex-direction:column;gap:8px}
-.st{display:grid;grid-template-columns:40px 1fr auto;gap:14px;align-items:center;padding:14px 16px;background:#fff;border:1px solid var(--line);border-radius:12px;text-decoration:none;color:var(--ink)}
-.st:hover{border-color:var(--line2);box-shadow:0 2px 8px rgba(28,28,24,.05)}
-.st .n{font-variant-numeric:tabular-nums;color:var(--mute);font-weight:500}
-.st b{display:block;font-weight:550;margin-top:4px}
-.st small{display:block;color:var(--mute);font-size:13px}
-.st .go{color:var(--ink2);font-size:13px}
-.people{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}
-.people div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13px;color:var(--ink2)}
-.people b{display:block;color:var(--ink);font-weight:550}
-</style></head><body><div class="wrap">
-<div class="brand"><i></i>Warmcall</div>
-<h1 style="margin-top:20px">Prototype: one role, start to finish</h1>
-<p class="lede">Northwind Freight is hiring an Account Executive, Mid-Market. Follow the recruiter, a candidate and the hiring manager through 14 screens, plus 17 more off the main path. Use the bar at the bottom of each screen to move between steps.</p>
-<div class="people"><div><b>Dana Whitfield</b>Recruiter. Sets up the role and handles requests.</div><div><b>Sam Rivera</b>Candidate. Practices, then takes the scored call.</div><div><b>Marcus Lee</b>Hiring manager. Reviews calls and decides.</div></div>
-<div class="list"><a class="st" href="new-role.html"><span class="n">01</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>New role</b><small>Dana creates the role from the applicant tracker</small></div><span class="go">Open →</span></a><a class="st" href="setup.html"><span class="n">02</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>Interview setup</b><small>Dana sets up the interview</small></div><span class="go">Open →</span></a><a class="st" href="automation.html"><span class="n">03</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>Invite automation</b><small>Dana checks the invite automation</small></div><span class="go">Open →</span></a><a class="st" href="email.html"><span class="n">04</span><div><span class="tag" style="background:#E3ECFC;color:#2A4F99">Candidate</span><b>Invite email</b><small>Sam gets the invite</small></div><span class="go">Open →</span></a><a class="st" href="consent.html"><span class="n">05</span><div><span class="tag" style="background:#E3ECFC;color:#2A4F99">Candidate</span><b>Notice and consent</b><small>Sam reads the notice and agrees</small></div><span class="go">Open →</span></a><a class="st" href="prep.html"><span class="n">06</span><div><span class="tag" style="background:#E3ECFC;color:#2A4F99">Candidate</span><b>Meet your buyer</b><small>Sam meets the buyer and checks his mic</small></div><span class="go">Open →</span></a><a class="st" href="practice.html"><span class="n">07</span><div><span class="tag" style="background:#E3ECFC;color:#2A4F99">Candidate</span><b>Practice call</b><small>Sam takes a practice call</small></div><span class="go">Open →</span></a><a class="st" href="lookback.html"><span class="n">08</span><div><span class="tag" style="background:#E3ECFC;color:#2A4F99">Candidate</span><b>Practice notes</b><small>Sam reads his practice notes</small></div><span class="go">Open →</span></a><a class="st" href="scored.html"><span class="n">09</span><div><span class="tag" style="background:#E3ECFC;color:#2A4F99">Candidate</span><b>Scored call</b><small>Sam takes the scored call</small></div><span class="go">Open →</span></a><a class="st" href="done.html"><span class="n">10</span><div><span class="tag" style="background:#E3ECFC;color:#2A4F99">Candidate</span><b>Done</b><small>Sam is done and knows when he'll hear back</small></div><span class="go">Open →</span></a><a class="st" href="candidates.html"><span class="n">11</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>Candidates</b><small>Dana sees Sam finished and handles requests</small></div><span class="go">Open →</span></a><a class="st" href="shortlist.html"><span class="n">12</span><div><span class="tag" style="background:#E8E2D8;color:#493B2C">Hiring manager</span><b>Shortlist and decision</b><small>Marcus reviews and advances Sam</small></div><span class="go">Open →</span></a><a class="st" href="outcome-email.html"><span class="n">13</span><div><span class="tag" style="background:#E3ECFC;color:#2A4F99">Candidate</span><b>Decision email</b><small>Sam hears back from Dana</small></div><span class="go">Open →</span></a><a class="st" href="compare.html"><span class="n">14</span><div><span class="tag" style="background:#E8E2D8;color:#493B2C">Hiring manager</span><b>Compare two</b><small>Marcus compares Sam and Priya</small></div><span class="go">Open →</span></a></div>
-<h2 style="margin-top:36px">More screens</h2>
-<p class="small muted" style="margin:4px 0 0">Off the main path. Open them from the sidebar or here.</p>
-<div class="list"><a class="st" href="home.html"><span class="n">+</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>Home</b><small>Dana's start page: requests, today, roles</small></div><span class="go">Open →</span></a><a class="st" href="roles.html"><span class="n">+</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>Roles</b><small>Every role in the workspace</small></div><span class="go">Open →</span></a><a class="st" href="overview.html"><span class="n">+</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>Role overview</b><small>One role at a glance</small></div><span class="go">Open →</span></a><a class="st" href="test-call.html"><span class="n">+</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>Buyer test call</b><small>Dana tests a drafted buyer before publishing</small></div><span class="go">Open →</span></a><a class="st" href="call-review.html"><span class="n">+</span><div><span class="tag" style="background:#E8E2D8;color:#493B2C">Hiring manager</span><b>Call review</b><small>Sam's full scored call with transcript</small></div><span class="go">Open →</span></a><a class="st" href="fairness.html"><span class="n">+</span><div><span class="tag" style="background:#F3E8FD;color:#6B3FA0">Admin / legal</span><b>Fairness checks</b><small>Checks, audit log and export for an independent audit</small></div><span class="go">Open →</span></a><a class="st" href="signin.html"><span class="n">+</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>Sign in</b><small>Sign in to the hiring app</small></div><span class="go">Open →</span></a><a class="st" href="insights.html"><span class="n">+</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>Insights</b><small>Completion, time to shortlist, fairness rating</small></div><span class="go">Open →</span></a><a class="st" href="calls.html"><span class="n">+</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>Calls</b><small>Every scored and test call, with live calls on top</small></div><span class="go">Open →</span></a><a class="st" href="automations.html"><span class="n">+</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>Automations</b><small>All automations and templates</small></div><span class="go">Open →</span></a><a class="st" href="buyers.html"><span class="n">+</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>Buyers</b><small>The buyer library with settings and test history</small></div><span class="go">Open →</span></a><a class="st" href="role-settings.html"><span class="n">+</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>Role settings</b><small>Stages, team access, candidate emails, close role</small></div><span class="go">Open →</span></a><a class="st" href="settings.html"><span class="n">+</span><div><span class="tag" style="background:#F3E8FD;color:#6B3FA0">Admin / legal</span><b>Workspace settings</b><small>Team, integrations, notice, accommodations, retention</small></div><span class="go">Open →</span></a><a class="st" href="all-candidates.html"><span class="n">+</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>All candidates</b><small>Every candidate across live roles</small></div><span class="go">Open →</span></a><a class="st" href="shortlists.html"><span class="n">+</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>Shortlists</b><small>Shortlists for every role and their decisions</small></div><span class="go">Open →</span></a><a class="st" href="scenarios.html"><span class="n">+</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>Scenarios</b><small>What candidates sell and to whom</small></div><span class="go">Open →</span></a><a class="st" href="buyer-edit.html"><span class="n">+</span><div><span class="tag" style="background:#E2F2E6;color:#2B6B3E">Recruiter</span><b>Buyer editor</b><small>Editing a buyer, with versions</small></div><span class="go">Open →</span></a></div>
-<p class="cfoot">Desktop prototype · built Nov 17, 2026 · people and companies are invented</p>
-</div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home · Warmcall</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1C1C18; --ink2:#535347; --mute:#68685D; --faint:#8A8A7E;
+  --line:rgba(28,28,24,.08); --line2:rgba(28,28,24,.12);
+  --hover:rgba(28,28,24,.06); --active:rgba(28,28,24,.08);
+  --field:#FDFDFC; --sub:#FAFAF9; --chip:#F4F4F2;
+  --yellow:#1C1C18; --dark:#2F2F27;
+  --beige:#E8E2D8; --beigeT:#493B2C;
+  --blue:#E3ECFC; --blueT:#2A4F99; --pink:#F9E3F1; --pinkT:#8A2D6B; --green:#E2F2E6; --greenT:#2B6B3E;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:"Inter",system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased;font-feature-settings:"cv11","ss01"}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+input,textarea,select{font:inherit;color:inherit}
+svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;flex:none}
+b,strong{font-weight:550}
+:focus-visible{outline:2px solid #2A4F99;outline-offset:1px;border-radius:8px}
+
+.app{display:grid;grid-template-columns:240px minmax(0,1fr);height:100vh;min-width:1280px}
+
+/* sidebar */
+.side{border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;background:#fff}
+.side-top{display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 12px 0 14px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;letter-spacing:-.01em}
+.logo i{width:18px;height:18px;border-radius:50%;background:#D97757;display:block}
+.collapse{color:var(--mute);width:24px;height:24px;display:grid;place-items:center;border-radius:6px}
+.nav{flex:1;overflow:auto;padding:0 8px 12px}
+.nav a{display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;border-radius:8px;color:var(--ink2);text-decoration:none;font-size:13px}
+.nav a:hover{background:var(--hover)}
+.nav a.top{color:var(--ink);font-weight:450}
+.nav a.on{background:var(--active);color:var(--ink);font-weight:450}
+.nav .grp{display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;color:var(--ink2);margin-top:10px}
+.nav .grp .chev{margin-left:auto;color:var(--faint);width:14px;height:14px}
+.nav .sub{padding-left:24px}
+.nav hr{border:0;border-top:1px solid var(--line);margin:8px 6px}
+.side-foot{padding:8px;border-top:1px solid var(--line)}
+.hub{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.hub b{display:block;font-weight:450}
+.hub .bar{height:4px;border-radius:2px;background:var(--chip);margin:8px 0 4px;overflow:hidden}
+.hub .bar i{display:block;height:100%;width:67%;background:#3E8E56;border-radius:2px}
+.hub small{font-size:12px;color:var(--mute)}
+
+/* topbar */
+.main{display:flex;flex-direction:column;min-width:0;min-height:0}
+.topbar{height:48px;flex:none;display:grid;grid-template-columns:1fr 470px 1fr;align-items:center;padding:0 12px}
+.search{display:flex;align-items:center;gap:8px;height:32px;border:1px solid var(--line2);border-radius:8px;padding:0 10px;color:var(--mute);background:#fff;box-shadow:0 1px 2px rgba(28,28,24,.04)}
+.search span{flex:1}
+.kbd{font-size:11.5px;color:var(--faint);letter-spacing:.06em}
+.tb-r{justify-self:end;display:flex;align-items:center;gap:8px}
+.pill{height:32px;display:inline-flex;align-items:center;gap:6px;padding:0 10px;border:1px solid var(--line2);border-radius:8px;background:var(--field);font-size:13px;white-space:nowrap}
+.btn-dark{height:32px;display:inline-flex;align-items:center;gap:6px;padding:0 10px;border-radius:8px;background:var(--dark);color:#fff;font-weight:450;white-space:nowrap}
+.iconbtn{width:32px;height:32px;display:grid;place-items:center;border-radius:8px;color:var(--ink2)}
+.avatar{width:28px;height:28px;border-radius:50%;background:#DCEBDD;color:#2B6B3E;display:grid;place-items:center;font-size:11.5px;font-weight:550}
+
+/* page header */
+.ph{padding:10px 16px 0 12px;border-bottom:1px solid var(--line);flex:none}
+.ph-row{display:flex;align-items:center;gap:10px;min-height:32px}
+.crumb{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mute)}
+.crumb a{color:var(--mute);text-decoration:none}
+.ph h1{font-size:20px;line-height:28px;font-weight:450;margin:0;letter-spacing:-.005em}
+.tag{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 8px;border-radius:12px;font-size:12px;font-weight:450;white-space:nowrap}
+.tag.beige{background:var(--beige);color:var(--beigeT)}
+.tag.gray{background:var(--chip);color:var(--ink2)}
+.tag.blue{background:var(--blue);color:var(--blueT)}
+.tag.pink{background:var(--pink);color:var(--pinkT)}
+.tag.green{background:var(--green);color:var(--greenT)}
+.ph-acts{margin-left:auto;display:flex;gap:8px;align-items:center}
+.btn{height:32px;display:inline-flex;align-items:center;gap:6px;padding:0 10px;border-radius:8px;border:1px solid var(--line2);background:var(--field);font-size:13px;white-space:nowrap}
+.btn:hover{background:#F7F7F5}
+.btn.sm{height:28px;padding:0 8px;font-size:12.5px}
+.btn.ghost{border-color:transparent;background:transparent}
+.btn.ghost:hover{background:var(--hover)}
+.btn.yellow{background:var(--yellow);border-color:var(--yellow);color:#fff;font-weight:450}
+.btn.yellow:hover{background:#2F2F27}
+.meta{font-size:12px;color:var(--mute);white-space:nowrap}
+.tabs{display:flex;gap:20px;margin-top:6px}
+.tabs a{padding:8px 2px 9px;color:var(--ink2);text-decoration:none;border-bottom:2px solid transparent;font-size:13px}
+.tabs a.on{color:var(--ink);border-color:var(--ink);font-weight:450}
+
+/* body: left panel + content, People-page skeleton */
+.body{flex:1;min-height:0;display:grid;grid-template-columns:300px minmax(0,1fr)}
+.lp{border-right:1px solid var(--line);overflow:auto;display:flex;flex-direction:column}
+.lp-sum{margin:12px;border:1px solid var(--line);border-radius:12px;display:grid;grid-template-columns:repeat(3,1fr);padding:4px;gap:4px}
+.lp-sum div{border-radius:8px;padding:6px 4px;text-align:center}
+.lp-sum div.on{background:#EEF3FC}
+.lp-sum b{display:block;font-weight:450;color:var(--ink)}
+.lp-sum span{display:inline-block;margin-top:2px;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11.5px;line-height:16px;background:var(--chip);color:var(--ink2);border-radius:12px;padding:0 6px}
+.lp-sum div.on span{background:#fff}
+.sec{display:flex;align-items:center;gap:10px;height:52px;padding:0 16px;border-top:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:450}
+.sec:hover{background:var(--sub)}
+.sec.on{background:var(--sub);box-shadow:inset 2px 0 0 var(--ink)}
+.sec .i{color:var(--ink2)}
+.sec .st{margin-left:auto;display:flex;align-items:center;gap:6px;font-weight:400;font-size:12px;color:var(--mute)}
+.ok{width:16px;height:16px;border-radius:50%;background:#3E8E56;display:grid;place-items:center;flex:none}
+.ok svg{width:10px;height:10px;stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.todo{width:16px;height:16px;border-radius:50%;border:1.5px dashed #B9B9AE;flex:none}
+.lp-foot{margin-top:auto;border-top:1px solid var(--line);padding:12px;display:flex;gap:4px;align-items:center;justify-content:space-between}
+.lp-foot .link{color:var(--mute)}
+
+.content{overflow:auto;background:var(--sub)}
+.wrapc{max-width:1000px;margin:0 auto;padding:16px 24px 48px;display:flex;flex-direction:column;gap:12px}
+.banner{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:#F0F0EC;color:var(--ink)}
+.banner .i{margin-top:2px;color:var(--ink2)}
+.banner p{margin:0;color:var(--ink2)}
+.banner .x{margin-left:auto;color:var(--mute)}
+.banner a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:12px}
+.ch{display:flex;align-items:flex-start;gap:12px;padding:14px 16px 12px}
+.ch h2{font-size:15px;line-height:24px;font-weight:550;margin:0;display:flex;align-items:center;gap:8px}
+.ch p{margin:0;color:var(--mute)}
+.ch .r{margin-left:auto;display:flex;align-items:center;gap:8px;flex:none}
+.cb{padding:0 16px 16px}
+.lab{display:block;font-weight:450;margin-bottom:6px}
+.lab small{font-weight:400;color:var(--mute);font-size:12px;margin-left:4px}
+.help{font-size:12px;color:var(--mute);margin-top:6px;line-height:16px}
+
+/* job card */
+.jobgrid{display:grid;grid-template-columns:1.5fr 1.2fr 1fr 1fr;border:1px solid var(--line);border-radius:8px}
+.jobgrid>div{padding:10px 12px;border-left:1px solid var(--line);min-width:0}
+.jobgrid>div:first-child{border-left:0}
+.jobgrid small{display:block;font-size:12px;color:var(--mute);line-height:16px;margin-bottom:2px}
+.jobgrid span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sync{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mute);white-space:nowrap}
+.dot{width:6px;height:6px;border-radius:50%;background:#3E8E56;flex:none}
+
+/* inputs */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ta{width:100%;min-height:76px;resize:none;border:1px solid var(--line2);border-radius:8px;background:#fff;padding:8px 10px;line-height:20px;box-shadow:0 1px 2px rgba(28,28,24,.03)}
+.ta:focus{outline:none;border-color:#7C9BD6;box-shadow:0 0 0 3px rgba(42,79,153,.12)}
+.count{float:right;font-size:12px;color:var(--faint);font-weight:400}
+.files{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px;padding:10px 12px;border:1px dashed var(--line2);border-radius:8px;background:var(--sub)}
+.file{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border:1px solid var(--line2);border-radius:8px;background:var(--field);font-size:12.5px}
+.file .i{width:14px;height:14px;color:var(--ink2)}
+.file em{font-style:normal;color:var(--mute)}
+.files .add{color:var(--ink2);display:inline-flex;align-items:center;gap:6px;margin-left:auto}
+.files .hint{color:var(--mute);font-size:12px}
+
+/* buyers */
+.buyers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.by{border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;background:#fff}
+.by:hover{border-color:var(--line2)}
+.by .tags{display:flex;gap:6px;flex-wrap:wrap}
+.by .who{display:flex;gap:10px;align-items:center}
+.av{width:32px;height:32px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:12px;font-weight:550}
+.av.a1{background:#E3ECFC;color:#2A4F99}.av.a2{background:#FBE7DE;color:#9A4320}.av.a3{background:#E2F2E6;color:#2B6B3E}
+.by .who b{display:block;font-weight:550;font-size:14px;line-height:20px}
+.by .who small{display:block;font-size:12px;color:var(--mute);line-height:16px}
+.by p{margin:0;color:var(--ink2);font-size:12.5px;line-height:18px}
+.by .row{display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:8px;border-top:1px solid var(--line)}
+.by .row .meta{margin-right:auto}
+.by.add{border-style:dashed;align-items:center;justify-content:center;color:var(--ink2);min-height:100%}
+
+/* skills table */
+.tbl{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.tr{display:grid;grid-template-columns:40px 150px minmax(0,1fr) 150px 28px;gap:12px;align-items:center;padding:0 12px;min-height:48px;border-top:1px solid var(--line)}
+.tr:first-child{border-top:0}
+.th{min-height:36px;background:var(--sub);font-size:12px;color:var(--mute)}
+.tr .nm{font-weight:450}
+.tr .def{color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr.off .nm,.tr.off .def{color:var(--faint)}
+.sw{width:28px;height:16px;border-radius:999px;background:#DADAD3;position:relative;flex:none}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.sw.on{background:var(--ink)}
+.sw.on::after{left:14px}
+.wt{display:flex;align-items:center;gap:8px}
+.wt .bar{flex:1;height:4px;border-radius:2px;background:var(--chip);overflow:hidden}
+.wt .bar i{display:block;height:100%;background:var(--ink)}
+.num{width:52px;height:28px;border:1px solid var(--line2);border-radius:8px;background:var(--field);display:flex;align-items:center;justify-content:flex-end;padding:0 8px;font-variant-numeric:tabular-nums;gap:2px}
+.num em{font-style:normal;color:var(--mute)}
+.tr .more{color:var(--mute);width:28px;height:28px;display:grid;place-items:center;border-radius:8px}
+.tfoot{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:var(--sub)}
+.tfoot .total{margin-left:auto;display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+
+/* call settings */
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.select{height:32px;border:1px solid var(--line2);border-radius:8px;background:var(--field);display:flex;align-items:center;padding:0 10px;gap:8px}
+.select .i{margin-left:auto;color:var(--mute);width:14px;height:14px}
+.seg{display:flex;height:32px;border:1px solid var(--line2);border-radius:8px;padding:2px;background:var(--field);gap:2px}
+.seg span{flex:1;display:grid;place-items:center;border-radius:6px;color:var(--ink2)}
+.seg span.on{background:var(--active);color:var(--ink);font-weight:450}
+.checks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:6px}
+.ck{display:flex;align-items:center;gap:8px;height:32px;padding:0 10px;border:1px solid var(--line);border-radius:8px}
+.box{width:16px;height:16px;border-radius:4px;border:1px solid #B9B9AE;background:#fff;flex:none;display:grid;place-items:center}
+.box.on{background:var(--ink);border-color:var(--ink)}
+.box.on svg{width:10px;height:10px;stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.divider{border-top:1px solid var(--line);margin:16px 0}
+
+/* notice */
+.notice{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:16px}
+.doc{border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:#fff;color:var(--ink2);line-height:20px}
+.doc p{margin:0 0 8px}
+.doc p:last-child{margin:0}
+.doc .ln{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);color:var(--ink)}
+.facts{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:8px}
+.facts>div{padding:10px 12px;border-top:1px solid var(--line)}
+.facts>div:first-child{border-top:0}
+.facts small{display:block;font-size:12px;color:var(--mute);line-height:16px}
+.facts span{display:flex;align-items:center;gap:6px}
+
+.help-fab{position:fixed;right:12px;bottom:12px;height:28px;display:inline-flex;align-items:center;gap:4px;padding:0 8px;border:1px solid var(--line2);border-radius:8px;background:#fff;font-size:12.5px;box-shadow:0 1px 3px rgba(28,28,24,.08)}
+
+/* ===== screen 03: candidates table ===== */
+.body3{flex:1;min-height:0;display:grid;grid-template-columns:280px minmax(0,1fr)}
+.fp{border-right:1px solid var(--line);overflow:auto;display:flex;flex-direction:column}
+.fsum{margin:12px;border:1px solid var(--line);border-radius:12px;display:grid;grid-template-columns:repeat(3,1fr);padding:4px;gap:4px}
+.fsum div{border-radius:8px;padding:6px 4px;text-align:center}
+.fsum div.on{background:#EEF3FC}
+.fsum b{display:block;font-weight:450}
+.fsum span{display:inline-block;margin-top:2px;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11.5px;line-height:16px;background:var(--chip);color:var(--ink2);border-radius:12px;padding:0 6px}
+.fsum div.on span{background:#fff}
+.acc{border-top:1px solid var(--line)}
+.acc-h{display:flex;align-items:center;gap:10px;height:48px;padding:0 16px;font-weight:450}
+.acc-h .i{color:var(--ink2)}
+.acc-h .car{margin-left:auto;width:0;height:0;border-left:4.5px solid transparent;border-right:4.5px solid transparent;border-top:5px solid var(--ink2)}
+.acc.open .acc-h .car{transform:rotate(180deg)}
+.acc-h .cnt{margin-left:auto;font-size:12px;color:var(--mute);font-weight:400}
+.acc-h .cnt+.car{margin-left:8px}
+.acc-b{padding:0 16px 12px;display:flex;flex-direction:column;gap:2px}
+.opt{display:flex;align-items:center;gap:8px;height:28px;padding:0 4px;border-radius:6px}
+.opt .n{margin-left:auto;font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums}
+.fp-foot{margin-top:auto;border-top:1px solid var(--line);padding:12px 16px;display:flex;gap:8px;justify-content:center;align-items:center}
+.fp-foot .ghost{color:var(--mute)}
+
+.tw{display:flex;flex-direction:column;min-width:0;min-height:0}
+.tbar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.tbar .srch{display:flex;align-items:center;gap:8px;height:32px;width:240px;border:1px solid var(--line2);border-radius:8px;padding:0 10px;color:var(--mute);background:#fff}
+.tbar .r{margin-left:auto;display:flex;gap:8px;align-items:center}
+.sel-bar{display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid var(--line);background:var(--sub)}
+.sel-bar .meta{margin-right:8px}
+.sel-bar .btn{opacity:.5}
+.tscroll{flex:1;overflow:auto;min-height:0}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:880px}
+thead th{position:sticky;top:0;z-index:1;background:#fff;text-align:left;font-weight:450;font-size:12px;color:var(--mute);height:36px;padding:0 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+thead th .lk{width:12px;height:12px;vertical-align:-2px;margin-left:4px;color:var(--faint)}
+tbody td{height:52px;padding:0 12px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle}
+tbody tr:hover td{background:#FCFCFB}
+tbody tr.flag td{background:#FDFAF3}
+td.cbx,th.cbx{width:40px;padding:0 0 0 16px}
+.person{display:flex;align-items:center;gap:10px;min-width:0}
+.pav{width:28px;height:28px;border-radius:50%;background:var(--chip);color:var(--ink2);display:grid;place-items:center;font-size:11px;font-weight:550;flex:none}
+.person b{display:block;font-weight:450;line-height:18px}
+.person small{display:block;font-size:12px;color:var(--mute);line-height:16px}
+.st{display:inline-flex;align-items:center;gap:6px}
+.st i{width:7px;height:7px;border-radius:50%;flex:none}
+.st.done i{background:var(--ink)}
+.st.live i{background:#3E8E56;box-shadow:0 0 0 3px rgba(62,142,86,.18)}
+.st.wait i{background:#B9B9AE}
+.st.warn i{background:#C9821E}
+.st.stop i{background:transparent;border:1.5px solid #B9B9AE}
+.dim{color:var(--mute)}
+.mono{font-variant-numeric:tabular-nums}
+td.act{text-align:right}
+.stage{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border:1px solid var(--line2);border-radius:8px;background:var(--field);font-size:12.5px}
+.req{display:inline-flex;align-items:center;gap:6px}
+.pager{display:flex;align-items:center;gap:8px;padding:10px 16px;border-top:1px solid var(--line);background:#fff}
+.pager .meta{margin-right:auto}
+.pg{width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--line2);border-radius:8px;color:var(--ink2);background:var(--field)}
+.foot-note{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mute)}
+</style>
+<style>
+.hm-scroll{flex:1;min-height:0;overflow:auto;background:var(--sub);border-top:1px solid var(--line)}
+.hm-col{max-width:960px;margin:0 auto;padding:20px 24px 80px;display:flex;flex-direction:column;gap:12px}
+.hm-title{display:flex;align-items:center;gap:10px;min-height:32px}
+.hm-title h1{font-size:20px;line-height:28px;font-weight:450;margin:0}
+.hm-title .r{margin-left:auto;display:flex;gap:8px;align-items:center}
+.hm-greet{display:flex;align-items:baseline;gap:10px;padding:2px 0 4px}
+.hm-greet b{font-size:15px;font-weight:550}
+.hm-greet span{color:var(--ink2)}
+.hm-cnt{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11.5px;line-height:16px;background:var(--chip);color:var(--ink2);border-radius:12px;padding:0 6px;font-weight:400}
+.hm-list{border-top:1px solid var(--line)}
+.hm-row{display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 16px;border-top:1px solid var(--line)}
+.hm-row:first-child{border-top:0}
+.hm-row .hm-tx{min-width:0;flex:1}
+.hm-row .hm-tx b{display:block;font-weight:450;line-height:18px}
+.hm-row .hm-tx small{display:block;font-size:12px;color:var(--mute);line-height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hm-row .hm-when{font-size:12px;color:var(--mute);white-space:nowrap;width:84px;text-align:right}
+.hm-row.hm-flag{background:#FDFAF3}
+.hm-list .hm-row:last-child{border-radius:0 0 12px 12px}
+.hm-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.hm-stat{padding:12px 16px 14px;border-left:1px solid var(--line)}
+.hm-stat:first-child{border-left:0}
+.hm-stat small{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mute);line-height:16px}
+.hm-stat .hm-v{font-size:22px;line-height:30px;font-weight:450;font-variant-numeric:tabular-nums;margin-top:4px;letter-spacing:-.01em}
+.hm-stat .hm-s{font-size:12px;color:var(--mute);line-height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hm-tbl{width:100%;min-width:0;border-collapse:separate;border-spacing:0}
+.hm-tbl thead th{position:static;background:var(--sub);border-top:1px solid var(--line)}
+.hm-tbl thead th:first-child{padding-left:16px}
+.hm-tbl tbody td:first-child{padding-left:16px}
+.hm-tbl tbody tr:last-child td{border-bottom:0}
+.hm-tbl th.n,.hm-tbl td.n{text-align:right;font-variant-numeric:tabular-nums;width:84px}
+.hm-tbl td.nx{color:var(--ink2)}
+.hm-tbl td.nx.hm-due{color:var(--ink)}
+.hm-role{color:var(--ink);text-decoration:none;font-weight:450;display:block;line-height:18px}
+.hm-role:hover{text-decoration:underline;text-underline-offset:2px}
+.hm-tbl small{display:block;font-size:12px;color:var(--mute);line-height:16px}
+.hm-date{width:44px;flex:none;border:1px solid var(--line);border-radius:8px;text-align:center;background:#fff;overflow:hidden}
+.hm-date small{display:block;font-size:10.5px;line-height:16px;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);background:var(--chip)}
+.hm-date b{display:block;font-size:15px;line-height:24px;font-weight:550}
+.hm-foot{display:flex;align-items:center;gap:6px;padding:10px 16px;border-top:1px solid var(--line);font-size:12px;color:var(--mute);background:var(--sub);border-radius:0 0 12px 12px}
+.hm-foot a{color:var(--ink2)}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="side" aria-label="Main navigation">
+    <div class="side-top">
+      <a class="logo" href="home.html" style="text-decoration:none;color:inherit"><i></i>Warmcall</a>
+      <button class="collapse" aria-label="Collapse sidebar"><svg class="i" viewBox="0 0 16 16"><path d="M8.5 4.5 5 8l3.5 3.5M12 4.5 8.5 8l3.5 3.5"/></svg></button>
+    </div>
+    <nav class="nav">
+      <a class="top on" href="home.html" aria-current="page"><svg class="i" viewBox="0 0 16 16"><path d="M2.5 7 8 2.5 13.5 7v6.5h-3.5v-4h-4v4H2.5z"/></svg>Home</a>
+
+      <div class="grp"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="4.5" width="11" height="8.5" rx="1.5"/><path d="M5.5 4.5V3.2c0-.4.3-.7.7-.7h3.6c.4 0 .7.3.7.7v1.3"/></svg>Hiring<svg class="i chev" viewBox="0 0 16 16"><path d="m4.5 10 3.5-3.5 3.5 3.5"/></svg></div>
+      <a class="sub" href="roles.html">Roles</a>
+      <a class="sub" href="all-candidates.html">Candidates</a>
+      <a class="sub" href="shortlists.html">Shortlists</a>
+
+      <div class="grp"><svg class="i" viewBox="0 0 16 16"><path d="M3 9.5V6.5M6 11.5v-7M9 13V3M12 10V6"/></svg>Interviews<svg class="i chev" viewBox="0 0 16 16"><path d="m4.5 10 3.5-3.5 3.5 3.5"/></svg></div>
+      <a class="sub" href="buyers.html">Buyers</a>
+      <a class="sub" href="calls.html">Calls</a>
+      <a class="sub" href="scenarios.html">Scenarios</a>
+
+      <div class="grp"><svg class="i" viewBox="0 0 16 16"><path d="M9 2 4 9h4l-1 5 5-7H8z"/></svg>Tools and automation<svg class="i chev" viewBox="0 0 16 16"><path d="m4.5 10 3.5-3.5 3.5 3.5"/></svg></div>
+      <a class="sub" href="automations.html">Automations</a>
+      <a class="sub" href="insights.html">Insights</a>
+      <a class="sub" href="fairness.html">Fairness checks</a>
+    </nav>
+    <div class="side-foot">
+      <div class="hub"><b>Role setup</b><div class="bar"><i style="width:100%"></i></div><small>6 of 6 sections done</small></div>
+      <a class="nav-a" href="settings.html#integrations" style="display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;color:var(--ink);text-decoration:none"><svg class="i" viewBox="0 0 16 16"><path d="M6 3.5h-2a1.5 1.5 0 0 0-1.5 1.5v7A1.5 1.5 0 0 0 4 13.5h7a1.5 1.5 0 0 0 1.5-1.5v-2M9 2.5h4.5V7M13.5 2.5 7 9"/></svg>Integrations</a>
+      <a class="nav-a" href="settings.html" style="display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;color:var(--ink);text-decoration:none"><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2"/><path d="M8 1.8v1.7M8 12.5v1.7M1.8 8h1.7M12.5 8h1.7M3.6 3.6l1.2 1.2M11.2 11.2l1.2 1.2M3.6 12.4l1.2-1.2M11.2 4.8l1.2-1.2"/></svg>Admin settings<svg class="i" viewBox="0 0 16 16" style="margin-left:auto;width:14px;height:14px;color:var(--faint)"><path d="m6 4 4 4-4 4"/></svg></a>
+    </div>
+  </aside>
+
+
+  <div class="main">
+    <!-- Top bar -->
+    <header class="topbar">
+      <div></div>
+      <div class="search"><svg class="i" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><span>Search roles, candidates or calls</span><span class="kbd">⌘ K</span></div>
+      <div class="tb-r">
+        <a class="pill" href="calls.html" style="text-decoration:none;color:inherit">3 calls today</a>
+        <button class="iconbtn" aria-label="Notifications"><svg class="i" viewBox="0 0 16 16"><path d="M4 10.5V7a4 4 0 0 1 8 0v3.5l1 1.5H3zM6.5 13.5a1.5 1.5 0 0 0 3 0"/></svg></button>
+        <span class="avatar" aria-label="Dana Whitfield">DW</span>
+      </div>
+    </header>
+
+
+    <div class="hm-scroll">
+      <div class="hm-col">
+        <div class="hm-title">
+          <h1>Home</h1>
+          <span class="meta">Tue, Nov 17 · Northwind Freight</span>
+          <div class="r">
+            <button class="btn" data-go="roles.html"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="4.5" width="11" height="8.5" rx="1.5"/><path d="M5.5 4.5V3.2c0-.4.3-.7.7-.7h3.6c.4 0 .7.3.7.7v1.3"/></svg>All roles</button>
+            <button class="btn yellow" data-go="new-role.html">New role</button>
+          </div>
+        </div>
+
+        <div class="hm-greet"><b>Good morning, Dana</b><span>2 candidates are waiting on you, 1 scored call is running, and your debrief with Marcus is Thursday.</span></div>
+
+        <section class="card" aria-labelledby="hm-needs">
+          <div class="ch"><h2 id="hm-needs">Needs you <span class="hm-cnt" id="hmNeedN">2</span></h2><div class="r"><span class="meta">Accommodation requests show to recruiters only</span></div></div>
+          <div class="hm-list">
+            <div class="hm-row hm-flag">
+              <span class="pav">DK</span>
+              <div class="hm-tx"><b>Dev Kapoor asked for extra time on his scored call</b><small>Account Executive, Mid-Market · Req 114 · Scored call opens Nov 30 · Approving gives him 10 minutes</small></div>
+              <span class="hm-when">8:40 am</span>
+              <button class="btn sm yellow" data-go="candidates.html">Review request</button>
+            </div>
+            <div class="hm-row hm-flag">
+              <span class="pav">MB</span>
+              <div class="hm-tx"><b>Mia Brandt asked for a human interviewer</b><small>Account Executive, Mid-Market · Req 114 · Assign someone to run her call in place of the AI buyer</small></div>
+              <span class="hm-when">Yesterday</span>
+              <button class="btn sm yellow" data-go="candidates.html">Assign interviewer</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="hm-today">
+          <div class="ch"><h2 id="hm-today">Today</h2><div class="r"><span class="meta">All live roles · updated 9:14 am</span></div></div>
+          <div class="hm-stats" style="border-top:1px solid var(--line)">
+            <div class="hm-stat"><small>Calls finished today</small><div class="hm-v">3</div><div class="hm-s">2 in Req 114 · 1 in Req 117</div></div>
+            <div class="hm-stat"><small><span class="dot"></span>In a scored call now</small><div class="hm-v">1</div><div class="hm-s">Kai Morgan · Req 114 · since 10:05</div></div>
+            <div class="hm-stat"><small>Invites sent this week</small><div class="hm-v">46</div><div class="hm-s">Across Req 114, 117 and 109</div></div>
+            <div class="hm-stat"><small>Reminders sent</small><div class="hm-v">12</div><div class="hm-s">This week · sent by automation</div></div>
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="hm-roles">
+          <div class="ch"><h2 id="hm-roles">Your roles <span class="hm-cnt">5</span></h2><div class="r"><button class="btn sm ghost" data-go="roles.html">View all<svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m6 4 4 4-4 4"/></svg></button></div></div>
+          <table class="hm-tbl">
+            <thead><tr><th>Role</th><th>Status</th><th class="n">Enrolled</th><th class="n">Finished</th><th>Next action</th></tr></thead>
+            <tbody>
+              <tr><td><a class="hm-role" href="candidates.html">Account Executive, Mid-Market</a><small>Req 114 · Chicago or remote (US) · Marcus Lee</small></td><td><span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span></td><td class="n">212</td><td class="n">39</td><td class="nx hm-due">Decide 2 requests · debrief Thu 2:00 pm</td></tr>
+              <tr><td><a class="hm-role" href="roles.html">SDR, Inbound</a><small>Req 117 · Chicago</small></td><td><span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span></td><td class="n">96</td><td class="n">21</td><td class="nx">Review 21 finished calls</td></tr>
+              <tr><td><a class="hm-role" href="roles.html">Account Executive, Enterprise</a><small>Req 109 · Remote (US)</small></td><td><span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span></td><td class="n">44</td><td class="n">12</td><td class="nx">Invite the next batch from the applicant tracker</td></tr>
+              <tr><td><a class="hm-role" href="roles.html">SDR, Outbound</a><small>Req 120 · Set up by you · not published</small></td><td><span class="tag gray">Draft</span></td><td class="n dim">—</td><td class="n dim">—</td><td class="nx">Finish interview setup and publish</td></tr>
+              <tr><td><a class="hm-role" href="roles.html">Sales Manager, Central</a><small>Req 101 · Closed Oct 30 · 2 hired</small></td><td><span class="tag beige">Closed</span></td><td class="n">58</td><td class="n">19</td><td class="nx">Export the audit log for the annual bias audit</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="card" aria-labelledby="hm-next">
+          <div class="ch"><h2 id="hm-next">Coming up</h2><div class="r"><span class="meta">Next 14 days</span></div></div>
+          <div class="hm-list">
+            <div class="hm-row">
+              <div class="hm-date"><small>Thu</small><b>19</b></div>
+              <div class="hm-tx"><b>Debrief with Marcus Lee</b><small>2:00 pm · Account Executive, Mid-Market · 9 recommended on the shortlist, Sam Rivera ranked first</small></div>
+              <span class="pav" style="background:#E3ECFC;color:#2A4F99">ML</span>
+              <button class="btn sm" data-go="shortlist.html">Open shortlist</button>
+            </div>
+            <div class="hm-row">
+              <div class="hm-date"><small>Mon</small><b>30</b></div>
+              <div class="hm-tx"><b>Dev Kapoor's scored call opens</b><small>Nov 30 · Req 114 · Extra time request still needs your decision before then</small></div>
+              <button class="btn sm" data-go="candidates.html">View candidate</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="proto.js"></script>
+</body>
+</html>

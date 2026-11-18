@@ -1,6 +1,7 @@
 /* Prototype helpers: demo step bar and a note for things outside this prototype. */
 (function(){
   var STEPS=[
+    ['home.html','Recruiter','Dana opens Warmcall'],
     ['new-role.html','Recruiter','Dana creates the role from the applicant tracker'],
     ['setup.html','Recruiter','Dana sets up the interview'],
     ['automation.html','Recruiter','Dana checks the invite automation'],
@@ -16,7 +17,7 @@
     ['outcome-email.html','Candidate','Sam hears back from Dana'],
     ['compare.html','Hiring manager','Marcus compares Sam and Priya']
   ];
-  var file=(location.pathname.split('/').pop()||'index.html');
+  var file=(location.pathname.split('/').pop()||'index.html');if(file==='index.html')file='home.html';
   var i=-1;for(var k=0;k<STEPS.length;k++){if(STEPS[k][0]===file)i=k;}
   var css=document.createElement('style');
   css.textContent='.protobar{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:100;display:flex;align-items:center;gap:4px;padding:4px;border-radius:10px;background:#2F2F27;color:#fff;font:450 12.5px/1 Inter,system-ui,sans-serif;box-shadow:0 6px 20px rgba(28,28,24,.25)}'+
@@ -28,7 +29,7 @@
   document.head.appendChild(css);
   var bar=document.createElement('nav');bar.className='protobar';bar.setAttribute('aria-label','Prototype steps');
   var prev=i>0?STEPS[i-1]:null,next=i>=0&&i<STEPS.length-1?STEPS[i+1]:null;
-  bar.innerHTML='<a href="index.html" title="All screens">Map</a><span class="sep"></span>'+
+  bar.innerHTML=
     '<a class="'+(prev?'':'dis')+'" href="'+(prev?prev[0]:'#')+'" aria-label="Previous step">←</a>'+
     '<span class="t">'+(i>=0?'Step <b>'+(i+1)+'</b> of '+STEPS.length+' · '+STEPS[i][1]+' · '+STEPS[i][2]:'Prototype')+'</span>'+
     '<a class="'+(next?'':'dis')+'" href="'+(next?next[0]:'#')+'">'+(next?'Next →':'End')+'</a>';
