@@ -413,8 +413,9 @@ body.si-body{background:#FAFAF9;min-height:100%;height:auto}
         var bad=!n.value.trim()?[n,'Add your name.']:!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e.value.trim())?[e,'Add a work email we can reply to.']:!c.value.trim()?[c,'Add your company.']:null;
         if(bad){bad[0].style.borderColor='#B42318';bad[0].focus();er.textContent=bad[1];er.hidden=false;return false;}
         var first=n.value.trim().split(' ')[0];
-        m.querySelector('.ui-md-b').innerHTML='<div class="cd-ok"><span>✓</span><div><p><b>Thanks, '+UI.esc(first)+'.</b></p><p>We’ll email '+UI.esc(e.value.trim())+' within one working day with times for a 30-minute demo.</p></div></div>';
+        setTimeout(function(){m.querySelector('.ui-md-b').innerHTML='<div class="cd-ok"><span>✓</span><div><p><b>Thanks, '+UI.esc(first)+'.</b></p><p>We’ll email '+UI.esc(e.value.trim())+' within one working day with times for a 30-minute demo.</p></div></div>';
         var f=m.querySelector('.ui-md-f');f.innerHTML='';var b=document.createElement('button');b.className='ui-b pri';b.textContent='Done';b.onclick=function(){m.close();};f.appendChild(b);
+        },0);
         return false;}}]});
   });
 })();

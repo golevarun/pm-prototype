@@ -22,7 +22,7 @@
   function draw(){
     var L=list(),pages=Math.max(1,Math.ceil(L.length/PER));if(st.page>=pages)st.page=pages-1;
     var P=L.slice(st.page*PER,st.page*PER+PER);
-    $('byRows').innerHTML=P.length?P.map(function(e){var t=TC[e.type];return '<tr data-id="'+e.id+'" tabindex="0"><td class="mono by-dim">'+byFmtTime(e.t)+'</td><td>'+esc(e.ev)+'</td><td><span class="tag '+t[2]+'">'+t[1].replace(/s$/,'').replace('Buyer draw','Draw').replace('Settings change','Settings').replace('Fairness check','Check').replace('Scored call','Call').replace('Notice version','Notice')+'</span></td><td>'+esc(e.role)+'</td><td'+(e.cand?'':' class="by-dim"')+'>'+esc(e.cand||'–')+'</td><td>'+esc(e.by)+'</td><td class="by-dim" title="'+esc(e.det)+'">'+esc(e.det)+'</td></tr>';}).join('')
+    $('byRows').innerHTML=P.length?P.map(function(e){var t=TC[e.type];return '<tr data-id="'+e.id+'" tabindex="0"><td class="mono by-dim">'+byFmtTime(e.t)+'</td><td>'+esc(e.ev)+'</td><td><span class="tag '+t[2]+'">'+e.type+'</span></td><td>'+esc(e.role)+'</td><td'+(e.cand?'':' class="by-dim"')+'>'+esc(e.cand||'–')+'</td><td>'+esc(e.by)+'</td><td class="by-dim" title="'+esc(e.det)+'">'+esc(e.det)+'</td></tr>';}).join('')
       :'<tr><td colspan="7" class="by-none">No entries match these filters. <button class="by-clear" data-js id="byClr2">Clear all</button></td></tr>';
     $('byCount').textContent=L.length+(L.length===1?' entry':' entries')+(L.length<BY_LOG.length?' of '+BY_LOG.length:'');
     $('byPgL').textContent=L.length?(st.page*PER+1)+'–'+Math.min(L.length,st.page*PER+PER)+' · page '+(st.page+1)+' of '+pages:'';
