@@ -1,6 +1,7 @@
 /* cx.js — candidate data, candidate table, candidate drawer and invite flow for
    all-candidates.html, candidates.html, shortlists.html, shortlist.html, compare.html.
-   State changes live in sessionStorage so they carry between these screens and reset when the tab closes. */
+   State lives in the shared PMStore (store.js): decisions, accommodation answers and invites
+   are the same on every screen, across reloads. */
 (function(){
 var NOW=620; /* 10:20 am, Tue Nov 17 2026 */
 var TODAY=new Date(2026,10,17);
@@ -12,7 +13,8 @@ function dlw(d){var x=dAt(d);return WD[x.getDay()]+', '+MON[x.getMonth()]+' '+x.
 function hm(min){var h=Math.floor(min/60),m=Math.round(min%60),ap=h>=12?'pm':'am';h=h%12||12;return h+':'+(m<10?'0':'')+m+' '+ap;}
 function lt(d,mod){return d*1440+NOW-mod;}
 function lastLbl(p){if(p.lastTxt)return p.lastTxt;var t=p.lt;if(t<NOW)return hm(NOW-t);var d=Math.floor((t-NOW)/1440)+1;return d===1?'Yesterday':dl(d);}
-function ss(k,v){try{if(v===undefined){var s=sessionStorage.getItem(k);return s?JSON.parse(s):null;}sessionStorage.setItem(k,JSON.stringify(v));}catch(e){return null;}}
+var SSK={'cx-dec':'decisions','cx-people':'people','cx-notes':'notes'};
+function ss(k,v){k=SSK[k]||k;if(v===undefined)return PMStore.get(k,null);PMStore.set(k,v);}
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
 function slug(n){return n.toLowerCase().replace(/[^a-z]+/g,'-');}
 function ini(n){return n.split(' ').map(function(w){return w[0]}).join('').slice(0,2).toUpperCase();}
@@ -157,21 +159,28 @@ function stageOf(p,dec){
  if(p.st==='fin'&&p.req!=='109')return 'Review';
  return 'Phone screen';
 }
+/* Dev's and Mia's requests are shared with Home and the role overview through PMStore.acc() */
+var ACCK={'dev-kapoor':'dev','mia-brandt':'mia'};
+function applyAcc(p,A){
+ var k=ACCK[p.id];if(!k)return;var v=A[k];if(!v)return;
+ var a=(p.acc||[]).map(function(x){return Object.assign({},x);}),pend=a[0];if(!pend)return;
+ pend.by='Dana · just now';p.acc=a;p.st='notice';p.lt=0;p.lastTxt='Just now';
+ if(k==='dev'&&v.state==='approved'){pend.state='approved';pend.detail=(v.min||'10')+' minutes';p.stx='Extra time approved';p.cls='done';p.call='Opens Nov 30 · '+(v.min||'10')+' min';}
+ else if(k==='dev'){pend.state='declined';pend.reason=v.reason||'';p.stx='Extra time declined';p.cls='wait';}
+ else{var first=v.who.split(' ')[0],short=(v.date||'').split(', ')[1]||v.date;pend.state='assigned';pend.detail=v.who+', '+v.date+(v.time?' at '+v.time:'');p.stx='Human interviewer: '+first+', '+short;p.cls='done';p.call='With '+first+' · '+short;}
+}
 function people(){
- var S=ss('cx-people')||{},patch=S.patch||{},dec=ss('cx-dec')||{};
- var list=(S.added||[]).concat(BASE).map(function(b){var p=Object.assign({},b);if(patch[p.id])Object.assign(p,patch[p.id]);p.stageNow=stageOf(p,dec);return p;});
+ var S=ss('cx-people')||{},patch=S.patch||{},dec=ss('cx-dec')||{},A=PMStore.acc();
+ var list=(S.added||[]).concat(BASE).map(function(b){var p=Object.assign({},b);if(patch[p.id])Object.assign(p,patch[p.id]);applyAcc(p,A);p.stageNow=stageOf(p,dec);
+  if(p.st==='fin'&&dec[p.id])p.stx=dec[p.id]==='adv'?'Finished · advanced':'Finished · declined';return p;});
  return list;
 }
 function save(id,obj){var S=ss('cx-people')||{};S.patch=S.patch||{};S.patch[id]=Object.assign(S.patch[id]||{},obj);ss('cx-people',S);}
 function addPeople(arr){var S=ss('cx-people')||{};S.added=arr.concat(S.added||[]);ss('cx-people',S);}
 
 /* ---------- applicant tracker pool for Invite candidates ---------- */
-var POOL={
- '114':[['Maya Chen','maya.chen@gmail.com','Nov 15'],['Tariq Aziz','tariq.aziz@outlook.com','Nov 15'],['Sofia Lindqvist','sofia.lindqvist@gmail.com','Nov 16'],['Jamal Price','jamal.price@icloud.com','Nov 16'],['Erin Walsh','erin.walsh@gmail.com','Nov 16'],['Ravi Menon','ravi.menon@gmail.com','Nov 17']],
- '117':[['Kim Nguyen','kim.nguyen@gmail.com','Nov 14'],['Diego Alvarez','diego.alvarez@hey.com','Nov 16'],['Hannah Cole','hannah.cole@gmail.com','Nov 16'],['Victor Osei','victor.osei@outlook.com','Nov 17']],
- '109':[['Paul Novak','paul.novak@gmail.com','Nov 13'],['Lucy Grant','lucy.grant@icloud.com','Nov 16'],['Arjun Rao','arjun.rao@gmail.com','Nov 17']]
-};
-function pool(req){var S=ss('cx-people')||{},done=S.invited||[];return POOL[req].filter(function(a){return done.indexOf(a[0])<0;});}
+var POOL=PMStore.POOL;
+function pool(req){return PMStore.pool(req);}
 
 function invite(req,onDone){
  var reqs=req?[req]:['114','117','109'];var cur=reqs[0],picked={};
@@ -204,10 +213,7 @@ function invite(req,onDone){
   ed.onclick=function(){var on=mb.getAttribute('contenteditable')==='true';mb.setAttribute('contenteditable',on?'false':'true');mb.classList.toggle('cx-editing',!on);ed.textContent=on?'Edit message':'Done editing';if(!on)mb.focus();};
  }
  function send(names){
-  var S=ss('cx-people')||{};S.invited=(S.invited||[]).concat(names);ss('cx-people',S);
-  var locs=['chi','rem','chi','rem','rem','chi'];
-  var add=names.map(function(n,k){var a=POOL[cur].filter(function(x){return x[0]===n;})[0];var p=P(n,cur,'inv',{email:a[1],pr:'n',call:'Opens '+dl(-14),lt:0,lastTxt:'Just now',invD:0,loc:locs[k%6]});p.named=0;p.fresh=1;return p;});
-  addPeople(add);
+  var add=PMStore.addInvites(cur,names);
   note('Invited '+names.length+' candidate'+(names.length>1?'s':'')+' to Req '+cur+'. Dana\'s email went out just now.');
   if(onDone)onDone(add);
  }
@@ -215,17 +221,22 @@ function invite(req,onDone){
 }
 
 /* ---------- accommodation actions ---------- */
+function interviewers(){var m=PMStore.members(),l=[['Dana Whitfield','recruiter'],['Marcus Lee','hiring manager']].filter(function(x){return m.removed.indexOf(x[0])<0;});
+ m.added.forEach(function(x){if(x.r==='Recruiter'||x.r==='Hiring manager')l.push([x.n,x.r.toLowerCase()]);});return l;}
 function accAct(p,act,done){
  var fn=p.name.split(' ')[0],a=(p.acc||[]).map(function(x){return Object.assign({},x);}),pend=a.filter(function(x){return x.state==='pending';})[0];
  if(!pend)return;
+ var K=ACCK[p.id];
+ if(act==='approve'&&K){PMStore.setAcc(K,{state:'approved',min:'10'});note('Approved. '+fn+' gets 10 minutes for the scored call and an email from Dana.');done&&done();return;}
  if(act==='approve'){pend.state='approved';pend.by='Dana · just now';save(p.id,{st:'notice',stx:pend.type==='time'?'Extra time approved':'Request approved',cls:'done',acc:a,lt:0,lastTxt:'Just now'});note('Approved. '+fn+' gets 10 minutes for the scored call and an email from Dana.');done&&done();}
  else if(act==='decline'){
   UI.modal({title:'Decline '+fn+'\'s request?',body:'<p>'+esc(pend.text)+'.</p><label for="cxRs">Reason for '+fn+'</label><textarea id="cxRs" placeholder="For example: the call length is the same for everyone in this role. We can offer captions or a text version instead."></textarea><p class="cx-mnote">Dana\'s email to '+fn+' includes this reason. Hiring managers don\'t see the request or the reason.</p>',
-   actions:[{label:'Cancel'},{label:'Decline request',danger:true,onClick:function(m){var t=m.querySelector('textarea');if(!t.value.trim()){t.style.borderColor='#B42318';t.focus();return false;}pend.state='declined';pend.by='Dana · just now';pend.reason=t.value.trim();save(p.id,{st:'notice',stx:'Extra time declined',cls:'wait',acc:a,lt:0,lastTxt:'Just now'});note('Declined. Dana\'s email to '+fn+' includes your reason.');done&&done();}}]});
+   actions:[{label:'Cancel'},{label:'Decline request',danger:true,onClick:function(m){var t=m.querySelector('textarea');if(!t.value.trim()){t.style.borderColor='#B42318';t.focus();return false;}if(K){PMStore.setAcc(K,{state:'declined',reason:t.value.trim()});note('Declined. Dana\'s email to '+fn+' includes your reason.');done&&done();return;}pend.state='declined';pend.by='Dana · just now';pend.reason=t.value.trim();save(p.id,{st:'notice',stx:'Extra time declined',cls:'wait',acc:a,lt:0,lastTxt:'Just now'});note('Declined. Dana\'s email to '+fn+' includes your reason.');done&&done();}}]});
  }
  else if(act==='assign'){
-  UI.modal({title:'Assign an interviewer for '+fn,body:'<p>'+fn+' asked for a person to interview her instead of the AI buyer. The interviewer uses the same scenario and the same three skills.</p><label for="cxIv">Interviewer</label><select id="cxIv"><option>Dana Whitfield, recruiter</option><option>Marcus Lee, hiring manager</option></select><label for="cxId">Date</label><select id="cxId"><option>Thu, Nov 19</option><option selected>Fri, Nov 20</option><option>Mon, Nov 23</option></select><label for="cxIt">Time</label><select id="cxIt"><option>10:00 am</option><option>1:30 pm</option><option>3:00 pm</option></select>',
+  UI.modal({title:'Assign an interviewer for '+fn,body:'<p>'+fn+' asked for a person to interview her instead of the AI buyer. The interviewer uses the same scenario and the same three skills.</p><label for="cxIv">Interviewer</label><select id="cxIv">'+interviewers().map(function(x){return '<option>'+esc(x[0])+', '+esc(x[1])+'</option>';}).join('')+'</select><label for="cxId">Date</label><select id="cxId"><option>Thu, Nov 19</option><option selected>Fri, Nov 20</option><option>Mon, Nov 23</option></select><label for="cxIt">Time</label><select id="cxIt"><option>10:00 am</option><option>1:30 pm</option><option>3:00 pm</option></select>',
    actions:[{label:'Cancel'},{label:'Assign and send invite',primary:true,onClick:function(m){var who=m.querySelector('#cxIv').value.split(',')[0],first=who.split(' ')[0],d=m.querySelector('#cxId').value,t=m.querySelector('#cxIt').value,short=d.split(', ')[1];
+    if(K){PMStore.setAcc(K,{state:'assigned',who:who,date:d,time:t});note('Assigned. '+fn+' gets an invite for a call with '+first+' on '+short+' at '+t+'.');done&&done();return;}
     pend.state='assigned';pend.by='Dana · just now';pend.detail=who+', '+d+' at '+t;save(p.id,{st:'notice',stx:'Human interviewer: '+first+', '+short,cls:'done',call:'With '+first+' · '+short,acc:a,lt:0,lastTxt:'Just now'});note('Assigned. '+fn+' gets an invite for a call with '+first+' on '+short+' at '+t+'.');done&&done();}}]});
  }
 }
@@ -484,6 +495,7 @@ function table(root,cfg){
     var f={};Object.keys(S.f).forEach(function(g){f[g]=S.f[g].slice();});var v={id:'v'+Date.now(),name:i.value.trim(),f:f,q:S.q,sort:S.sort};saved.push(v);ss('cx-views-'+cfg.key,saved);S.view=v.id;labels();note('Saved the view “'+v.name+'”.');}}]});
  }
  shell();if(cfg.initView)cfg.viewFn(cfg.initView,S);render();
+ PMStore.on(function(k){if(/^(people|decisions|acc|members|\*)$/.test(k))render();});
  return {render:render,exportAll:function(){csv(L,cfg.file+'-'+L.length+'.csv');},state:S,list:function(){return L;}};
 }
 

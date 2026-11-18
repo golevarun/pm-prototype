@@ -402,13 +402,13 @@ td.act{text-align:right}
           <div class="hm-stats" style="border-top:1px solid var(--line)">
             <div class="hm-stat"><small>Calls finished today</small><div class="hm-v">3</div><div class="hm-s">2 in Req 114 · 1 in Req 117</div></div>
             <div class="hm-stat"><small><span class="dot"></span>In a scored call now</small><div class="hm-v">1</div><div class="hm-s">Kai Morgan · Req 114 · since 10:05</div></div>
-            <div class="hm-stat"><small>Invites sent this week</small><div class="hm-v">46</div><div class="hm-s">Across Req 114, 117 and 109</div></div>
+            <div class="hm-stat"><small>Invites sent this week</small><div class="hm-v" id="rlInvWk">46</div><div class="hm-s">Across Req 114, 117 and 109</div></div>
             <div class="hm-stat"><small>Reminders sent</small><div class="hm-v">12</div><div class="hm-s">This week · sent by automation</div></div>
           </div>
         </section>
 
         <section class="card" aria-labelledby="hm-roles">
-          <div class="ch"><h2 id="hm-roles">Your roles <span class="hm-cnt">5</span></h2><div class="r"><button class="btn sm ghost" data-go="roles.html">View all<svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m6 4 4 4-4 4"/></svg></button></div></div>
+          <div class="ch"><h2 id="hm-roles">Your roles <span class="hm-cnt" id="rlRoleN">5</span></h2><div class="r"><button class="btn sm ghost" data-go="roles.html">View all<svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m6 4 4 4-4 4"/></svg></button></div></div>
           <table class="hm-tbl">
             <thead><tr><th>Role</th><th>Status</th><th class="n">Enrolled</th><th class="n">Finished</th><th>Next action</th></tr></thead>
             <tbody>
@@ -426,7 +426,7 @@ td.act{text-align:right}
           <div class="hm-list" id="rlComing">
             <div class="hm-row">
               <div class="hm-date"><small>Thu</small><b>19</b></div>
-              <div class="hm-tx"><b>Debrief with Marcus Lee</b><small>2:00 pm · Account Executive, Mid-Market · 9 recommended on the shortlist, Sam Rivera ranked first</small></div>
+              <div class="hm-tx"><b>Debrief with Marcus Lee</b><small id="rlDebrief">2:00 pm · Account Executive, Mid-Market · 9 recommended on the shortlist, Sam Rivera ranked first</small></div>
               <span class="pav" style="background:#E3ECFC;color:#2A4F99">ML</span>
               <button class="btn sm" data-go="shortlist.html">Open shortlist</button>
             </div>
@@ -441,32 +441,69 @@ td.act{text-align:right}
     </div>
   </div>
 </div>
-<script src="ui.js"></script><script src="proto.js"></script>
+<script src="store.js"></script><script src="ui.js"></script><script src="proto.js"></script>
 <script src="rl.js"></script>
 <script>
 (function(){
   var OK='<span class="rl-ok"><svg viewBox="0 0 16 16"><path d="m4 8.5 2.5 2.5L12 5.5"/></svg></span>';
-  var dev=document.getElementById('rlNeedDev'),mia=document.getElementById('rlNeedMia');
+  var E=RL.esc,dev=document.getElementById('rlNeedDev'),mia=document.getElementById('rlNeedMia');
   var devHTML=dev.innerHTML,miaHTML=mia.innerHTML;
-  function undo(k){var n=RL.needs();n[k]=null;RL.set('needs',n);render();UI.toast(k==='dev'?'Dev Kapoor\'s request is open again.':'Mia Brandt\'s request is open again.');}
+  var tbody=document.querySelector('.hm-tbl tbody'),ROWS0=tbody.innerHTML;
+  function undo(k){RL.setNeed(k,null);UI.toast(k==='dev'?'Dev Kapoor\'s request is open again.':'Mia Brandt\'s request is open again.');}
+  function rowNav(row,href){row.classList.add('rl-click');row.addEventListener('click',function(e){if(e.target.closest('a,button'))return;location.href=href;});}
+  /* Your roles: story rows, plus publish state, invites and roles created on New role */
+  function drawRoles(){
+    tbody.innerHTML=ROWS0;
+    tbody.querySelectorAll('tr').forEach(function(tr){
+      var a=tr.querySelector('a.hm-role'),h=a.getAttribute('href'),req=h==='overview.html'?'114':(h.match(/req=(\w+)/)||[])[1];
+      if(RL.roleState(req,'deleted')){tr.remove();return;}
+      var n=tr.querySelectorAll('td.n');
+      if(RL.ROLES[req]&&RL.ROLES[req].enr!=null)n[0].textContent=RL.enrolled(req);
+      if(RL.ROLES[req]&&RL.ROLES[req].st==='draft'&&PMStore.isLive(req)){
+        tr.querySelector('.tag').outerHTML='<span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span>';
+        a.nextElementSibling.textContent='Req '+req+' · '+RL.ROLES[req].loc+' · published by you';
+        n[0].textContent=RL.enrolled(req);n[1].textContent='0';n[0].classList.remove('dim');n[1].classList.remove('dim');
+        tr.querySelector('.nx').textContent=RL.enrolled(req)?'Wait for the first scored calls':'Invite candidates from the applicant tracker';}
+    });
+    RL.newRoles().forEach(function(r){if(RL.roleState(r.req,'deleted'))return;var live=PMStore.isLive(r.req),tr=document.createElement('tr');
+      tr.innerHTML='<td><a class="hm-role" href="rl-role.html?req='+encodeURIComponent(r.req)+'">'+E(r.t)+'</a><small>'+(/^\d+$/.test(r.req)?'Req '+E(r.req):'No req linked')+(r.loc?' · '+E(r.loc):'')+(live?' · published by you':' · set up by you · not published')+'</small></td>'+
+        '<td>'+(live?'<span class="tag green"><span class="dot" style="margin-right:2px"></span>Live</span>':'<span class="tag gray">Draft</span>')+'</td><td class="n'+(live?'':' dim')+'">'+(live?'0':'—')+'</td><td class="n'+(live?'':' dim')+'">'+(live?'0':'—')+'</td><td class="nx">'+(live?'Invite candidates from the applicant tracker':'Finish interview setup and publish')+'</td>';
+      tbody.insertBefore(tr,tbody.firstChild);});
+    tbody.querySelectorAll('tr').forEach(function(tr){var a=tr.querySelector('a.hm-role');if(a)rowNav(tr,a.getAttribute('href'));});
+    document.getElementById('rlRoleN').textContent=tbody.querySelectorAll('tr').length;
+  }
   function render(){
-    var n=RL.needs(),open=RL.openNeeds();
+    var n=RL.needs(),open=RL.openNeeds(),D=PMStore.decided(),dm=PMStore.decisionMeta();
     if(n.dev){dev.className='hm-row rl-done';dev.innerHTML=OK+'<div class="hm-tx"><b>'+(n.dev.ok?'Approved '+n.dev.min+' minutes for Dev Kapoor':'Declined extra time for Dev Kapoor')+'</b><small>Req 114 · Dev got an email · decided by you</small></div><span class="hm-when">Just now</span><button class="btn sm ghost" data-js data-rl="undo-dev">Undo</button><button class="btn sm" data-go="candidates.html">View candidate</button>';}
     else{dev.className='hm-row hm-flag';dev.innerHTML=devHTML;}
-    if(n.mia){mia.className='hm-row rl-done';mia.innerHTML=OK+'<div class="hm-tx"><b>'+RL.esc(n.mia.who)+' will interview Mia Brandt</b><small>Req 114 · '+RL.esc(n.mia.when)+' · Mia got a calendar invite</small></div><span class="hm-when">Just now</span><button class="btn sm ghost" data-js data-rl="undo-mia">Undo</button><button class="btn sm" data-go="candidates.html">View candidate</button>';}
+    if(n.mia){mia.className='hm-row rl-done';mia.innerHTML=OK+'<div class="hm-tx"><b>'+E(n.mia.who)+' will interview Mia Brandt</b><small>Req 114 · '+E(n.mia.when)+' · Mia got a calendar invite</small></div><span class="hm-when">Just now</span><button class="btn sm ghost" data-js data-rl="undo-mia">Undo</button><button class="btn sm" data-go="candidates.html">View candidate</button>';}
     else{mia.className='hm-row hm-flag';mia.innerHTML=miaHTML;}
-    document.getElementById('hmNeedN').textContent=open;
-    var list=dev.parentNode,em=list.querySelector('.rl-empty');
-    if(!open&&!em){em=document.createElement('div');em.className='rl-empty';em.textContent='Nothing waiting on you. Decided requests stay here until tomorrow.';list.appendChild(em);}
-    if(open&&em)em.remove();
+    var list=dev.parentNode;
+    /* Shortlist decisions Marcus made: Dana checks the outcome email before it goes out */
+    list.querySelectorAll('.rl-decrow').forEach(function(r){r.remove();});
+    var DEC=PMStore.decisions(),ids=Object.keys(DEC).filter(function(id){return PMStore.REC9.indexOf(id)>=0;});
+    ids.forEach(function(id){var c=CXN[id],adv=DEC[id]==='adv',r=document.createElement('div');r.className='hm-row rl-decrow';
+      r.innerHTML='<span class="pav">'+c[1]+'</span><div class="hm-tx"><b>Marcus '+(adv?'advanced ':'declined ')+c[0]+(adv?' to Final round':'')+'</b><small>Req 114 · '+(adv?'Dana\'s message goes out today at 2:00 pm':'Dana\'s message goes out by Tue, Nov 24')+(dm[id]&&dm[id].reason?' · reason: '+E(dm[id].reason.charAt(0).toLowerCase()+dm[id].reason.slice(1)):'')+'</small></div><span class="hm-when">Just now</span>'+
+        '<button class="btn sm" data-go="shortlist.html#'+id+'">Open shortlist</button>'+(id==='sam'?'<button class="btn sm yellow" data-go="outcome-email.html">Check email</button>':'');
+      list.appendChild(r);});
+    var total=open+ids.length;
+    document.getElementById('hmNeedN').textContent=total;
+    var em=list.querySelector('.rl-empty');
+    if(!total&&!em){em=document.createElement('div');em.className='rl-empty';em.textContent='Nothing waiting on you. Decided requests stay here until tomorrow.';list.appendChild(em);}
+    if(total&&em)em.remove();
     var g=document.getElementById('rlGreet');
-    g.textContent=(open?open+' candidate'+(open>1?'s are':' is')+' waiting on you':'Nothing is waiting on you')+', 1 scored call is running, and your debrief with Marcus is Thursday.';
-    document.getElementById('rlNx114').textContent=(open?'Decide '+open+' request'+(open>1?'s':'')+' · ':'')+'debrief Thu 2:00 pm';
+    g.textContent=(open?open+' candidate'+(open>1?'s are':' is')+' waiting on you':(ids.length?'No requests are waiting on you':'Nothing is waiting on you'))+', 1 scored call is running, and your debrief with Marcus is Thursday.'+(ids.length?' Marcus has decided '+ids.length+' of 9 on the shortlist. Check the outcome email'+(ids.length>1?'s':'')+' before '+(ids.length>1?'they go':'it goes')+' out.':'');
+    drawRoles();
+    var nx=document.getElementById('rlNx114');
+    if(nx)nx.textContent=(open?'Decide '+open+' request'+(open>1?'s':'')+' · ':'')+(ids.length?'Check '+ids.length+' outcome email'+(ids.length>1?'s':'')+' · ':'')+'debrief Thu 2:00 pm';
     document.querySelectorAll('.hm-tbl tbody tr').forEach(function(tr){var a=tr.querySelector('a.hm-role'),m=a&&a.getAttribute('href').match(/req=(\d+)/);if(m&&RL.roleState(m[1],'paused')){var tg=tr.querySelector('.tag');tg.className='tag beige';tg.textContent='Invites paused';}});
     var dn=document.getElementById('rlDevNext');
     dn.textContent=n.dev?('Nov 30 · Req 114 · '+(n.dev.ok?'Extra time approved: '+n.dev.min+' minutes':'Extra time declined: 7 minutes')):'Nov 30 · Req 114 · Extra time request still needs your decision before then';
-    wire();
+    document.getElementById('rlDebrief').textContent='2:00 pm · Account Executive, Mid-Market · 9 recommended on the shortlist, Sam Rivera ranked first'+(D.adv||D.dec?' · '+[D.adv?D.adv+' advanced':'',D.dec?D.dec+' declined':''].filter(Boolean).join(', ')+', '+D.left+' left to decide':'');
+    document.getElementById('rlInvWk').textContent=46+PMStore.invitedCount();
+    wire();syncRb();
   }
+  var CXN={sam:['Sam Rivera','SR'],priya:['Priya Nair','PN'],ama:['Ama Owusu','AO'],rhea:['Rhea Das','RD'],nia:['Nia Brooks','NB'],ben:['Ben Carter','BC'],theo:['Theo Grant','TG'],carmen:['Carmen Ruiz','CR'],ian:['Ian Walsh','IW']};
   function wire(){
     document.querySelectorAll('#rlNeedDev button, #rlNeedMia button').forEach(function(b){
       var t=b.textContent.trim();
@@ -476,10 +513,7 @@ td.act{text-align:right}
       if(b.dataset.rl==='undo-mia')b.onclick=function(){undo('mia');};
     });
   }
-  render();
   /* Rows open what their main link or button opens */
-  function rowNav(row,href){row.classList.add('rl-click');row.addEventListener('click',function(e){if(e.target.closest('a,button'))return;location.href=href;});}
-  document.querySelectorAll('.hm-tbl tbody tr').forEach(function(tr){var a=tr.querySelector('a.hm-role');if(a)rowNav(tr,a.getAttribute('href'));});
   document.querySelectorAll('#rlComing .hm-row').forEach(function(r){var b=r.querySelector('[data-go]');if(b)rowNav(r,b.getAttribute('data-go'));});
   /* The Dev row in Coming up opens his request while it's undecided */
   var devNext=document.getElementById('rlDevNext').closest('.hm-row');
@@ -488,7 +522,9 @@ td.act{text-align:right}
   vb.parentNode.insertBefore(rb,vb);
   rb.onclick=function(){RL.reviewDev(render);};
   function syncRb(){rb.hidden=!!RL.needs().dev;}
-  var r0=render;render=function(){r0();syncRb();};syncRb();
+  render();
+  /* every change in the shared store, from this tab or another, redraws Home */
+  PMStore.on(function(){render();});
 })();
 </script>
 </body>

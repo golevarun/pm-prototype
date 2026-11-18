@@ -1,4 +1,4 @@
-/* by-new-buyer.html: create (or edit) a draft buyer, saved to localStorage pm-by-new */
+/* by-new-buyer.html: create (or edit) a draft buyer, saved in PMStore (pm:by-new) */
 (function(){
   var esc=UI.esc,$=function(id){return document.getElementById(id)};
   var MOODS=['Cold','Rushed','Neutral','Open','Warm'];

@@ -119,6 +119,7 @@ body{background:#EFEFEB;padding:20px 24px 96px}
     </div>
   </article>
 </div>
+<script src="store.js"></script>
 <script>
 (function(){
   var V={adv:{s:'Next step for Account Executive at Northwind',t:'Tue, Nov 17, 2:00 pm',lt:'2:00 pm',p:'Thanks for taking the call with Jordan. Marcus Lee, our hiring manager\u2026',n:'Your call with Jordan Ellis on Nov 17 \u00b7 the three moments Marcus listened to, with what was said'},
@@ -131,6 +132,12 @@ body{background:#EFEFEB;padding:20px 24px 96px}
     document.title='Inbox \u00b7 '+v.s;
     $('oe-adv').hidden=k!=='adv';$('oe-dec').hidden=k!=='dec';$('oe-m3').hidden=k==='dec';
   })});
+  /* Start on what Marcus actually decided for Sam on the shortlist (shared PMStore) */
+  var d=window.PMStore&&PMStore.decisions().sam;
+  if(d==='dec'){var b=document.querySelector('[data-oe="dec"]');if(b)b.click();}
+  var tp=document.querySelector('.oe-top'),nt=document.createElement('small');nt.id='oe-actual';nt.style.marginLeft='auto';
+  nt.textContent=d==='adv'?'Marcus advanced Sam on the shortlist':d==='dec'?'Marcus declined Sam on the shortlist':'Sam has no decision yet. Marcus decides on the shortlist.';
+  if(tp)tp.appendChild(nt);
 })();
 </script>
 <script src="ui.js"></script><script src="proto.js"></script><script src="cd-mail.js"></script>

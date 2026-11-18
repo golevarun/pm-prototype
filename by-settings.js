@@ -52,7 +52,7 @@
         {sep:true},
         {label:pend?'Cancel invite':'Remove from workspace',danger:true,onClick:function(){
           UI.confirm((pend?'Cancel the invite for ':'Remove ')+nm+'?',pend?'The invite link stops working.':nm+' loses access right away. Decisions and notes they made stay in the audit log.',pend?'Cancel invite':'Remove',function(){
-            tr.remove();var n=qa('#team tbody tr').length;q('#team .ch p').textContent=n+' members. Each role sets what a member can see and change.';UI.toast(pend?'Cancelled the invite for '+nm+'.':'Removed '+nm+' from Northwind Freight. Logged in the audit log.');},true);}}]);});
+            tr.remove();PMStore.update('members',function(M){M=M||{};M.added=(M.added||[]).filter(function(x){return x.n!==nm;});if(!pend){M.removed=(M.removed||[]).filter(function(x){return x!==nm;}).concat([nm]);}return M;},{});var n=qa('#team tbody tr').length;q('#team .ch p').textContent=n+' members. Each role sets what a member can see and change.';UI.toast(pend?'Cancelled the invite for '+nm+'.':'Removed '+nm+' from Northwind Freight. Logged in the audit log.');},true);}}]);});
   }
   qa('tr',tbody).forEach(bindMember);
   var inv=UI.byText('Invite member')[0];inv.removeAttribute('onclick');
@@ -62,12 +62,20 @@
       actions:[{label:'Cancel'},{label:'Send invite',primary:true,onClick:function(m){
         var n=q('#byIvN',m).value.trim(),e=q('#byIvE',m).value.trim(),r=q('#byIvR',m).value;
         if(!n||!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(e)){q('#byIvErr',m).textContent=!n?'Add a name.':'Add a valid work email.';return false;}
-        var ini=n.split(/\s+/).map(function(w){return w.charAt(0)}).join('').slice(0,2).toUpperCase();
-        tbody.insertAdjacentHTML('beforeend','<tr class="by-inv"><td><div class="person"><span class="pav" style="background:#E8E2D8;color:#493B2C">'+esc(ini)+'</span><div><b>'+esc(n)+'<span class="st-you">Invited</span></b><small>'+esc(e)+'</small></div></div></td><td><span class="st-role">'+r+CHEV+'</span></td><td class="dim st-can">'+CAN[r]+'</td><td class="dim">Invite sent</td><td class="act"><button class="st-more" aria-label="More for '+esc(n)+'"><svg class="i" viewBox="0 0 16 16"><path d="M4 8h.01M8 8h.01M12 8h.01" stroke-width="2.2"/></svg></button></td></tr>');
-        bindMember(tbody.lastElementChild);var c=qa('#team tbody tr').length;q('#team .ch p').textContent=c+' members. Each role sets what a member can see and change.';
+        addRow(n,e,r);PMStore.update('members',function(M){M=M||{};M.added=(M.added||[]).filter(function(x){return x.n!==n;}).concat([{n:n,e:e,r:r}]);M.removed=(M.removed||[]).filter(function(x){return x!==n;});return M;},{});
         UI.toast('Sent an invite to '+e+'. They join as '+r.toLowerCase()+'.');}}]});
     var s=q('.ui-md #byIvR');s.onchange=function(){q('.ui-md #byIvC').textContent=CAN[s.value]+'.';};
   });
+  /* members added or removed earlier in this demo (PMStore members) */
+  function addRow(n,e,r){
+        var ini=n.split(/\s+/).map(function(w){return w.charAt(0)}).join('').slice(0,2).toUpperCase();
+        tbody.insertAdjacentHTML('beforeend','<tr class="by-inv"><td><div class="person"><span class="pav" style="background:#E8E2D8;color:#493B2C">'+esc(ini)+'</span><div><b>'+esc(n)+'<span class="st-you">Invited</span></b><small>'+esc(e)+'</small></div></div></td><td><span class="st-role">'+r+CHEV+'</span></td><td class="dim st-can">'+CAN[r]+'</td><td class="dim">Invite sent</td><td class="act"><button class="st-more" aria-label="More for '+esc(n)+'"><svg class="i" viewBox="0 0 16 16"><path d="M4 8h.01M8 8h.01M12 8h.01" stroke-width="2.2"/></svg></button></td></tr>');
+        bindMember(tbody.lastElementChild);var c=qa('#team tbody tr').length;q('#team .ch p').textContent=c+' members. Each role sets what a member can see and change.';
+  }
+  (function(){var M=PMStore.members();
+    qa('tr',tbody).forEach(function(tr){var b=q('.person b',tr);if(b&&M.removed.indexOf(b.firstChild.textContent.trim())>=0)tr.remove();});
+    M.added.forEach(function(x){addRow(x.n,x.e,x.r);});
+    q('#team .ch p').textContent=qa('#team tbody tr').length+' members. Each role sets what a member can see and change.';})();
 
   /* ---------- Integrations ---------- */
   var mans=UI.byText('Manage',q('#integrations'));

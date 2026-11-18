@@ -18,13 +18,25 @@
       hist:[0,1,2,3,3,2,1],since:'Oct 22'}
   };
   var cur='114';
+  /* Req 114 checks that depend on shared state: shortlist decisions, accommodation answers, invites */
+  function live114(){
+    var D=PMStore.decided(),A=PMStore.acc(),n=D.all.adv+D.all.dec,inv=PMStore.invitedCount('114');
+    meta.textContent=(212+inv)+' enrolled · 39 finished · checked 9:15 am';
+    qa('.fc-chk',strip).forEach(function(c){var t=q('b',c).textContent;
+      if(t==='Human decision on every advance or decline'){q('.fc-n',c).textContent=n?n+' of '+n:'0 so far';
+        q('small',c).textContent=n?D.all.adv+' advance'+(D.all.adv===1?'':'s')+' and '+D.all.dec+' decline'+(D.all.dec===1?'':'s')+', each made by Marcus Lee. PM can’t make one.':'No advance or decline yet. PM can’t make one.';}
+      if(t==='Accommodation requests answered within 1 working day'){var open=(A.dev?0:1)+(A.mia?0:1);
+        if(!open){c.classList.remove('fc-warn');q('.fc-st',c).innerHTML=OK;q('.fc-n',c).textContent='0 open · 2 answered today';q('small',c).textContent='Dev Kapoor and Mia Brandt were answered within a day.';}
+        else if(open===1){q('.fc-n',c).textContent='1 open'+(A.mia?'':' · due today');q('small',c).innerHTML=(A.mia?'Dev Kapoor is waiting on Dana.':'Mia Brandt is due today.')+' <a href="candidates.html">Review requests</a>';}}
+    });
+  }
   var roleBtn=q('.fc-role');
   function chk(title,n,small,warn,state){return '<div class="fc-chk'+(warn?' fc-warn':'')+'"><div class="fc-st">'+(warn?'<span class="fc-wi">!</span>Needs review':OK)+'</div><b>'+title+'</b><div class="fc-n mono">'+n+'</div><small>'+small+'</small></div>';}
   function render(k){
     cur=k;var R=ROLES[k];
     roleBtn.innerHTML=roleBtn.innerHTML.replace(/<\/svg>[^<]*<span class="dim">[^<]*<\/span>/,'</svg>'+esc(R.name)+'<span class="dim">'+R.req+'</span>');
     meta.textContent=R.meta;rangeSel.childNodes.forEach(function(n){if(n.nodeType===3&&n.textContent.trim())n.textContent=R.range;});
-    if(k==='114'){strip.innerHTML=ORIG.strip;two.innerHTML=ORIG.two;logBody.innerHTML=ORIG.log;}
+    if(k==='114'){strip.innerHTML=ORIG.strip;two.innerHTML=ORIG.two;logBody.innerHTML=ORIG.log;live114();}
     else{
       strip.innerHTML=chk('Notice shown before every scored call',R.finished+' of '+R.finished,'Notice v1, shown 10 business days before the call')+
         chk('Consent recorded before every scored call',R.finished+' of '+R.finished,'Time, notice version and candidate on each record')+
@@ -148,5 +160,6 @@
     },600);
   };
 
+  live114();PMStore.on(function(){if(cur==='114')live114();});
   if(/#exports/.test(location.hash))showTab('Exports');else if(/#settings/.test(location.hash))showTab('Settings');
 })();

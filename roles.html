@@ -405,7 +405,7 @@ tbody tr.rl-on td{background:#F5F8FE!important}
     </div>
   </div>
 </div>
-<script src="ui.js"></script><script src="proto.js"></script>
+<script src="store.js"></script><script src="ui.js"></script><script src="proto.js"></script>
 <script src="rl.js"></script>
 <script>
 (function(){
@@ -421,7 +421,9 @@ tbody tr.rl-on td{background:#F5F8FE!important}
   ];
   RL.newRoles().forEach(function(r){rows.push({req:r.req,t:r.t,loc:r.loc||'',st:'draft',co:r.hm||'',enr:null,fin:null,rec:null,upd:'Just now',k:200,isNew:1});});
   rows=rows.filter(function(r){return !RL.roleState(r.req,'deleted');});
-  rows.forEach(function(r){var p=RL.roleState(r.req,'paused');if(p)r.paused=true;});
+  rows.forEach(function(r){var p=RL.roleState(r.req,'paused');if(p)r.paused=true;
+    if(RL.ROLES[r.req]&&r.enr!=null)r.enr=RL.enrolled(r.req);
+    if(r.st==='draft'&&PMStore.isLive(r.req)){r.st='live';r.enr=RL.enrolled(r.req);r.fin=0;r.rec=0;r.upd='Just now';r.k=250;}});
   var F={q:'',owner:'Any',st:[],sort:'upd'},sel={},hidden={},dupN=0;
   var tb=document.getElementById('rlRows');
   function href(r){return r.dup?'setup.html':RL.roleHref(r.req);}
@@ -432,7 +434,7 @@ tbody tr.rl-on td{background:#F5F8FE!important}
   }
   function n(v){return v==null?'<td class="rl-n dim">—</td>':'<td class="rl-n">'+v+'</td>';}
   function act(r){
-    if(r.st==='draft')return '<button class="btn sm yellow" data-go="setup.html">Finish setup</button>';
+    if(r.st==='draft')return '<button class="btn sm yellow" data-go="setup.html?req='+encodeURIComponent(r.dup?'120':r.req)+'">Finish setup</button>';
     if(r.req==='114')return '<button class="btn sm" data-go="overview.html">Open</button>';
     return '<button class="btn sm ghost" data-go="'+href(r)+'">View</button>';
   }
@@ -518,6 +520,7 @@ tbody tr.rl-on td{background:#F5F8FE!important}
   UI.wire('#rlBDup',function(){var l=selList();l.forEach(function(r){dupN++;rows.push({req:'C'+dupN+r.req,t:r.t+' (copy)',loc:r.loc,st:'draft',co:r.co,enr:null,fin:null,rec:null,upd:'Just now',k:400+dupN,dup:1});});
     sel={};render();UI.toast('Duplicated '+l.length+' role'+(l.length>1?'s':'')+' as draft'+(l.length>1?'s':'')+'. Buyers, skills and call settings were copied. Candidates were not.');});
   render();
+  PMStore.on(function(k,v,remote){if(remote)location.reload();});
 })();
 </script>
 </body>

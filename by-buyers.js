@@ -17,6 +17,11 @@
     BY.forEach(function(b){if(b.id==='rl'){b.status='use';b.ver='v2';b.tested='Oct 26';TESTED.rl='2026-10-26';EDITED.rl='2026-10-26';
       b.hist=[['Oct 26','Dana · stayed in character','7:00'],['Sep 30','Dana · first test','6:20']];b.moodStart=1;b.moodTo=1;b.moodNote='Rushed the whole call.';}});
   }
+  /* Rosa marked as tested on the test call screen */
+  if((BYC.get('pm-by-tested',{})||{}).rl){BY.forEach(function(b){if(b.id==='rl'){b.tested='Today';TESTED.rl='2026-11-17T12';}});}
+  /* Buyers archived earlier in this demo */
+  var ARCH=BYC.get('pm-by-archived',[])||[];
+  for(var ai=BY.length-1;ai>=0;ai--){if(ARCH.indexOf(BY[ai].id)>=0)BY.splice(ai,1);}
   /* New buyers saved on by-new-buyer.html */
   function fromNew(n){
     var ini=n.name.split(/\s+/).map(function(w){return w.charAt(0)}).join('').slice(0,2).toUpperCase();
@@ -30,7 +35,7 @@
       voice:[v.name,v.desc],voiceLen:v.len,diff:'Set by each role that uses it',hist:[],changed:'Dana created it today'};
   }
   var NEW=BYC.get('pm-by-new',[]);
-  NEW.slice().reverse().forEach(function(n){if(!BY.some(function(b){return b.id===n.id})){BY.unshift(fromNew(n));EDITED[n.id]='2026-11-17T'+(n.t||'12:00');TESTED[n.id]='';}});
+  NEW.slice().reverse().forEach(function(n){if(ARCH.indexOf(n.id)<0&&!BY.some(function(b){return b.id===n.id})){BY.unshift(fromNew(n));EDITED[n.id]='2026-11-17T'+(n.t||'12:00');TESTED[n.id]='';}});
 
   function inRole(b,r){if(r==='all')return true;if(r==='none')return !b.roles.length;return b.roles.some(function(x){return x[0]===r});}
   function visible(){
@@ -174,7 +179,7 @@
       if(b.roles.length){UI.modal({title:'Can’t archive '+b.name,body:'<p>'+esc(b.name)+' is in the buyer mix for '+b.roles.map(function(r){return r[0]+' ('+r[1]+')'}).join(', ')+'. Every candidate in a role gets the same mix, so remove the buyer in that role’s Interview setup first.</p>',
         actions:[{label:'Close'},{label:'Open interview setup',primary:true,onClick:function(){location.href='setup.html';}}]});return;}
       UI.confirm('Archive '+b.name+'?','The buyer leaves this list. Past calls keep their record of the buyer version they ran with.','Archive',function(){
-        BY.splice(BY.indexOf(b),1);var N=BYC.get('pm-by-new',[]).filter(function(n){return n.id!==b.id});BYC.set('pm-by-new',N);
+        BY.splice(BY.indexOf(b),1);var N=BYC.get('pm-by-new',[]).filter(function(n){return n.id!==b.id});BYC.set('pm-by-new',N);if(!b.isNew){var AR=BYC.get('pm-by-archived',[])||[];AR.push(b.id);BYC.set('pm-by-archived',AR);}
         byCur=(visible()[0]||BY[0]).id;byRows();bySel(byCur);UI.toast('Archived '+b.name+'.');},true);}});
     UI.menu(btn,items);
   }

@@ -471,7 +471,7 @@ button.playb.cx-pause::after{border:0;width:9px;height:10px;margin:0;border-left
     <div class="mf2"><span class="meta">You can edit the message before it sends.</span><button class="btn" data-js onclick="closeDecide()">Cancel</button><button class="btn yellow" id="mGo" data-js onclick="confirmDecide()">Advance Sam</button></div>
   </div>
 </div>
-<script src="ui.js"></script><script src="proto.js"></script><script src="cx.js"></script>
+<script src="store.js"></script><script src="ui.js"></script><script src="proto.js"></script><script src="cx.js"></script>
 <script>
 var C=CX.SL;
 var SK=[['Discovery',40],['Handling doubt',35],['Getting a next step',25]];
@@ -508,7 +508,7 @@ function cbar(){var ids=Object.keys(cmp),el=document.getElementById('cxCbar');el
  el.innerHTML='<span class="meta" style="color:var(--ink)">'+ids.length+' picked to compare</span><span class="meta">'+ids.map(function(id){return C.filter(function(c){return c.id===id})[0].name}).join(', ')+'</span><span style="margin-left:auto"></span><button class="btn sm ghost" data-js onclick="cmp={};renderRows()">Clear</button><button class="btn sm yellow" data-js onclick="goCompare()">Compare'+(ids.length===2?' these two':'')+'</button>';}
 function goCompare(){var ids=Object.keys(cmp);if(ids.length!==2){protoNote(ids.length<2?'Pick one more candidate to compare.':'Pick exactly two candidates to compare.');return;}location.href='compare.html?a='+ids[0]+'&b='+ids[1];}
 function actsHtml(c){var d=dec[c.id];
- if(d)return '<span class="done-tag">'+(d==='adv'?'Advanced to Final round':'Declined')+' · synced</span><button class="btn sm" data-js onclick="undoDecide()">Undo</button>';
+ if(d){var dm=PMStore.decisionMeta()[c.id];return '<span class="done-tag"'+(dm&&dm.reason?' title="Reason: '+dm.reason.replace(/"/g,'&quot;')+'"':'')+'>'+(d==='adv'?'Advanced to Final round':'Declined')+' · synced</span><button class="btn sm" data-js onclick="undoDecide()">Undo</button>';}
  var other=c.id==='sam'?'priya':'sam';
  return '<button class="btn sm" data-go="compare.html?a='+other+'&b='+c.id+'">Compare with '+(other==='sam'?'Sam':'Priya')+'</button><button class="btn sm" data-js onclick="openDecide(0)">Decline</button><button class="btn sm yellow" data-js onclick="openDecide(1)">Advance to final round</button>';}
 function renderPanel(){var c=C[cur],fn=first(c),D=420;
@@ -575,14 +575,14 @@ function reasonPicked(){document.getElementById('mGo').disabled=false;}
 function closeDecide(){document.getElementById('scrim').classList.remove('on');}
 function confirmDecide(){var c=C[cur],fn=first(c);
  if(!mode&&!document.querySelector('.reasons input:checked'))return;
- closeDecide();dec[c.id]=mode?'adv':'dec';CX.ss('cx-dec',dec);
+ var rs=document.querySelector('.reasons input:checked');closeDecide();PMStore.decide(c.id,mode?'adv':'dec',!mode&&rs?rs.parentNode.textContent.trim():'');dec=PMStore.decisions();
  counts();renderRows();renderPanel();
  protoNote(mode?fn+' moved to Final round. Dana\'s message goes out at 2:00 pm.':fn+' declined. Dana\'s message goes out by Nov 24.');}
-function undoDecide(){var c=C[cur],fn=first(c),was=dec[c.id];delete dec[c.id];CX.ss('cx-dec',dec);counts();
+function undoDecide(){var c=C[cur],fn=first(c),was=dec[c.id];PMStore.undecide(c.id);dec=PMStore.decisions();counts();
  if((view==='adv'||view==='dec')&&visible().indexOf(cur)<0){renderRows();renderPanel();}else{renderRows();renderPanel();}
  protoNote('Undone. '+fn+' is back to undecided and Dana\'s message won\'t go out.');}
 UI.wire('#cxExport',function(){var V=visible();
- var csv=[CX.csvRow(['Rank','Candidate','Overall range','Discovery','Handling doubt','Getting a next step','Call date','Recommended','Decision','Decided by'])].concat(V.map(function(i){var c=C[i],d=dec[c.id];return CX.csvRow([i+1,c.name,rg(c.ov),rg(c.sk[0]),rg(c.sk[1]),rg(c.sk[2]),c.date,c.rec?'Yes':'No',d==='adv'?'Final round':d==='dec'?'Declined':'Undecided',d?'Marcus Lee':'']);})).join('\n');
+ var csv=[CX.csvRow(['Rank','Candidate','Overall range','Discovery','Handling doubt','Getting a next step','Call date','Recommended','Decision','Decided by','Reason'])].concat(V.map(function(i){var c=C[i],d=dec[c.id],dm=PMStore.decisionMeta()[c.id]||{};return CX.csvRow([i+1,c.name,rg(c.ov),rg(c.sk[0]),rg(c.sk[1]),rg(c.sk[2]),c.date,c.rec?'Yes':'No',d==='adv'?'Final round':d==='dec'?'Declined':'Undecided',d?'Marcus Lee':'',dm.reason||'']);})).join('\n');
  UI.download('shortlist-req-114-'+view+'.csv',csv);});
 UI.wire('#cxFilter',function(b){
  var pop=UI.popover(b,'<div class="ui-h">Decision</div><label class="cx-colr"><input type="checkbox" data-f="und"'+(F.und?' checked':'')+'>Undecided only</label><div class="ui-sep"></div><div class="ui-h">Strongest skill</div>'+SK.map(function(s,k){return '<label class="cx-colr"><input type="checkbox" data-s="'+k+'"'+(F.str.indexOf(k)>=0?' checked':'')+'>'+s[0]+'</label>';}).join('')+'<div class="ui-sep"></div><div class="ui-h">Overall range</div><label class="cx-colr"><input type="checkbox" data-f="min6"'+(F.min6?' checked':'')+'>Starts at 6.0 or higher</label><div class="ui-sep"></div><button class="ui-it" data-clear>Clear filter</button>',{width:240});
@@ -591,6 +591,8 @@ UI.wire('#cxFilter',function(b){
  pop.querySelector('[data-clear]').onclick=function(){UI.close();clearF();};
 });
 counts();fromHash();
+/* another tab (or Reset demo data) changed the decisions */
+PMStore.on(function(k){if(k==='decisions'||k==='*'){var n=PMStore.decisions();if(JSON.stringify(n)!==JSON.stringify(dec)){dec=n;counts();renderRows();renderPanel();}}});
 </script>
 </body>
 </html>

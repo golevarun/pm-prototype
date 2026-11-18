@@ -411,7 +411,7 @@ tbody tr.sh-hide{display:none}
   </div>
 </div>
 
-<script src="ui.js"></script><script src="proto.js"></script><script src="cx.js"></script>
+<script src="store.js"></script><script src="ui.js"></script><script src="proto.js"></script><script src="cx.js"></script>
 <script>
 (function(){
 var tab='wait',hm='',role='',sortDir=-1,q='';
@@ -453,11 +453,12 @@ tb.addEventListener('click',function(e){var b=e.target.closest('[data-open]');if
   '<p class="cx-mnote">Every decision is logged with who made it, when, and the reason for a decline. Candidates don\'t see the reason.</p>',actions:acts});
 });
 function exp(reqs){var dec=CX.ss('cx-dec')||{},rows=[CX.csvRow(['Req','Role','Hiring manager','Candidate','Overall range','Decision','Decided by','Reason'])];
- reqs.forEach(function(r){if(r==='114'){CX.SL.filter(function(c){return c.rec;}).forEach(function(c){var d=dec[c.id];rows.push(CX.csvRow(['114',RN['114'],'Marcus Lee',c.name,c.ov[0].toFixed(1)+'–'+c.ov[1].toFixed(1),d==='adv'?'Final round':d==='dec'?'Declined':'Waiting',d?'Marcus Lee':'','']));});return;}
+ reqs.forEach(function(r){if(r==='114'){CX.SL.filter(function(c){return c.rec;}).forEach(function(c){var d=dec[c.id];rows.push(CX.csvRow(['114',RN['114'],'Marcus Lee',c.name,c.ov[0].toFixed(1)+'–'+c.ov[1].toFixed(1),d==='adv'?'Final round':d==='dec'?'Declined':'Waiting',d?'Marcus Lee':'',(PMStore.decisionMeta()[c.id]||{}).reason||'']));});return;}
   SLD[r].list.forEach(function(x){rows.push(CX.csvRow([r,RN[r],SLD[r].hm,x[0],x[1],x[2]==='adv'?'Final round':x[2]==='hired'?'Hired':x[2]==='dec'?'Declined':'Waiting',x[2]?SLD[r].hm:'',x[3]||'']));});});
  UI.download(reqs.length>1?'shortlist-decisions-all.csv':'shortlist-decisions-req-'+reqs[0]+'.csv',rows.join('\n'));}
 UI.wire('#cxExport',function(){exp(['114','117','109','101']);});
 sync114();labels();draw();
+PMStore.on(function(k){if(k==='decisions'||k==='*'){sync114();draw();}});
 })();
 </script>
 </body>

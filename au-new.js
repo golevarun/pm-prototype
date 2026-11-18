@@ -1,4 +1,4 @@
-/* New automation: pick a trigger, add steps, name it, save to localStorage (pm-au-new). */
+/* New automation: pick a trigger, add steps, name it, saved in PMStore (pm:au-new). */
 (function(){
   var E=UI.esc,D=document;
   var st={trigger:'stage',topt:{stage:'Phone screen',days:'2'},steps:[]};

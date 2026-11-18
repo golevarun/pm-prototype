@@ -566,7 +566,7 @@ function inRender(k){var d=IN[k],f=d.f,h='';
  $('kFair').textContent=d.fair;$('kFairM').textContent=d.fairM;
  var mx=Math.max.apply(null,d.fd),s='';for(var j=0;j<5;j++){s+='<div><em>'+d.fd[j]+'</em><i class="'+(j<2?'lo':'')+'" style="height:'+Math.max(1,d.fd[j]/mx*16)+'px"></i><span>'+(j+1)+'</span></div>';}
  $('kFairD').innerHTML=s;
- $('kAgr').textContent=d.agr;$('kAgrM').textContent=d.agrM;$('kAgrF').textContent=d.agrF;$('kAgrBar').style.width=d.agrW+'%';
+ $('kAgr').textContent=d.agr;$('kAgrM').textContent=d.agrM;$('kAgrF').textContent=window.BYC?BYC.agr114(d.agrF):d.agrF;$('kAgrBar').style.width=d.agrW+'%';
  var hm=Math.max.apply(null,d.h),hs='',tot=0;for(var q=0;q<5;q++){tot+=d.h[q];hs+='<div><b>'+d.h[q]+'</b><i class="'+(q>=3?'wd':'')+'" style="height:'+(d.h[q]/hm*112)+'px"></i></div>';}
  $('hist').innerHTML=hs;$('hMed').textContent=d.med;$('hWide').textContent=(d.h[3]+d.h[4])+' of '+tot;
  document.querySelectorAll('.in-t tbody tr').forEach(function(r){r.classList.toggle('in-dim',k!=='all'&&r.getAttribute('data-row')!==k)});
@@ -580,7 +580,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.in-dd'))inC
 document.addEventListener('keydown',function(e){if(e.key==='Escape')inClose()});
 inRender('all');
 </script>
-<script src="ui.js"></script><script src="proto.js"></script>
+<script src="store.js"></script><script src="ui.js"></script><script src="proto.js"></script>
 <style>
 /* ===== insights wiring (by-) ===== */
 .by-cr{padding:10px 10px 8px}

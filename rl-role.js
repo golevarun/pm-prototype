@@ -34,6 +34,10 @@
   if(!R){var nr=RL.newRoles().filter(function(x){return x.req===req;})[0];
     if(nr){R={t:nr.t,st:'draft',loc:nr.loc||'',pub:null,hm:nr.hm||'Not set',hmIni:(nr.hm||'?').split(' ').map(function(w){return w[0]}).join(''),hmRole:'Hiring manager',next:'Finish interview setup and publish',buyers:[],skills:[],len:'7 minutes',diff:'Medium',auto:'Not set up'};}
     else{req='117';R=D['117'];}}
+  /* published from interview setup in this demo */
+  if(R.st==='draft'&&PMStore.isLive(req)){R=Object.assign({},R,{st:'live',pub:'Nov 17',enr:0,prac:0,notice:0,fin:0,rec:0,adv:0,invited:0,stopped:0,withdrew:0,today:0,weeks:[['Nov 16',0]],next:'Invite candidates from the applicant tracker',auto:req==='120'?'Invite SDR Outbound applicants':'Invite after phone screen'});}
+  /* invites sent from PM in this demo */
+  if(R.st==='live'){var nInv=PMStore.invitedCount(req);R.enr=(R.enr||0)+nInv;R.invited=(R.invited||0)+nInv;}
   if(R.st==='live'&&RL.roleState(req,'paused'))R.paused=true;
 
   /* Finished candidates. Ranges are ranked by midpoint; the first R.rec are recommended. */
@@ -61,7 +65,7 @@
     $('rlCrumb').textContent=/^\d+$/.test(req)?'Req '+req:'New role';$('rlTitle').textContent=R.t;$('rlTag').innerHTML=statusTag();
     var a='';
     if(R.st==='live')a='<span class="meta">Published '+R.pub+' · '+E(R.loc)+'</span><button class="btn" data-js id="rlCopy"><svg class="i" viewBox="0 0 16 16"><path d="M7 9a2.5 2.5 0 0 0 3.5 0l2-2a2.5 2.5 0 0 0-3.5-3.5l-.6.6M9 7a2.5 2.5 0 0 0-3.5 0l-2 2A2.5 2.5 0 0 0 7 12.5l.6-.6"/></svg>Copy invite link</button><button class="btn yellow" data-js id="rlInvite">Invite candidates</button>';
-    if(R.st==='draft')a='<span class="meta">Set up by Dana Whitfield · not published</span><button class="btn" data-go="setup.html">Open interview setup</button><button class="btn yellow" data-js id="rlPublish">Publish role</button>';
+    if(R.st==='draft')a='<span class="meta">Set up by Dana Whitfield · not published</span><button class="btn" data-go="setup.html?req='+encodeURIComponent(req)+'">Open interview setup</button><button class="btn yellow" data-js id="rlPublish">Publish role</button>';
     if(R.st==='closed')a='<span class="meta">Published '+R.pub+' · closed '+R.closed+' · '+R.hired+' hired</span><button class="btn" data-js id="rlAudit"><svg class="i" viewBox="0 0 16 16"><path d="M8 2.5v8M5 7.5l3 3 3-3M3 12.5h10"/></svg>Export audit log</button>';
     $('rlActs').innerHTML=a;
     if($('rlCopy'))$('rlCopy').onclick=function(){RL.copyLink(RL.ROLES[req]&&RL.ROLES[req].slug);};
@@ -70,11 +74,11 @@
     if($('rlAudit'))$('rlAudit').onclick=audit;
   }
   function invite(){if(R.paused){UI.toast('Invites are paused for this role. Resume them in Settings first.');return;}
-    RL.inviteModal({t:R.t},function(n){R.enr+=n;R.invited+=n;render();});}
+    RL.inviteModal({t:R.t,req:req},function(n){R.enr+=n;R.invited+=n;render();});}
   function publish(){
     var left=R.buyers.length?'<li>'+R.buyers.length+' buyers drafted, none tested yet</li>':'<li>No buyers drafted yet</li>';
     UI.modal({title:'Finish setup before you publish',body:'<p>'+E(R.t)+' isn\'t ready for candidates yet. These sections still need you:</p><ul style="margin:0 0 10px;padding-left:18px">'+left+'<li>Call settings: pick the call length and accommodations</li><li>Candidate notice: send to Legal for review</li></ul><p style="color:#68685D;font-size:12px">Nothing goes to candidates until you publish. Every candidate then gets the same buyer mix and difficulty.</p>',
-      actions:[{label:'Cancel'},{label:'Open interview setup',primary:true,onClick:function(){location.href='setup.html';}}]});
+      actions:[{label:'Cancel'},{label:'Open interview setup',primary:true,onClick:function(){location.href='setup.html?req='+encodeURIComponent(req);}}]});
   }
   function audit(){
     var rows=['candidate_id,role,req,notice_version,consent_logged,buyer,difficulty,call_length,skills_scored,overall_range,decision,decided_by'];
@@ -88,8 +92,8 @@
   function overview(){
     if(R.st==='draft')return draftOverview();
     var adv=advanced(),h='';
-    var fs=[['Enrolled',R.enr,100,'100%'],['Started practice',R.prac,pct(R.prac,R.enr),Math.round(R.prac/R.enr*100)+'% of enrolled'],
-      ['Finished',R.fin,pct(R.fin,R.enr),Math.round(R.fin/R.enr*100)+'% of enrolled'],['Recommended',R.rec,pct(R.rec,R.enr),R.rec+' of '+R.fin+' finished'],
+    var fs=[['Enrolled',R.enr,100,'100%'],['Started practice',R.prac,pct(R.prac,R.enr),Math.round(pct(R.prac,R.enr))+'% of enrolled'],
+      ['Finished',R.fin,pct(R.fin,R.enr),Math.round(pct(R.fin,R.enr))+'% of enrolled'],['Recommended',R.rec,pct(R.rec,R.enr),R.rec+' of '+R.fin+' finished'],
       [R.st==='closed'?'Advanced':'Advanced',adv,pct(adv,R.enr),R.st==='closed'?R.hired+' hired':(undecided()+' not decided yet')]];
     if(R.st==='live')fs.splice(2,0,['In notice period',R.notice,pct(R.notice,R.enr),'Scored call not open yet']);
     var rest=R.enr-R.fin-R.notice;
@@ -115,7 +119,7 @@
     var steps=[[1,'Job','Synced from the applicant tracker'],[1,'Product and buyer','Notes saved Nov 16'],[0,'Buyers',R.buyers.length?R.buyers.length+' drafted, none tested':'None drafted'],[1,'Skills and weights',R.skills.length?R.skills.map(function(s){return s[0]+' '+s[1]+'%'}).join(' · '):'Workspace defaults'],[0,'Call settings','Pick the call length and accommodations'],[0,'Candidate notice','Needs review by Legal']];
     if(!R.buyers.length)steps[1]=[0,'Product and buyer','Add what the role sells and who buys it'];
     var done=steps.filter(function(s){return s[0]}).length;
-    var left=card('rl-st','Setup','<span class="meta">'+done+' of 6 sections done</span>','<div class="cb rl-steps">'+steps.map(function(s){return '<div class="ov-check">'+(s[0]?OK:TODO)+'<p><b>'+s[1]+'</b> · '+E(s[2])+'</p></div>';}).join('')+'<a class="ov-link" href="setup.html">Open interview setup'+ARROW+'</a></div>');
+    var left=card('rl-st','Setup','<span class="meta">'+done+' of 6 sections done</span>','<div class="cb rl-steps">'+steps.map(function(s){return '<div class="ov-check">'+(s[0]?OK:TODO)+'<p><b>'+s[1]+'</b> · '+E(s[2])+'</p></div>';}).join('')+'<a class="ov-link" href="setup.html?req='+encodeURIComponent(req)+'">Open interview setup'+ARROW+'</a></div>');
     left+=interviewCard(true);
     var right=card('rl-pb','Before you publish','','<div class="cb"><div class="ov-check">'+TODO+'<p>Take a test call with each buyer.</p></div><div class="ov-check">'+TODO+'<p>Send the candidate notice to Jess Park (Legal).</p></div><div class="ov-check"><span class="ov-info"><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 7.2v3.3M8 5.3v.1"/></svg></span><p>Nothing goes to candidates until you publish.</p></div></div>');
     right+=teamCard();
@@ -126,7 +130,7 @@
       '<div class="ov-row"><small>Skills and weights</small><div class="ov-skills">'+(R.skills.length?R.skills.map(function(s){return '<div class="ov-sk"><span>'+E(s[0])+'</span><div class="ov-bar"><i style="width:'+s[1]+'%"></i></div><span class="mono">'+s[1]+'%</span></div>';}).join(''):'<span class="dim">Not set</span>')+'</div></div>'+
       '<div class="ov-row"><small>Scored call</small><span>'+R.len+' · '+R.diff.toLowerCase()+' difficulty</span></div>'+
       (short?'':'<div class="ov-row"><small>Practice</small><span>Unlimited. Never scored or shared with the team.</span></div><div class="ov-row"><small>Notice period</small><span>10 business days before the scored call opens</span></div><div class="ov-row"><small>Recordings</small><span>Kept 12 months</span></div><div class="ov-row"><small>Not scored</small><span>Voice, accent, face, pauses and personality. Only the skills above are scored.</span></div>')+'</div>';
-    var right=short?'<button class="btn sm" data-js data-p="interview">View interview</button>':(R.st==='draft'?'<a class="btn sm" href="setup.html">Open interview setup</a>':'<span class="meta">'+(R.st==='closed'?'Locked when the role closed':'Changes apply to candidates invited after you save')+'</span>');
+    var right=short?'<button class="btn sm" data-js data-p="interview">View interview</button>':(R.st==='draft'?'<a class="btn sm" href="setup.html?req='+encodeURIComponent(req)+'">Open interview setup</a>':'<span class="meta">'+(R.st==='closed'?'Locked when the role closed':'Changes apply to candidates invited after you save')+'</span>');
     return card(short?'rl-iv':'rl-iv2','Interview',right,body);
   }
   function teamCard(){
@@ -185,7 +189,7 @@
     if(a==='audit')audit();if(a==='invite')invite();if(a==='csv')csv();
     if(a==='pause')UI.confirm('Pause invites for '+R.t+'?','New invites stop going out. Candidates already invited keep their links.','Pause invites',function(){R.paused=true;RL.setRoleState(req,'paused',true);render();UI.toast('Paused invites for '+R.t+'.');});
     if(a==='resume'){R.paused=false;RL.setRoleState(req,'paused',false);render();UI.toast('Invites are going out again for '+R.t+'.');}
-    if(a==='delete')UI.confirm('Delete '+R.t+'?','The draft and its buyers are deleted. The req stays open in the applicant tracker.','Delete draft',function(){var l=RL.newRoles().filter(function(x){return x.req!==req;});RL.set('newRoles',l);RL.setRoleState(req,'deleted',true);UI.toast('Deleted the draft.');setTimeout(function(){location.href='roles.html';},600);},true);
+    if(a==='delete')UI.confirm('Delete '+R.t+'?','The draft and its buyers are deleted. The req stays open in the applicant tracker.','Delete draft',function(){var l=RL.newRoles().filter(function(x){return x.req!==req;});PMStore.set('newRoles',l);RL.setRoleState(req,'deleted',true);UI.toast('Deleted the draft.');setTimeout(function(){location.href='roles.html';},600);},true);
   });
   var h=(location.hash||'').slice(1);if(['overview','interview','candidates','settings'].indexOf(h)>-1)P=h;
   render();

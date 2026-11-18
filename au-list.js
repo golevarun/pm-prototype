@@ -19,7 +19,12 @@
       trigger:'stage',topt:{stage:'Phone screen'},steps:[{t:'email',v:'AE invite, v2',x:'Includes the candidate notice'},{t:'wait',v:'10',x:'Notice period'},{t:'email',v:'Gentle reminder',x:'Only if they have not started a call'}]}
   ];
   /* status of the main automation can be changed on automation.html */
-  try{var ps=localStorage.getItem('pm-au-inv-status');if(ps)rows[0].status=ps;}catch(e){}
+  /* saved changes to the built-in automations (PMStore.au), from this list or automation.html */
+  for(var bi=rows.length-1;bi>=0;bi--){var o=PMStore.au(rows[bi].id);if(o.archived){rows.splice(bi,1);continue;}['status','name','desc','owner','steps'].forEach(function(k){if(o[k]!==undefined)rows[bi][k]=o[k];});}
+  rows.forEach(function(r){if(r.status==='Archived'){r.archivedNow=1;}});
+  rows=rows.filter(function(r){return !r.archivedNow;});
+  /* Req 120 published on interview setup: its automation can be turned on */
+  rows.forEach(function(r){if(r.id==='sdr'&&PMStore.isLive('120')){r.locked=false;if(r.desc.indexOf('Draft. Starts')===0)r.desc='Req 120 is live. Turn this on to start sending invites.';}});
   var created=AU.load();
   created.forEach(function(a){rows.push({id:a.id,name:a.name,desc:a.desc||('Created '+a.created+'. '+a.steps.length+' step'+(a.steps.length===1?'':'s')+'.'),roles:a.roles||['All roles'],status:a.status,enrolled:0,run:'Never',rk:0,owner:a.owner||'Dana Whitfield',icon:'bolt',trigger:a.trigger,topt:a.topt||{},steps:a.steps,isNew:true});});
   var newId=(location.search.match(/[?&]new=([^&]+)/)||[])[1];
@@ -118,12 +123,11 @@
     var b=document.querySelector('.ui-dr .ui-md-b');if(b)b.classList.add('au-form');
   }
   function persist(r){
-    if(!r.isNew)return;var list=AU.load();list.forEach(function(a){if(a.id===r.id){a.name=r.name;a.desc=r.desc;a.status=r.status;a.owner=r.owner;a.steps=r.steps;}});AU.save(list);
+    if(!r.isNew){PMStore.setAu(r.id,{status:r.status,name:r.name,desc:r.desc,owner:r.owner,steps:r.steps});return;}var list=AU.load();list.forEach(function(a){if(a.id===r.id){a.name=r.name;a.desc=r.desc;a.status=r.status;a.owner=r.owner;a.steps=r.steps;}});AU.save(list);
   }
   function toggle(r){
     if(r.locked){UI.toast('Publish Req 120 before turning this on.');return;}
     var was=r.status;r.status=r.status==='Active'?'Paused':'Active';
-    if(r.id==='inv'){try{localStorage.setItem('pm-au-inv-status',r.status)}catch(e){}}
     persist(r);render();
     UI.toast(r.status==='Active'?(was==='Draft'?r.name+' is on. Candidates enroll from now.':r.name+' is on again. New candidates enroll from now.'):r.name+' is paused. No new candidates enroll and no emails go out.');
   }
@@ -132,13 +136,14 @@
     UI.menu(btn,[
       {label:'Open',onClick:function(){view(r)}},
       {label:'Rename',onClick:function(){UI.modal({title:'Rename automation',body:'<label for="auRn">Name</label><input id="auRn" value="'+E(r.name)+'">',actions:[{label:'Cancel'},{label:'Rename',primary:true,onClick:function(m){var v=m.querySelector('#auRn').value.trim();if(!v)return false;var old=r.name;r.name=v;persist(r);render();UI.toast('Renamed '+old+' to '+v+'.');}}]});}},
-      {label:'Duplicate',onClick:function(){var c=JSON.parse(JSON.stringify(r));c.id=r.id+'-copy'+Date.now();c.name='Copy of '+r.name;c.status='Draft';c.enrolled=0;c.run='Never';c.rk=0;delete c.href;c.locked=false;c.isNew=false;c.desc=r.status==='Draft'?r.desc:'Draft copy. '+r.desc;rows.splice(rows.indexOf(r)+1,0,c);render();UI.toast('Duplicated as '+c.name+'. It starts as a draft.');}},
+      {label:'Duplicate',onClick:function(){var c=JSON.parse(JSON.stringify(r));c.id=r.id+'-copy'+Date.now();c.name='Copy of '+r.name;c.status='Draft';c.enrolled=0;c.run='Never';c.rk=0;delete c.href;c.locked=false;c.isNew=false;c.desc=r.status==='Draft'?r.desc:'Draft copy. '+r.desc;c.isNew=true;c.icon='bolt';
+        var L=AU.load();L.push({id:c.id,name:c.name,desc:c.desc,roles:c.roles,status:'Draft',owner:c.owner,trigger:c.trigger,topt:c.topt,steps:c.steps,created:'Nov 17'});AU.save(L);rows.splice(rows.indexOf(r)+1,0,c);render();UI.toast('Duplicated as '+c.name+'. It starts as a draft.');}},
       {label:on?'Pause':(r.status==='Draft'?'Turn on':'Resume'),onClick:function(){toggle(r)}},
       {label:'Download run log',onClick:function(){
         var lines=['automation,status,enrolled,last_run,owner',[r.name,r.status,r.enrolled,r.run,r.owner].map(function(x){return '"'+String(x).replace(/"/g,'""')+'"'}).join(',')];
         UI.download(r.name.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-runs.csv',lines.join('\n'));}},
       {sep:true},
-      {label:'Archive',danger:true,onClick:function(){UI.confirm('Archive '+r.name+'?',on?'It stops right away. Candidates already in it get no more emails. You can find it in Archived for 90 days.':'It moves to Archived. You can restore it for 90 days.','Archive',function(){rows.splice(rows.indexOf(r),1);if(r.isNew){AU.save(AU.load().filter(function(a){return a.id!==r.id}));}render();UI.toast('Archived '+r.name+'.');},true);}}
+      {label:'Archive',danger:true,onClick:function(){UI.confirm('Archive '+r.name+'?',on?'It stops right away. Candidates already in it get no more emails. You can find it in Archived for 90 days.':'It moves to Archived. You can restore it for 90 days.','Archive',function(){rows.splice(rows.indexOf(r),1);if(r.isNew){AU.save(AU.load().filter(function(a){return a.id!==r.id}));}else PMStore.setAu(r.id,{archived:true});render();UI.toast('Archived '+r.name+'.');},true);}}
     ]);
   }
   tb.addEventListener('click',function(e){

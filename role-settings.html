@@ -540,13 +540,25 @@ td.act{text-align:right}
   document.addEventListener('keydown',function(e){if(e.key==='Escape')rsClose()});
 })();
 </script>
-<script src="ui.js"></script><script src="proto.js"></script>
+<script src="store.js"></script><script src="ui.js"></script><script src="proto.js"></script>
 <script src="rl.js"></script>
 <script>
 (function(){
   var E=RL.esc;
   UI.wire(UI.byText('Copy invite link'),function(){RL.copyLink('northwind-ae');});
-  UI.wire(UI.byText('Invite candidates'),function(){RL.inviteModal(RL.ROLES['114']);});
+  UI.wire(UI.byText('Invite candidates'),function(){RL.inviteModal({t:RL.ROLES['114'].t,req:'114'});});
+  /* Shared state shown on this screen: decisions, automation, notice version */
+  function shared(){
+    var n=Object.keys(PMStore.decisions()).length,st=document.querySelector('#rs-close-h').parentNode.querySelector('.rs-st');if(st)st.textContent='39 finished · '+n+' decided';
+    var A=PMStore.au('inv'),lk=document.querySelector('a.rs-link[href="automation.html"]');
+    if(lk){lk.textContent=A.name||'Invite after phone screen';var hp=lk.parentNode,em=hp.querySelector('.rl-aust');if(!em){em=document.createElement('span');em.className='rl-aust';lk.after(em);}em.textContent=A.status&&A.status!=='Active'?' ('+A.status.toLowerCase()+')':'';}
+    var v2=PMStore.notice(),row=[].filter.call(document.querySelectorAll('.rs-who b'),function(b){return b.textContent==='Notice';})[0];
+    if(row){var r=row.closest('.rs-row')||row.parentNode.parentNode,tg=r.querySelector('.tag'),sm=row.parentNode.querySelector('small');
+      if(!r.dataset.v1){r.dataset.v1=sm.textContent;}
+      if(v2){tg.className='tag beige';tg.textContent='v2 waiting for Legal';sm.textContent='Workspace notice v1 until Jess Park approves v2, saved by Dana Whitfield in workspace settings.';}
+      else{tg.className='tag blue';tg.textContent='Workspace notice v1';sm.textContent=r.dataset.v1;}}
+  }
+  shared();PMStore.on(shared);
   /* Applicant tracker record */
   UI.wire(UI.byText('Open in applicant tracker'),function(){
     UI.modal({title:'Req 114 in the applicant tracker',wide:true,body:
@@ -561,7 +573,7 @@ td.act{text-align:right}
   var save=document.getElementById('rsSave'),list=document.querySelector('#rs-team-h').closest('.card').querySelector('.rs-list');
   UI.wire(UI.byText('Add person'),function(){
     UI.modal({title:'Add a person to this role',body:
-      '<label for="rlPn">Name or email</label><input id="rlPn" list="rlPeople" placeholder="Search your workspace"><datalist id="rlPeople"><option value="Jess Park"><option value="Tyler Grant"><option value="Morgan Diaz"></datalist>'+
+      '<label for="rlPn">Name or email</label><input id="rlPn" list="rlPeople" placeholder="Search your workspace"><datalist id="rlPeople">'+['Jess Park','Tyler Grant','Morgan Diaz'].concat(PMStore.members().added.map(function(x){return x.n;})).filter(function(n){return PMStore.members().removed.indexOf(n)<0;}).map(function(n){return '<option value="'+E(n)+'">';}).join('')+'</datalist>'+
       '<label for="rlPa">Access</label><select id="rlPa"><option>Viewer</option><option>Reviewer</option><option>Editor</option></select>'+
       '<p style="margin-top:10px;color:#68685D;font-size:12px">Viewers see the shortlist and scores. Reviewers also watch scored calls and record decisions. Nobody on the team sees practice calls or accommodation requests.</p>',
       actions:[{label:'Cancel'},{label:'Add person',primary:true,onClick:function(md){

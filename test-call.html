@@ -567,11 +567,12 @@ td.act{text-align:right}
   window.tcEnd=function(){if(ended){start();protoNote('Started a new test call with '+NM()+'.');return;}ended=true;stopTimers();clearInterval(tick);state('tc-s-idle','Call ended');var eb=$('tcEnd');eb.classList.remove('tc-end');eb.classList.add('yellow');eb.innerHTML=START_HTML;
     $('tcCap').className='tc-cap tc-dim';$('tcCap').textContent='Test call ended at '+fmt(sec)+'. Nothing was saved to the role or a candidate.';};
   window.tcMarkTested=function(){var d=new Date(),h=d.getHours(),m=('0'+d.getMinutes()).slice(-2);
+    var bid=(location.search.match(/[?&]b=([^&]+)/)||[])[1]||'rl';PMStore.update('by-tested',function(t){t=t||{};t[decodeURIComponent(bid)]=Date.now();return t;},{});
     $('tcAt').textContent=((h%12)||12)+':'+m+' '+(h<12?'am':'pm');document.querySelector('.app').classList.add('tc-done');};
   start();
 })();
 </script>
-<script src="ui.js"></script><script src="proto.js"></script>
+<script src="store.js"></script><script src="ui.js"></script><script src="proto.js"></script>
 <script src="rl.js"></script>
 <script>
 (function(){
@@ -580,6 +581,17 @@ td.act{text-align:right}
   var dirty=document.querySelector('.tc-sech .meta');
   function changed(){dirty.textContent='Unsaved changes apply on restart';}
   document.querySelectorAll('.tc-right textarea').forEach(function(t){t.addEventListener('input',changed);});
+  /* Buyer from the library: test-call.html?b=<id> tests a buyer created on New buyer */
+  function applyName(v,cur){window.tcNm=v;var fn=v.split(' ')[0],ini=v.split(/\s+/).map(function(w){return w[0]}).join('').slice(0,2).toUpperCase();
+    document.querySelectorAll('.rl-nm').forEach(function(e){e.textContent=v;});document.querySelectorAll('.rl-fn').forEach(function(e){e.textContent=fn;});
+    document.querySelectorAll('.rl-ini').forEach(function(e){e.textContent=ini;});document.querySelectorAll('#tcList .tc-rl').forEach(function(e){e.textContent=ini;});
+    document.querySelectorAll('#tcList .tc-ln b').forEach(function(e){if(e.textContent===cur)e.textContent=v;});document.title='Test call with '+v+' · PM';}
+  var bq=(location.search.match(/[?&]b=([^&]+)/)||[])[1];
+  if(bq){var nb=(PMStore.get('by-new',[])||[]).filter(function(n){return n.id===decodeURIComponent(bq);})[0];
+    if(nb){applyName(nb.name,window.tcNm);var sm=document.querySelector('.tc-name small');if(sm)sm.textContent=(nb.role||'Buyer')+(nb.size?' · '+nb.size:'')+' · draft v1';
+      var sm2=document.querySelector('.tc-who small');if(sm2)sm2.textContent=(nb.role||'Buyer')+(nb.size?' · '+nb.size:'');}}
+  var tAt=(PMStore.get('by-tested',{})||{})[bq?decodeURIComponent(bq):'rl'];
+  if(tAt){var dd=new Date(tAt),hh=dd.getHours();var at=document.getElementById('tcAt');if(at)at.textContent=((hh%12)||12)+':'+('0'+dd.getMinutes()).slice(-2)+' '+(hh<12?'am':'pm');document.querySelector('.app').classList.add('tc-done');}
   /* Rename */
   UI.wire('#rlRename',function(){var cur=window.tcNm;
     UI.modal({title:'Rename buyer',body:'<label for="rlBn">Name</label><input id="rlBn" value="'+E(cur)+'"><p style="margin-top:8px;color:#68685D;font-size:12px">The new name shows to candidates in the scored call and in practice.</p>',

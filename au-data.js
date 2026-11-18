@@ -51,8 +51,9 @@
     return s.v;
   }
   function triggerText(t,o){var T=TRIGGERS[t];if(!T)return '';return T.short.replace('{stage}',(o&&o.stage)||'Phone screen').replace('{days}',(o&&o.days)||'2');}
-  function load(){try{return JSON.parse(localStorage.getItem('pm-au-new')||'[]')}catch(e){return []}}
-  function save(list){try{localStorage.setItem('pm-au-new',JSON.stringify(list))}catch(e){}}
+  /* New automations live in the shared PMStore (store.js) as pm:au-new */
+  function load(){return PMStore.get('au-new',[])||[];}
+  function save(list){PMStore.set('au-new',list);}
   window.AU={TRIGGERS:TRIGGERS,STEPS:STEPS,EMAILS:EMAILS,STAGES:STAGES,TPL:TPL,stepTitle:stepTitle,triggerText:triggerText,load:load,save:save,
     tpl:function(id){for(var i=0;i<TPL.length;i++)if(TPL[i].id===id)return TPL[i];return null;}};
 })();

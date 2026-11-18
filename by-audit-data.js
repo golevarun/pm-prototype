@@ -64,7 +64,16 @@ var BY_LOG=(function(){
   ['2026-10-05T09:15','Check','Weekly fairness check passed','Req 101','','PM','5 checks passed'],
   ['2026-10-01T14:00','Export','Audit export downloaded','Req 101','','Jess Park','Sep 8 – Sep 30 · CSV · 41 candidates']
   ];
-  var extra=[];try{extra=JSON.parse(localStorage.getItem('pm-by-exports')||'[]');}catch(e){}
+  var extra=PMStore.get('by-exports',[])||[];
+  /* decisions and accommodation answers made in this demo (shared PMStore) */
+  var NM={sam:'Sam Rivera',priya:'Priya Nair',ama:'Ama Owusu',rhea:'Rhea Das',nia:'Nia Brooks',ben:'Ben Carter',theo:'Theo Grant',carmen:'Carmen Ruiz',ian:'Ian Walsh'};
+  function iso(ms){var d=new Date(ms||Date.now());return '2026-11-17T'+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
+  var live=[],DM=PMStore.decisionMeta();
+  Object.keys(DM).forEach(function(id){var m=DM[id],rk=PMStore.REC9.indexOf(id);live.push([iso(m.at),'Decision',m.d==='adv'?'Advanced to final interview':'Declined','Req 114',NM[id]||id,'Marcus Lee',(rk>=0?'Rank '+(rk+1)+' of 39 on the shortlist':'Outside the top 9')+(m.reason?' · reason: '+m.reason:'')]);});
+  var AC=PMStore.acc();
+  if(AC.dev)live.push([iso(),'Accommodation',AC.dev.state==='approved'?'Extra time approved':'Extra time declined','Req 114','Dev Kapoor','Dana Whitfield',AC.dev.state==='approved'?AC.dev.min+' minutes · recruiters only':'Reason sent to the candidate · recruiters only']);
+  if(AC.mia)live.push([iso(),'Accommodation','Human interviewer assigned','Req 114','Mia Brandt','Dana Whitfield',AC.mia.who+' · '+AC.mia.date+' '+AC.mia.time+' · recruiters only']);
+  live.sort(function(a,b){return a[0]<b[0]?1:-1;});extra=live.concat(extra);
   return extra.concat(L).map(function(r,i){return {id:'EV-'+(10480-i),t:r[0],type:r[1],ev:r[2],role:r[3],cand:r[4],by:r[5],det:r[6]};});
 })();
 function byFmtTime(iso){var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];var d=iso.slice(0,10).split('-'),h=+iso.slice(11,13),mi=iso.slice(14,16);

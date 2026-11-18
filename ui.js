@@ -223,7 +223,7 @@
   if(av){
     av.setAttribute('role','button');av.setAttribute('tabindex','0');av.style.cursor='pointer';
     var who=av.getAttribute('aria-label')||'';
-    av.addEventListener('click',function(){menu(av,[{header:who+' · Northwind Freight'},{label:'Your settings',go:'settings.html'},{label:'Notification settings',go:'settings.html#notifications'},{label:'Help and docs',onClick:function(){modal({title:'Help',body:'<p>This is a prototype of PM. Use the step bar at the bottom of the screen to walk through the main flow, or open any screen from the sidebar.</p>'})}},{sep:true},{label:'Sign out',go:'signin.html'}]);});
+    av.addEventListener('click',function(){menu(av,[{header:who+' · Northwind Freight'},{label:'Your settings',go:'settings.html'},{label:'Notification settings',go:'settings.html#notifications'},{label:'Help and docs',onClick:function(){modal({title:'Help',body:'<p>This is a prototype of PM. Use the step bar at the bottom of the screen to walk through the main flow, or open any screen from the sidebar.</p>'})}},{sep:true},{label:'Reset demo data',onClick:function(){confirmBox('Reset demo data?','Decisions, accommodation answers, invites, new roles, buyers, automation changes and settings go back to how the story starts. This can\'t be undone.','Reset demo data',function(){if(window.PMStore)PMStore.reset();else{try{localStorage.clear();sessionStorage.clear();}catch(e){}}location.reload();},true);}},{label:'Sign out',go:'signin.html'}]);});
   }
   /* ---------- Candidate side ---------- */
   UI.byText('Questions? Write to Dana').forEach(function(b){

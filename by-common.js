@@ -8,8 +8,10 @@ var BYC=(function(){
     {id:'ruth',name:'Ruth',desc:'Calm, careful · American English',len:9},
     {id:'sol',name:'Sol',desc:'Bright, relaxed · American English, South',len:8}
   ];
-  function get(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
-  function set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  /* Buyer, notice and export state lives in the shared PMStore (store.js): pm-by-new is stored as pm:by-new */
+  function key(k){return String(k).replace(/^pm-/,'');}
+  function get(k,d){var v=PMStore.get(key(k),undefined);return v===undefined||v===null?d:v;}
+  function set(k,v){PMStore.set(key(k),v);}
   function fmt(s){s=Math.max(0,Math.floor(s));return Math.floor(s/60)+':'+(s%60<10?'0':'')+(s%60);}
   /* Voice sample player. btn: play button; opts.bar: element whose width shows progress; opts.time: element for time; len seconds */
   var cur=null;
@@ -28,5 +30,9 @@ var BYC=(function(){
   }
   function voice(id){for(var i=0;i<VOICES.length;i++)if(VOICES[i].id===id||VOICES[i].name===id)return VOICES[i];return VOICES[0];}
   function today(){return 'Nov 17';}
-  return {VOICES:VOICES,get:get,set:set,play:play,stop:stop,voice:voice,fmt:fmt,PLAY:PLAY,today:today};
+  /* Req 114 insight lines follow the shortlist decisions in PMStore */
+  function agr114(t){var D=PMStore.decided(),n=D.all.adv;if(!n)return t;
+    var tx='Marcus advanced '+n+' from Req 114 so far ('+D.adv+' from the top 9) · debrief Thu, Nov 19';
+    return String(t).replace('Req 114 has no advances yet · debrief Thu, Nov 19',tx).replace('Marcus Lee reviews the top 9 at the debrief, Thu, Nov 19',tx);}
+  return {agr114:agr114,VOICES:VOICES,get:get,set:set,play:play,stop:stop,voice:voice,fmt:fmt,PLAY:PLAY,today:today};
 })();

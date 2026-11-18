@@ -132,7 +132,8 @@
     if(d.type==='email'){ch.innerHTML='<span class="chipk"><em>From</em> '+E(d.from)+'</span>';}
     if(d.type==='task'){p.textContent=d.txt;}
   }
-  function commit(quiet){S[sel]=JSON.parse(JSON.stringify(draft));dirty=false;updateNode(sel);if(!quiet)UI.toast('Saved "'+title(sel)+'". Changes apply to new candidates.');}
+  function keepSteps(){var o={};Object.keys(S).forEach(function(k){if(!/^x\d+$/.test(k))o[k]=S[k];});PMStore.set('au-inv-steps',o);}
+  function commit(quiet){S[sel]=JSON.parse(JSON.stringify(draft));dirty=false;updateNode(sel);keepSteps();if(!quiet)UI.toast('Saved "'+title(sel)+'". Changes apply to new candidates.');}
   function setDirty(){dirty=true;var m=D.getElementById('auRpM');m.textContent='Unsaved changes';m.classList.add('au-dirty');}
 
   /* ---------- right panel events ---------- */
@@ -186,7 +187,7 @@
   UI.wire('#auCollapse',function(b){var c=flow.classList.toggle('au-col');b.textContent=c?'Expand all':'Collapse all';});
 
   /* ---------- status ---------- */
-  var status='Active';try{status=localStorage.getItem('pm-au-inv-status')||'Active';}catch(e){}
+  var status=PMStore.au('inv').status||'Active';
   if(status==='Draft')status='Active';
   var pb=D.getElementById('auPause');
   var PI='<svg class="i" viewBox="0 0 16 16"><path d="M5.5 3.5v9M10.5 3.5v9"/></svg>',RI='<svg class="i" viewBox="0 0 16 16"><path d="M5 3.5v9l7-4.5z"/></svg>';
@@ -194,7 +195,7 @@
     if(status==='Archived'){t.className='tag gray';t.textContent='Archived';pb.disabled=true;pb.innerHTML=RI+'Resume';return;}
     var on=status==='Active';t.className=on?'tag green':'tag beige';t.innerHTML=on?'<span class="dot" style="margin-right:2px"></span>Active':'Paused';pb.innerHTML=(on?PI+'Pause':RI+'Resume');
     var st=D.querySelectorAll('.cv-stat')[1];if(st)st.innerHTML=on?'<span class="dot"></span>Last run 9:14 am':'<span class="dot" style="background:#C9821E"></span>Paused · last run 9:14 am';}
-  UI.wire(pb,function(){status=status==='Active'?'Paused':'Active';try{localStorage.setItem('pm-au-inv-status',status)}catch(e){}drawStatus();
+  UI.wire(pb,function(){status=status==='Active'?'Paused':'Active';PMStore.setAu('inv',{status:status});drawStatus();
     UI.toast(status==='Paused'?'Paused. No invites or reminders go out until you resume.':'Resumed. Sending picks up in working hours.');});
   UI.wire('#auSaveAll',function(){if(dirty){commit(true);drawPanel();}D.querySelector('.ph .meta').textContent='Edited by Dana Whitfield, just now';UI.toast('Saved. Changes apply to new candidates.');});
 
@@ -268,6 +269,9 @@
   }
   function filt(){return CANDS.filter(function(c){return (hf==='All'||c[2]===hf)&&(!hq||c[0].toLowerCase().indexOf(hq)>=0);});}
   var SET={name:'Invite after phone screen',desc:'Sends the notice and invite at Phone screen, then up to 2 reminders.',owner:'Dana Whitfield',reenroll:false,failed:true};
+  (function(){var o=PMStore.au('inv');['name','desc','owner','reenroll','failed'].forEach(function(k){if(o[k]!==undefined)SET[k]=o[k];});
+    if(o.name){D.getElementById('auName').textContent=o.name;document.title=o.name+' · PM';}
+    var st=PMStore.get('au-inv-steps',null);if(st)Object.keys(st).forEach(function(k){if(S[k]){S[k]=st[k];updateNode(k);}});})();
   function drawSet(){
     var el=D.getElementById('auSet');
     el.innerHTML='<div class="au-pw"><section class="card"><div class="au-bar"><h2>Automation settings</h2><span class="meta">Saved settings apply right away</span></div><div class="au-form">'+
@@ -282,8 +286,9 @@
     el.querySelectorAll('[data-sw]').forEach(function(s){s.addEventListener('click',function(){if(s.classList.contains('locked')){UI.toast('This rule is always on.');return;}var k=s.getAttribute('data-sw');SET[k]=!SET[k];s.classList.toggle('on',SET[k]);s.setAttribute('aria-checked',SET[k]);});});
     function keep(){SET.name=D.getElementById('auSN').value;SET.desc=D.getElementById('auSD').value;}
     UI.wire('#auSS',function(){keep();if(!SET.name.trim()){D.getElementById('auSN').focus();UI.toast('Give the automation a name.');return;}
+      PMStore.setAu('inv',{name:SET.name,desc:SET.desc,owner:SET.owner,reenroll:SET.reenroll,failed:SET.failed});
       D.getElementById('auName').textContent=SET.name;document.title=SET.name+' · PM';UI.toast('Saved settings for '+SET.name+'.');});
-    UI.wire('#auSA',function(){if(status==='Archived'){UI.toast('Already archived.');return;}UI.confirm('Archive this automation?','It stops right away. The 23 candidates in the notice period keep their invite links, but get no reminders. You can restore it from Automations for 90 days.','Archive',function(){status='Archived';drawStatus();UI.toast('Archived '+SET.name+'. No more emails go out.');},true);});
+    UI.wire('#auSA',function(){if(status==='Archived'){UI.toast('Already archived.');return;}UI.confirm('Archive this automation?','It stops right away. The 23 candidates in the notice period keep their invite links, but get no reminders. You can restore it from Automations for 90 days.','Archive',function(){status='Archived';PMStore.setAu('inv',{status:'Archived'});drawStatus();UI.toast('Archived '+SET.name+'. No more emails go out.');},true);});
   }
   function setTab(t){
     D.querySelectorAll('[data-au-tab]').forEach(function(a){var on=a.getAttribute('data-au-tab')===t;a.classList.toggle('on',on);if(on)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
@@ -294,6 +299,7 @@
   }
   D.querySelectorAll('[data-au-tab]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();setTab(a.getAttribute('data-au-tab'));});});
 
+  (function(){var b=D.querySelectorAll('.cv-stat b');if(b.length>1){b[0].textContent=212+PMStore.invitedCount('114');b[1].textContent=46+PMStore.invitedCount();}})();
   drawStatus();select('invite');
   var h=location.hash.slice(1);if(h==='history'||h==='settings')setTab(h);
 })();

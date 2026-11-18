@@ -486,13 +486,13 @@ td.act{text-align:right}
     </div>
   </div>
 </div>
-<script src="ui.js"></script><script src="proto.js"></script>
+<script src="store.js"></script><script src="ui.js"></script><script src="proto.js"></script>
 <script src="rl.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id);};
   $('rlCopy').onclick=function(){RL.copyLink('northwind-ae');};
-  $('rlInvite').onclick=function(){RL.inviteModal(RL.ROLES['114']);};
+  $('rlInvite').onclick=function(){RL.inviteModal({t:RL.ROLES['114'].t,req:'114'});};
   var OK='<span class="rl-ok"><svg viewBox="0 0 16 16"><path d="m4 8.5 2.5 2.5L12 5.5"/></svg></span>';
   var dev=$('rlNeedDev'),mia=$('rlNeedMia'),dH=dev.innerHTML,mH=mia.innerHTML;
   function render(){var n=RL.needs();
@@ -503,11 +503,29 @@ td.act{text-align:right}
       var t=b.textContent.trim();b.removeAttribute('data-go');b.setAttribute('data-js','');
       if(t==='Review request')b.onclick=function(){RL.reviewDev(render);};
       if(t==='Assign interviewer')b.onclick=function(){RL.assignMia(render);};
-      if(b.dataset.u)b.onclick=function(){var x=RL.needs();x[b.dataset.u]=null;RL.set('needs',x);render();UI.toast('The request is open again.');};
+      if(b.dataset.u)b.onclick=function(){RL.setNeed(b.dataset.u,null);UI.toast('The request is open again.');};
     });});
-    var note=document.querySelector('.ov-fnote');note.textContent=note.textContent.replace(/\d+ needs? you/,RL.openNeeds()+(RL.openNeeds()===1?' needs you':' need you'));
+    counts();
+  }
+  /* Funnel, automation card: story numbers plus what changed in the shared store */
+  function counts(){
+    var inv=PMStore.invitedCount('114'),open=RL.openNeeds(),k=2-open,enr=212+inv,D=PMStore.decided();
+    var fs=document.querySelectorAll('.ov-fs');
+    function set(i,v,w,meta){fs[i].querySelector('b').textContent=v;fs[i].querySelector('.ov-bar i').style.width=w;if(meta!=null)fs[i].querySelector('.meta').textContent=meta;}
+    set(0,enr,'100%');
+    set(1,90,(90/enr*100).toFixed(1)+'%',Math.round(90/enr*100)+'% of enrolled');
+    set(2,23+k,((23+k)/enr*100).toFixed(1)+'%');
+    set(3,39,(39/enr*100).toFixed(1)+'%',Math.round(39/enr*100)+'% of enrolled');
+    set(4,9,(9/enr*100).toFixed(1)+'%');
+    set(5,D.adv,(D.adv/enr*100).toFixed(1)+'%',D.adv||D.dec?(D.dec?D.dec+' declined · ':'')+D.left+' left to decide':'Debrief Thu, Nov 19');
+    document.querySelector('.ov-fnote').textContent='Practice is optional, so some candidates finish without starting it. The other '+(150+inv-k)+' enrolled: '+(51+inv)+' invited, 34 with reminders stopped, 62 withdrew, '+open+(open===1?' needs you':' need you')+', 1 in a scored call now.';
+    var A=PMStore.au('inv'),st=A.status||'Active',card=document.querySelector('.ov-auto');
+    card.querySelector('b').textContent=A.name||'Invite after phone screen';
+    card.querySelector('small').textContent=st==='Active'?(51+inv)+' invited · 34 reminders stopped':st==='Paused'?'Paused · no invites or reminders go out':'Archived · no more emails go out';
+    var tg=card.querySelector('.tag');tg.className='tag '+(st==='Active'?'green':st==='Paused'?'beige':'gray');tg.textContent=st;
   }
   render();
+  PMStore.on(function(){render();});
   function nav(el,href){el.classList.add('rl-click');el.addEventListener('click',function(e){if(e.target.closest('a,button'))return;location.href=href;});}
   document.querySelectorAll('.ov-fs').forEach(function(f){nav(f,f.querySelector('small').textContent==='Recommended'||f.querySelector('small').textContent==='Advanced'?'shortlist.html':'candidates.html');});
   document.querySelectorAll('.ov-auto').forEach(function(a){nav(a,'automation.html');});

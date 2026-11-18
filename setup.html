@@ -458,7 +458,7 @@ button.btn[disabled]{opacity:.6;cursor:default}
   </div>
 </div>
 <button class="help-fab"><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><circle cx="8" cy="8" r="5.5"/><path d="M6.6 6.4a1.5 1.5 0 0 1 2.9.5c0 1-1.5 1.3-1.5 2.1M8 11v.1"/></svg>Help</button>
-<script src="ui.js"></script><script src="proto.js"></script>
+<script src="store.js"></script><script src="ui.js"></script><script src="proto.js"></script>
 <input type="file" id="rlFile" multiple accept=".pdf,.docx,.doc,.mp3,.m4a,.wav,.txt" hidden>
 <script src="rl.js"></script>
 <script>
@@ -611,22 +611,77 @@ button.btn[disabled]{opacity:.6;cursor:default}
     '<p><a href="scenarios.html">How buyers are built</a> · <a href="fairness.html">Fairness checks</a></p>',
     actions:[{label:'Close'},{label:'Write to support',primary:true,onClick:function(){setTimeout(function(){UI.modal({title:'Write to support',body:'<label for="rlHq">Your question</label><textarea id="rlHq" placeholder="What are you trying to do?"></textarea>',actions:[{label:'Cancel'},{label:'Send',primary:true,onClick:function(md){if(!md.querySelector('#rlHq').value.trim()){UI.toast('Write your question first.');return false;}UI.toast('Sent. Support replies by email, usually within a few hours.');}}]});},0);}}]});});
 
+  /* 0. Which role, and its shared state (PMStore): publish status, buyers from the library, notice version */
+  var REQ=decodeURIComponent((location.search.match(/[?&]req=([^&#]+)/)||[])[1]||'114');
+  var NEWR=RL.newRoles().filter(function(x){return x.req===REQ;})[0];
+  var TITLE=REQ==='114'?'Account Executive, Mid-Market':(RL.ROLES[REQ]?RL.ROLES[REQ].t:NEWR?NEWR.t:'Account Executive, Mid-Market');
+  if(REQ!=='114'&&(RL.ROLES[REQ]||NEWR)){
+    var q2='?req='+encodeURIComponent(REQ),ov='rl-role.html'+q2;
+    document.querySelector('.ph .crumb span').textContent=/^\d+$/.test(REQ)?'Req '+REQ:'New role';
+    document.querySelector('.ph h1').textContent=TITLE;document.title='Interview setup · '+TITLE+' · PM';
+    document.querySelectorAll('.ph .tabs a').forEach(function(a){var h=a.getAttribute('href');
+      a.setAttribute('href',h==='overview.html'?ov:h==='setup.html'?'setup.html'+q2:h==='candidates.html'||h==='shortlist.html'?ov+'#candidates':h==='role-settings.html'?ov+'#settings':h);});
+    var BYR={'120':[['SK','Sean Kelly','Fleet manager · 60 vans','Did not ask for the call. Gives you thirty seconds to say why you are calling.',['Cold','Busy']],['AW','Ana Wright','Operations director · 150 vans','Happy with her current tool. Needs a reason to look at another one.',['Happy with current tool','Decides alone']]]};
+    var list=BYR[REQ]||(NEWR&&NEWR.buyerList)||[];
+    var grid=document.querySelector('#buyers .buyers');
+    grid.innerHTML=list.map(function(b,i){return '<article class="by"><div class="tags">'+(b[4]||[]).map(function(t,j){return '<span class="tag '+(j?'beige':'blue')+'">'+E(t)+'</span>';}).join('')+'</div><div class="who"><span class="av a'+(i%3+1)+'">'+E(b[0])+'</span><div><b>'+E(b[1])+'</b><small>'+E(b[2])+'</small></div></div><p>'+E(b[3]||'')+'</p><div class="row"><span class="meta">Not tested</span><button class="btn sm ghost" data-go="buyers.html">Edit</button><button class="btn sm" data-go="test-call.html">Test call</button></div></article>';}).join('')||'<p class="dim" style="margin:0">No buyers drafted yet. Add product and buyer notes, then redraft buyers.</p>';
+    document.querySelector('#buyers h2 .tag').textContent=list.length;
+    var bn=document.querySelector('.wrapc .banner b');if(bn)bn.textContent=list.length?'PM drafted '+list.length+' buyer'+(list.length===1?'':'s')+' from your product and buyer notes':'No buyers drafted yet';
+    var st0=document.querySelector('.lp .sec[href="#buyers"] .st');if(st0)st0.innerHTML='0 of '+list.length+' tested<span class="todo"></span>';
+    var ts=document.querySelectorAll('.lp-sum div span');if(ts[2])ts[2].textContent='0 of '+list.length;
+  }
+  /* Rosa Lin's draft: discarded on the buyer screen means Req 114 keeps v2, which is tested */
+  function byState(){
+    var tested=PMStore.get('by-tested',{})||{},rosa=PMStore.get('by-rosa','');
+    document.querySelectorAll('#buyers .by').forEach(function(c){var nm=c.querySelector('.who b').textContent,m=c.querySelector('.row .meta');
+      if(REQ==='114'&&nm==='Rosa Lin'){if(tested.rl)m.innerHTML='<span class="dot" style="display:inline-block;margin-right:6px"></span>Tested · today';else if(rosa==='discarded')m.innerHTML='<span class="dot" style="display:inline-block;margin-right:6px"></span>Tested · v2, Oct 26';else m.textContent='Not tested · draft v3';}});
+    var cards=document.querySelectorAll('#buyers .by'),nt=[].filter.call(cards,function(c){return /Tested/.test(c.querySelector('.row .meta').textContent);}).length;
+    var st=document.querySelector('.lp .sec[href="#buyers"] .st');if(st&&cards.length)st.innerHTML=nt+' of '+cards.length+' tested'+(nt===cards.length?OKS:'<span class="todo"></span>');
+    var ts=document.querySelectorAll('.lp-sum div span');if(ts[2]&&cards.length)ts[2].textContent=nt+' of '+cards.length;
+    /* new buyers in the library that this role doesn't use yet */
+    var lib=(PMStore.get('by-new',[])||[]).filter(function(n){return (PMStore.get('by-archived',[])||[]).indexOf(n.id)<0;}),add=PMStore.get('setup-buyers',{})||{},mine=add[REQ]||[];
+    var grid=document.querySelector('#buyers .buyers');
+    grid.querySelectorAll('.rl-addedby').forEach(function(x){x.remove();});
+    lib.filter(function(n){return mine.indexOf(n.id)>=0;}).forEach(function(n,i){var a=document.createElement('article');a.className='by rl-addedby';
+      a.innerHTML='<div class="tags"><span class="tag gray">Draft v1</span></div><div class="who"><span class="av a'+(i%3+1)+'">'+E(n.name.split(/\s+/).map(function(w){return w[0];}).join('').slice(0,2).toUpperCase())+'</span><div><b>'+E(n.name)+'</b><small>'+E((n.role||'Buyer')+(n.size?' · '+n.size:''))+'</small></div></div><p>'+E(n.objections&&n.objections[0]?n.objections[0]+'.':'No objection set yet.')+'</p><div class="row"><span class="meta">Not tested</span><button class="btn sm ghost" data-js data-rmby="'+E(n.id)+'">Remove</button><button class="btn sm" data-go="test-call.html?b='+encodeURIComponent(n.id)+'">Test call</button></div>';
+      grid.appendChild(a);});
+    var box=document.getElementById('rlLib');if(!box){box=document.createElement('div');box.id='rlLib';box.style.cssText='margin-top:12px;padding:10px 12px;border:1px dashed rgba(28,28,24,.16);border-radius:8px;color:#68685D';document.querySelector('#buyers .cb').appendChild(box);}
+    var avail=lib.filter(function(n){return mine.indexOf(n.id)<0;});
+    box.hidden=!avail.length;
+    box.innerHTML=avail.length?'In your buyer library, not in this role: '+avail.map(function(n){return '<b style="color:#1C1C18;font-weight:500">'+E(n.name)+'</b> <button class="btn sm ghost" data-js data-addby="'+E(n.id)+'">Add to role</button>';}).join(' · '):'';
+    var tg=document.querySelector('#buyers h2 .tag');if(tg)tg.textContent=grid.querySelectorAll('.by').length;
+  }
+  document.addEventListener('click',function(e){var b=e.target.closest('[data-addby],[data-rmby]');if(!b)return;e.preventDefault();
+    var id=b.getAttribute('data-addby')||b.getAttribute('data-rmby'),adding=b.hasAttribute('data-addby');
+    PMStore.update('setup-buyers',function(m){m=m||{};var l=(m[REQ]||[]).filter(function(x){return x!==id;});if(adding)l.push(id);m[REQ]=l;return m;},{});
+    var n=(PMStore.get('by-new',[])||[]).filter(function(x){return x.id===id;})[0];saved();
+    UI.toast(adding?'Added '+(n?n.name:'the buyer')+' to the buyer mix. Test the buyer before you publish.':'Removed '+(n?n.name:'the buyer')+' from this role. The buyer stays in the library.');});
+  /* notice version saved in workspace settings */
+  function noticeState(){var v2=PMStore.notice(),t=document.querySelector('#notice h2 .tag');if(!t)return;
+    if(v2){t.className='tag beige';t.textContent='v2 waiting for Legal';var d=document.querySelectorAll('#notice .doc p');String(v2.text||'').split('\n').forEach(function(x,i){if(d[i]&&x)d[i].textContent=x;});}}
+
   /* 8. Publish */
   var pubBtn=UI.byText('Publish role',document.querySelector('.ph'))[0];pubBtn.removeAttribute('data-go');
   function publish(){
-    if(document.querySelector('.ph .tag.green')){location.href='automation.html';return;}
+    if(document.querySelector('.ph .tag.green')){location.href=REQ==='114'?'automation.html':'rl-role.html?req='+encodeURIComponent(REQ);return;}
     var t=total();if(t!==100){show('skills');UI.toast('Skill weights add up to '+t+'%. Make them 100% before you publish.');return;}
     var untested=Array.prototype.filter.call(document.querySelectorAll('#buyers .by .meta'),function(m){return /Not tested/.test(m.textContent);}).length;
     var legalSent=legal.disabled;
-    UI.modal({title:'Publish Account Executive, Mid-Market?',body:'<p>When you publish:</p><ul style="margin:0 0 10px;padding-left:18px"><li>Candidates who reach Phone screen get the invite and the notice.</li><li>Practice opens right away. The scored call opens after 10 business days.</li><li>Every candidate gets the same buyer mix and '+document.querySelector('#call .seg .on').textContent.toLowerCase()+' difficulty.</li></ul>'+
-      ((untested||!legalSent)?'<div style="padding:8px 10px;border-radius:8px;background:#FDFAF3;border:1px solid rgba(201,130,30,.25)">'+(untested?'<div>'+untested+' of 3 buyers haven\'t had a test call.</div>':'')+(!legalSent?'<div>The candidate notice hasn\'t been sent to Legal.</div>':'')+'</div>':''),
+    UI.modal({title:'Publish '+TITLE+'?',body:'<p>When you publish:</p><ul style="margin:0 0 10px;padding-left:18px"><li>Candidates who reach Phone screen get the invite and the notice.</li><li>Practice opens right away. The scored call opens after 10 business days.</li><li>Every candidate gets the same buyer mix and '+document.querySelector('#call .seg .on').textContent.toLowerCase()+' difficulty.</li></ul>'+
+      ((untested||!legalSent)?'<div style="padding:8px 10px;border-radius:8px;background:#FDFAF3;border:1px solid rgba(201,130,30,.25)">'+(untested?'<div>'+untested+' of '+document.querySelectorAll('#buyers .by').length+' buyers haven\'t had a test call.</div>':'')+(!legalSent?'<div>The candidate notice hasn\'t been sent to Legal.</div>':'')+'</div>':''),
       actions:[{label:'Cancel'},{label:'Publish role',primary:true,onClick:function(){
-        var tg=document.querySelector('.ph .ph-row .tag');tg.className='tag green';tg.innerHTML='<span class="dot" style="margin-right:2px"></span>Live';
-        meta.textContent='Published just now';
-        document.querySelectorAll('[data-rlpub]').forEach(function(b){b.textContent='Open automation';});
-        pubBtn.textContent='Open automation';
+        PMStore.setRole(REQ,'published',Date.now());showLive('Published just now');
         UI.toast('Published. Invites go out when candidates reach Phone screen.');}}]});
   }
+  function showLive(m){
+    var tg=document.querySelector('.ph .ph-row .tag');tg.className='tag green';tg.innerHTML='<span class="dot" style="margin-right:2px"></span>Live';
+    meta.textContent=m;
+    document.querySelectorAll('[data-rlpub]').forEach(function(b){b.textContent=REQ==='114'?'Open automation':'Open role';});
+    pubBtn.textContent=REQ==='114'?'Open automation':'Open role';
+  }
+  if(PMStore.isLive(REQ)||(REQ!=='114'&&RL.ROLES[REQ]&&RL.ROLES[REQ].st==='live'))showLive('Published');
+  byState();noticeState();
+  PMStore.on(function(k){if(/^(by-|setup-buyers|\*)/.test(k)){byState();noticeState();}});
   pubBtn.setAttribute('data-js','');pubBtn.addEventListener('click',publish);
   document.addEventListener('click',function(e){if(e.target.closest('[data-rlpub]'))publish();});
 })();

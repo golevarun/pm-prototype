@@ -490,7 +490,7 @@ function scSel(id){scCur=id;scRows();scPanel(scFind(id));var r=document.querySel
 function scRegen(){var s=scFind(scCur);scDraft[s.id]=true;scRows();scPanel(s);protoNote('Draft v'+(s.ver+1)+' saved. Calls stay on v'+s.ver+' until you publish.');}
 scRows();scPanel(scFind(scCur));
 </script>
-<script src="ui.js"></script><script src="proto.js"></script>
+<script src="store.js"></script><script src="ui.js"></script><script src="proto.js"></script>
 <style>
 /* ===== scenarios wiring (by-) ===== */
 .sc-srch input{border:0;outline:0;background:transparent;font:inherit;color:var(--ink);flex:1;min-width:0;height:28px;padding:0}

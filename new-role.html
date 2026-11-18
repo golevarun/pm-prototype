@@ -541,7 +541,7 @@ tabs.forEach(function(b){b.addEventListener('click',function(){var t=b.getAttrib
 });});
 })();
 </script>
-<script src="ui.js"></script><script src="proto.js"></script>
+<script src="store.js"></script><script src="ui.js"></script><script src="proto.js"></script>
 <script src="rl.js"></script>
 <script>
 (function(){
@@ -619,12 +619,16 @@ tabs.forEach(function(b){b.addEventListener('click',function(){var t=b.getAttrib
   function save(open){
     var b=picked();
     if(J.req==='114'){UI.toast('Saved Account Executive, Mid-Market as a draft.');setTimeout(function(){location.href='setup.html';},500);return;}
-    RL.addRole({req:J.req,t:J.t,loc:J.loc,hm:J.hm,buyers:b.length});
+    RL.addRole({req:J.req,t:J.t,loc:J.loc,hm:J.hm,buyers:b.length,buyerList:b});
     document.querySelector('.nr-ph .tag').textContent='Draft saved';
     UI.toast('Saved '+J.t+' as a draft.');
-    setTimeout(function(){location.href=open?'setup.html':'roles.html';},600);
+    setTimeout(function(){location.href=open?'setup.html?req='+encodeURIComponent(J.req):'roles.html';},600);
   }
   stepsUI();setFoot();
+  /* reqs already added to PM in this demo can't be picked again */
+  RL.newRoles().forEach(function(r){var tr=document.querySelector('#nr-rows tr[data-req="'+r.req+'"]');if(!tr||tr.classList.contains('nr-dis'))return;
+    tr.classList.remove('nr-sel');tr.removeAttribute('aria-selected');tr.classList.add('nr-dis');tr.setAttribute('aria-disabled','true');tr.removeAttribute('tabindex');tr.removeAttribute('data-js');
+    var sm=tr.querySelector('.nr-job small');if(sm)sm.textContent+=' · already in PM';});
 })();
 </script>
 </body>
