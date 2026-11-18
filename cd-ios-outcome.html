@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Inbox · Next step for Account Executive at Northwind</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet"><link rel="stylesheet" href="cand.css"><link rel="stylesheet" href="cd-ios.css"></head><body class="cd-ios-page" data-cd-mail="outcome">
+<main class="cd-ios-stage">
+  <aside class="cd-ios-cap"><div class="cd-ios-c1">Sam’s inbox · Tue, Nov 17</div><div class="cd-ios-c2">Dana writes to Sam with Marcus’s decision.</div>
+    <div class="oe-top"><small>Prototype view</small><div class="oe-seg" role="group" aria-label="Prototype view"><button class="on" data-js data-oe="adv" aria-pressed="true">If advanced</button><button data-js data-oe="dec" aria-pressed="false">If declined</button></div></div>
+  </aside>
+  <div class="cd-ios-fit" id="cd-fit"><div class="cd-ios-phone" id="cd-phone" role="region" aria-label="Sam’s iPhone"><div class="cd-ios-screen" id="cd-screen" data-clock="2:00"></div></div></div>
+  <div></div>
+</main>
+<div id="cd-primary" hidden>
+  <div id="cd-pbody">
+    <div id="oe-adv">
+      <p>Hi Sam,</p>
+      <p>Thanks for taking the call with Jordan. Marcus Lee, our hiring manager, would like to meet you for the final round. I’ll send times for next week by Thursday.</p>
+      <p>Your notes from the call are attached. They show the parts Marcus listened to.</p>
+      <p>Dana</p>
+    </div>
+    <div id="oe-dec" hidden>
+      <p>Hi Sam,</p>
+      <p>Thank you for taking the call with Jordan. We’ve decided not to move forward with your application for this role.</p>
+      <p>Your notes from the call are attached. Two moments stood out, and the notes say why. If a future role fits, I’d be glad to hear from you.</p>
+      <p>Dana</p>
+    </div>
+    <button class="cd-ios-att" type="button" data-js data-cd-att="notes"><span class="pdf"><i>PDF</i></span><span><b>Your call notes.pdf</b><small>2 pages</small></span></button>
+    <div class="oe-notes">
+      <div class="oe-h"><b>In your notes</b><small id="oe-nmeta">Your call with Jordan Ellis on Nov 17 · the three moments Marcus listened to, with what was said</small></div>
+      <div class="oe-m"><time>03:12</time><div><b>Discovery</b><span>You asked what went wrong with Jordan’s last tool before pitching anything.</span></div></div>
+      <div class="oe-m"><time>05:40</time><div><b>Handling doubt</b><span>You offered to let drivers flag roads, and tied it to Jordan’s own story about flooded roads.</span></div></div>
+      <div class="oe-m" id="oe-m3"><time>06:55</time><div><b>Getting a next step</b><span>You booked a follow-up with the ops manager for Tuesday.</span></div></div>
+    </div>
+    <div class="cd-ios-sig">Dana Whitfield · Recruiter, Northwind Freight · Sent with PM</div>
+  </div>
+</div>
+<script src="store.js"></script>
+<script>
+(function(){
+  /* The decision email has two versions. window.OE holds the one on screen; cd-mail.js reads it. */
+  var V={adv:{s:'Next step for Account Executive at Northwind',t:'Tue, Nov 17, 2:00 pm',lt:'2:00 pm',p:'Thanks for taking the call with Jordan. Marcus Lee, our hiring manager…',n:'Your call with Jordan Ellis on Nov 17 · the three moments Marcus listened to, with what was said'},
+         dec:{s:'Your application for Account Executive at Northwind',t:'Tue, Nov 24, 10:00 am',lt:'Nov 24',p:'Thank you for taking the call with Jordan. We’ve decided not to move forward…',n:'Your call with Jordan Ellis on Nov 17 · the two moments that stood out, with what was said'}};
+  window.OE={k:'adv',V:V,cur:function(){return V[this.k];}};
+  function $(id){return document.getElementById(id)}
+  document.querySelectorAll('[data-oe]').forEach(function(b){b.addEventListener('click',function(){
+    var k=b.getAttribute('data-oe'),v=V[k];OE.k=k;
+    document.querySelectorAll('[data-oe]').forEach(function(x){var on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on)});
+    $('oe-nmeta').textContent=v.n;
+    document.title='Inbox · '+v.s;
+    $('oe-adv').hidden=k!=='adv';$('oe-dec').hidden=k!=='dec';$('oe-m3').hidden=k==='dec';
+    var c1=document.querySelector('.cd-ios-c1');if(c1)c1.textContent='Sam’s inbox · '+(k==='dec'?'Tue, Nov 24':'Tue, Nov 17');
+    var ck=document.querySelector('.cd-ios-clock');if(ck)ck.textContent=k==='dec'?'10:00':'2:00';
+    if(window.cdMailRefresh)cdMailRefresh();
+  })});
+  /* Start on what Marcus actually decided for Sam on the shortlist (shared PMStore) */
+  var d=window.PMStore&&PMStore.decisions().sam;
+  if(d==='dec'){var b=document.querySelector('[data-oe="dec"]');if(b)b.click();}
+  var tp=document.querySelector('.oe-top'),nt=document.createElement('small');nt.id='oe-actual';
+  nt.textContent=d==='adv'?'Marcus advanced Sam on the shortlist':d==='dec'?'Marcus declined Sam on the shortlist':'Sam has no decision yet. Marcus decides on the shortlist.';
+  if(tp)tp.appendChild(nt);
+})();
+</script>
+<script src="ui.js"></script><script src="proto.js"></script><script src="cd-ios-mail.js"></script>
+</body></html>
