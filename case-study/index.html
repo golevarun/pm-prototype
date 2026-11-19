@@ -498,7 +498,7 @@ document.querySelectorAll('.ramp').forEach(function(r){
 (function(){
   if(window.self===window.top) return;
   var last=0;
-  function send(){var h=Math.ceil(document.documentElement.scrollHeight);if(Math.abs(h-last)>2){last=h;parent.postMessage({type:'pm-case-height',height:h},'*');}}
+  function send(){var h=Math.ceil(document.body.getBoundingClientRect().height);if(Math.abs(h-last)>2){last=h;parent.postMessage({type:'pm-case-height',height:h},'*');}}
   window.addEventListener('load',send);window.addEventListener('resize',send);
   new ResizeObserver(send).observe(document.body);
   document.querySelectorAll('img').forEach(function(i){i.addEventListener('load',send)});
