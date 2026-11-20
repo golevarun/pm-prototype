@@ -154,9 +154,9 @@
     if(c.live){UI.toast("Kai Morgan's call is still running. The review opens when it ends.");return;}
     var B=BUY[c.b];
     var body='<dl class="au-dl"><dt>Role</dt><dd>'+ROLE[c.r]+' · Req '+c.r+'</dd><dt>Buyer</dt><dd>'+E(c.b)+', '+B[2]+'</dd><dt>Difficulty</dt><dd>'+(c.r===109?'Hard':'Medium')+'</dd><dt>Started</dt><dd>'+when(c.t)+'</dd><dt>Length</dt><dd>'+(scored?'7:00':c.len)+'</dd>'+(c.drop?'<dt>Connection</dt><dd>Dropped and reconnected. '+E(c.drop)+'</dd>':'')+'</dl>';
-    if(scored){body+='<div style="font-size:12px;color:#68685D;margin-bottom:2px">Overall range</div><div class="au-big">'+f1(c.lo)+'–'+f1(c.hi)+' <span style="font-size:12px;color:#68685D;font-weight:400">out of 10</span></div>'+
-      '<p style="margin-top:12px;color:#535347">Skill ranges, the moments behind them and the transcript open from the candidate\'s record. Voice, accent, pauses and face are never scored.</p>'+(st.rev[c.id]?'<p><b>Second review requested.</b></p>':'');}
-    else body+='<p style="color:#535347">Test calls are not scored and are not saved to any candidate. They help the hiring team hear what candidates hear.</p>';
+    if(scored){body+='<div style="font-size:var(--fs-sm);color:var(--mute);margin-bottom:2px">Overall range</div><div class="au-big">'+f1(c.lo)+'–'+f1(c.hi)+' <span style="font-size:var(--fs-sm);color:var(--mute);font-weight:var(--fw-regular)">out of 10</span></div>'+
+      '<p style="margin-top:12px;color:var(--ink2)">Skill ranges, the moments behind them and the transcript open from the candidate\'s record. Voice, accent, pauses and face are never scored.</p>'+(st.rev[c.id]?'<p><b>Second review requested.</b></p>':'');}
+    else body+='<p style="color:var(--ink2)">Test calls are not scored and are not saved to any candidate. They help the hiring team hear what candidates hear.</p>';
     var go=scored?(c.sl?'shortlist.html#'+c.sl:c.r===114?'candidates.html':'shortlists.html'):'test-call.html';
     UI.drawer({title:scored?c.n+' · scored call':c.n+' · test call',width:440,body:body,actions:[{label:'Close'},{label:scored?(c.sl?'Open in shortlist':c.r===114?'Open in candidates':'Open shortlists'):'Start another test call',primary:true,onClick:function(){location.href=go;}}]});
   }

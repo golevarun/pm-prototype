@@ -69,7 +69,7 @@
   /* members added or removed earlier in this demo (PMStore members) */
   function addRow(n,e,r){
         var ini=n.split(/\s+/).map(function(w){return w.charAt(0)}).join('').slice(0,2).toUpperCase();
-        tbody.insertAdjacentHTML('beforeend','<tr class="by-inv"><td><div class="person"><span class="pav" style="background:#E8E2D8;color:#493B2C">'+esc(ini)+'</span><div><b>'+esc(n)+'<span class="st-you">Invited</span></b><small>'+esc(e)+'</small></div></div></td><td><span class="st-role">'+r+CHEV+'</span></td><td class="dim st-can">'+CAN[r]+'</td><td class="dim">Invite sent</td><td class="act"><button class="st-more" aria-label="More for '+esc(n)+'"><svg class="i" viewBox="0 0 16 16"><path d="M4 8h.01M8 8h.01M12 8h.01" stroke-width="2.2"/></svg></button></td></tr>');
+        tbody.insertAdjacentHTML('beforeend','<tr class="by-inv"><td><div class="person"><span class="pav" style="background:var(--beige);color:var(--beigeT)">'+esc(ini)+'</span><div><b>'+esc(n)+'<span class="st-you">Invited</span></b><small>'+esc(e)+'</small></div></div></td><td><span class="st-role">'+r+CHEV+'</span></td><td class="dim st-can">'+CAN[r]+'</td><td class="dim">Invite sent</td><td class="act"><button class="st-more" aria-label="More for '+esc(n)+'"><svg class="i" viewBox="0 0 16 16"><path d="M4 8h.01M8 8h.01M12 8h.01" stroke-width="2.2"/></svg></button></td></tr>');
         bindMember(tbody.lastElementChild);var c=qa('#team tbody tr').length;q('#team .ch p').textContent=c+' members. Each role sets what a member can see and change.';
   }
   (function(){var M=PMStore.members();

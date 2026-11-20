@@ -99,7 +99,7 @@
     '<p class="by-dp" style="margin-top:12px">Changes apply to new calls only. Each call logs the rules that were on.</p>';}
   function openWsg(){
     var dr=UI.drawer({title:'Workspace guardrails',body:wsgBody(),width:460,actions:[{label:'Close'},{label:'Add rule',primary:true,onClick:function(d){
-      var i=d.querySelector('#byWsgNew'),v=i.value.trim();if(!v){i.focus();i.style.borderColor='#B42318';return false;}
+      var i=d.querySelector('#byWsgNew'),v=i.value.trim();if(!v){i.focus();i.style.borderColor='var(--danger)';return false;}
       if(!/[.!?]$/.test(v))v+='.';WSG.push({t:v});BYC.set('pm-by-wsg',WSG);d.querySelector('.ui-md-b').innerHTML=wsgBody();bindRm(d);refresh();UI.toast('Added a workspace guardrail. It applies to new calls in every role.');return false;}}]});
     bindRm(dr);
   }

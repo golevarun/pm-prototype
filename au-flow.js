@@ -113,7 +113,7 @@
     rpB.innerHTML=tab==='setup'?setupHtml(sel,d):tab==='preview'?previewHtml(sel,d):activityHtml(sel);
     var m=D.getElementById('auRpM');m.textContent=dirty?'Unsaved changes':'Changes apply to new candidates';m.classList.toggle('au-dirty',dirty);
     var rm=D.getElementById('auRpDel');
-    if(/^x/.test(sel)){if(!rm){rm=D.createElement('button');rm.className='btn';rm.id='auRpDel';rm.textContent='Remove step';rm.setAttribute('data-js','');rm.style.color='#B42318';D.getElementById('auRpCancel').before(rm);rm.addEventListener('click',removeStep);}}
+    if(/^x/.test(sel)){if(!rm){rm=D.createElement('button');rm.className='btn';rm.id='auRpDel';rm.textContent='Remove step';rm.setAttribute('data-js','');rm.style.color='var(--danger)';D.getElementById('auRpCancel').before(rm);rm.addEventListener('click',removeStep);}}
     else if(rm)rm.remove();
   }
   function select(id){
@@ -194,7 +194,7 @@
   function drawStatus(){var t=D.getElementById('auStatus');
     if(status==='Archived'){t.className='tag gray';t.textContent='Archived';pb.disabled=true;pb.innerHTML=RI+'Resume';return;}
     var on=status==='Active';t.className=on?'tag green':'tag beige';t.innerHTML=on?'<span class="dot" style="margin-right:2px"></span>Active':'Paused';pb.innerHTML=(on?PI+'Pause':RI+'Resume');
-    var st=D.querySelectorAll('.cv-stat')[1];if(st)st.innerHTML=on?'<span class="dot"></span>Last run 9:14 am':'<span class="dot" style="background:#C9821E"></span>Paused · last run 9:14 am';}
+    var st=D.querySelectorAll('.cv-stat')[1];if(st)st.innerHTML=on?'<span class="dot"></span>Last run 9:14 am':'<span class="dot" style="background:var(--warn)"></span>Paused · last run 9:14 am';}
   UI.wire(pb,function(){status=status==='Active'?'Paused':'Active';PMStore.setAu('inv',{status:status});drawStatus();
     UI.toast(status==='Paused'?'Paused. No invites or reminders go out until you resume.':'Resumed. Sending picks up in working hours.');});
   UI.wire('#auSaveAll',function(){if(dirty){commit(true);drawPanel();}D.querySelector('.ph .meta').textContent='Edited by Dana Whitfield, just now';UI.toast('Saved. Changes apply to new candidates.');});
@@ -280,7 +280,7 @@
       '<span class="lab">Owner</span><div><div class="inp" id="auSO" role="button" tabindex="0" style="max-width:420px;cursor:pointer"><span class="mini-av">'+SET.owner.split(' ').map(function(w){return w[0]}).join('')+'</span><span class="t">'+E(SET.owner)+'</span>'+CHEV+'</div><div class="help">The owner gets failed-send alerts. Each email step picks its own sender.</div></div>'+
       '<span class="lab">Roles</span><div><span class="tag gray">Req 114 · Account Executive, Mid-Market</span><div class="help">Add roles from <a href="setup.html" style="color:inherit">Interview setup</a> for each role.</div></div>'+
       '<span class="lab">Enrollment</span><div>'+tg('reenroll','Let candidates enroll again','If a candidate leaves the stage and comes back, they start over.',SET.reenroll)+tg('failed','Email the owner about failed sends','Sent once a day if any email bounced.',SET.failed)+tg('acc','Pause for accommodation requests','Always on. The candidate\'s emails wait until the recruiter answers.',true,true)+tg('wd','Stop when a candidate withdraws','Always on.',true,true)+'</div>'+
-      '<span></span><div style="display:flex;gap:8px"><button class="btn yellow" id="auSS" data-js>Save settings</button><button class="btn" id="auSA" data-js style="color:#B42318">Archive automation</button></div>'+
+      '<span></span><div style="display:flex;gap:8px"><button class="btn yellow" id="auSS" data-js>Save settings</button><button class="btn" id="auSA" data-js style="color:var(--danger)">Archive automation</button></div>'+
       '</div></section></div>';
     UI.wire('#auSO',function(b){UI.menu(b,DD.owner.map(function(o){return {label:o,check:SET.owner===o,onClick:function(){SET.owner=o;keep();drawSet();}};}),{align:'left'});});
     el.querySelectorAll('[data-sw]').forEach(function(s){s.addEventListener('click',function(){if(s.classList.contains('locked')){UI.toast('This rule is always on.');return;}var k=s.getAttribute('data-sw');SET[k]=!SET[k];s.classList.toggle('on',SET[k]);s.setAttribute('aria-checked',SET[k]);});});

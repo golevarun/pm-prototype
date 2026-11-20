@@ -14,19 +14,19 @@
   var M=[];
   if(OUT){
     M.push({id:'dana-outcome',primary:true,f:'inbox',from:'Dana Whitfield',av:'DW',unread:true,star:false});
-    M.push({id:'receipt',f:'inbox',from:'Northwind Freight interviews',addr:'interviews@northwindfreight.com',av:'NF',avc:'#E3ECFC;color:#2A4F99',subj:'We got your scored call',prev:'Your call with Jordan Ellis finished at 9:12 am. Here’s what happens next…',time:'9:13 am',full:'Tue, Nov 17, 9:13 am',
+    M.push({id:'receipt',f:'inbox',from:'Northwind Freight interviews',addr:'interviews@northwindfreight.com',av:'NF',avc:'var(--blue);color:var(--info)',subj:'We got your scored call',prev:'Your call with Jordan Ellis finished at 9:12 am. Here’s what happens next…',time:'9:13 am',full:'Tue, Nov 17, 9:13 am',
       body:'<p>Hi Sam,</p><p>Your call with Jordan Ellis finished at 9:12 am. Nothing else is needed from you.</p><p>Marcus Lee, the hiring manager, will listen to the parts of the call behind your score. Dana Whitfield will write to you with the decision by Nov 24. Either way, you’ll get notes from the call.</p><p>Northwind Freight</p><div class="sig">Sent with PM for Northwind Freight</div>'});
     M.push({id:'dana-invite',f:'inbox',from:'Dana Whitfield',addr:'dana@northwindfreight.com',av:'DW',subj:'Your first interview for Account Executive at Northwind',prev:'Thanks for applying. The next step is a short practice call…',time:'Nov 2',full:'Mon, Nov 2, 10:14 am',star:true,body:DANA_INVITE_BODY});
   }else{
     M.push({id:'dana-invite',primary:true,f:'inbox',from:'Dana Whitfield',av:'DW',unread:true,star:false,subj:'Your first interview for Account Executive at Northwind',prev:'Thanks for applying. The next step is a short practice call…',time:'10:14 am'});
   }
-  M.push({id:'brightline',f:'inbox',from:'Brightline Logistics Talent',addr:'talent@brightlinelogistics.com',av:'BL',avc:'#FBE7DE;color:#9A4320',subj:'Thanks for applying to Sales Executive',prev:'We’ve got your application. Our team reviews every one…',time:OUT?'Nov 2':'9:02 am',full:'Mon, Nov 2, 9:02 am',unread:!OUT,
+  M.push({id:'brightline',f:'inbox',from:'Brightline Logistics Talent',addr:'talent@brightlinelogistics.com',av:'BL',avc:'var(--orange);color:var(--orangeT)',subj:'Thanks for applying to Sales Executive',prev:'We’ve got your application. Our team reviews every one…',time:OUT?'Nov 2':'9:02 am',full:'Mon, Nov 2, 9:02 am',unread:!OUT,
     body:'<p>Hi Sam,</p><p>We’ve got your application for Sales Executive. Our team reviews every one and will reply within three weeks.</p><p>Brightline Logistics Talent Team</p>'});
-  M.push({id:'alex',f:'inbox',from:'Alex Rivera',addr:'alex.rivera@gmail.com',av:'AR',avc:'#F9E3F1;color:#8A2D6B',subj:'Sunday dinner?',prev:'Mom wants to know if you’re coming Sunday. 6 pm, same as usual…',time:'Nov 1',full:'Sun, Nov 1, 6:40 pm',unread:!OUT,
+  M.push({id:'alex',f:'inbox',from:'Alex Rivera',addr:'alex.rivera@gmail.com',av:'AR',avc:'var(--pink);color:var(--pinkT)',subj:'Sunday dinner?',prev:'Mom wants to know if you’re coming Sunday. 6 pm, same as usual…',time:'Nov 1',full:'Sun, Nov 1, 6:40 pm',unread:!OUT,
     body:'<p>Hey,</p><p>Mom wants to know if you’re coming Sunday. 6 pm, same as usual. Also, good luck with the interviews.</p><p>Alex</p>'});
-  M.push({id:'careers',f:'inbox',from:'Northwind Freight Careers',addr:'careers@northwindfreight.com',av:'NF',avc:'#E3ECFC;color:#2A4F99',subj:'We received your application',prev:'Thanks for applying to Account Executive, Mid-Market…',time:'Oct 30',full:'Fri, Oct 30, 4:21 pm',
+  M.push({id:'careers',f:'inbox',from:'Northwind Freight Careers',addr:'careers@northwindfreight.com',av:'NF',avc:'var(--blue);color:var(--info)',subj:'We received your application',prev:'Thanks for applying to Account Executive, Mid-Market…',time:'Oct 30',full:'Fri, Oct 30, 4:21 pm',
     body:'<p>Hi Sam,</p><p>Thanks for applying to Account Executive, Mid-Market at Northwind Freight. Dana Whitfield, our recruiter, will be in touch within a week if your background fits the role.</p><p>You don’t need to do anything else right now.</p><p>Northwind Freight Careers</p>'});
-  M.push({id:'bank',f:'inbox',from:'Maple Street Bank',addr:'alerts@maplestreetbank.com',av:'MS',avc:'#E8E2D8;color:#493B2C',subj:'Your statement is ready',prev:'Your October statement is now available…',time:'Oct 28',full:'Wed, Oct 28, 7:00 am',
+  M.push({id:'bank',f:'inbox',from:'Maple Street Bank',addr:'alerts@maplestreetbank.com',av:'MS',avc:'var(--beige);color:var(--beigeT)',subj:'Your statement is ready',prev:'Your October statement is now available…',time:'Oct 28',full:'Wed, Oct 28, 7:00 am',
     body:'<p>Your October statement is now available in online banking.</p><p>This is an automated message. Please don’t reply.</p><p>Maple Street Bank</p>'});
   M.push({id:'s-alex',f:'sent',from:'Me',to:'Alex Rivera',addr:'to alex.rivera@gmail.com',av:'SR',subj:'Re: Sunday dinner?',prev:'I’m in. I’ll bring dessert…',time:'Nov 1',full:'Sun, Nov 1, 7:05 pm',
     body:'<p>I’m in. I’ll bring dessert.</p><p>Thanks. One of them sent a practice call link, so I’ll try that this week.</p><p>Sam</p>'});
@@ -34,9 +34,9 @@
     body:'<p>Hi Jen,</p><p>I’m applying for account executive roles and wanted to ask if you’d be a reference. You saw most of my work on the regional accounts.</p><p>Happy to send you the job posts first.</p><p>Thanks,<br>Sam</p>'});
   M.push({id:'s-brightline',f:'sent',from:'Me',to:'Brightline Logistics Talent',addr:'to talent@brightlinelogistics.com',av:'SR',subj:'Application: Sales Executive',prev:'Attached are my resume and a short note on my last two years…',time:'Oct 26',full:'Mon, Oct 26, 9:40 pm',
     body:'<p>Hello,</p><p>Attached are my resume and a short note on my last two years selling to regional carriers. I’d be glad to talk.</p><p>Sam Rivera</p>'});
-  M.push({id:'a-transit',f:'archive',from:'Metro Transit',addr:'receipts@metrotransit.org',av:'MT',avc:'#E2F2E6;color:#2B6B3E',subj:'Your monthly pass receipt',prev:'Thanks for your purchase. Your November pass starts Nov 1…',time:'Oct 25',full:'Sun, Oct 25, 11:02 am',
+  M.push({id:'a-transit',f:'archive',from:'Metro Transit',addr:'receipts@metrotransit.org',av:'MT',avc:'var(--success-bg);color:var(--success-text)',subj:'Your monthly pass receipt',prev:'Thanks for your purchase. Your November pass starts Nov 1…',time:'Oct 25',full:'Sun, Oct 25, 11:02 am',
     body:'<p>Thanks for your purchase. Your November monthly pass starts Nov 1 and ends Nov 30.</p><p>Metro Transit</p>'});
-  M.push({id:'a-news',f:'archive',from:'Sales Builders',addr:'hello@salesbuilders.co',av:'SB',avc:'#F4F4F2;color:#535347',subj:'This week: asking for the next step',prev:'Most calls end with “I’ll send some info.” Here’s what to ask instead…',time:'Oct 12',full:'Mon, Oct 12, 6:00 am',
+  M.push({id:'a-news',f:'archive',from:'Sales Builders',addr:'hello@salesbuilders.co',av:'SB',avc:'var(--chip);color:var(--ink2)',subj:'This week: asking for the next step',prev:'Most calls end with “I’ll send some info.” Here’s what to ask instead…',time:'Oct 12',full:'Mon, Oct 12, 6:00 am',
     body:'<p>Most calls end with “I’ll send some info.” This week, three readers share what they ask instead, and how they pick a date the buyer can say yes to.</p><p>Sales Builders</p>'});
   M.forEach(function(m){m.home=m.f;});
 
@@ -69,7 +69,7 @@
   }
   function inFolder(m){if(folder==='starred')return m.star;return m.f===folder;}
   function visible(){return M.filter(inFolder);}
-  function starSvg(on){return '<svg class="i" viewBox="0 0 16 16"'+(on?' style="fill:#C9821E;stroke:#C9821E"':'')+'><path d="m8 2.5 1.7 3.5 3.8.5-2.8 2.6.7 3.8L8 11.1l-3.4 1.8.7-3.8-2.8-2.6 3.8-.5z"/></svg>';}
+  function starSvg(on){return '<svg class="i" viewBox="0 0 16 16"'+(on?' style="fill:var(--warn);stroke:var(--warn)"':'')+'><path d="m8 2.5 1.7 3.5 3.8.5-2.8 2.6.7 3.8L8 11.1l-3.4 1.8.7-3.8-2.8-2.6 3.8-.5z"/></svg>';}
 
   function drawFolders(){
     var n=M.filter(function(m){return m.f==='inbox'&&m.unread;}).length;

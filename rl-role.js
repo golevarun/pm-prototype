@@ -77,7 +77,7 @@
     RL.inviteModal({t:R.t,req:req},function(n){R.enr+=n;R.invited+=n;render();});}
   function publish(){
     var left=R.buyers.length?'<li>'+R.buyers.length+' buyers drafted, none tested yet</li>':'<li>No buyers drafted yet</li>';
-    UI.modal({title:'Finish setup before you publish',body:'<p>'+E(R.t)+' isn\'t ready for candidates yet. These sections still need you:</p><ul style="margin:0 0 10px;padding-left:18px">'+left+'<li>Call settings: pick the call length and accommodations</li><li>Candidate notice: send to Legal for review</li></ul><p style="color:#68685D;font-size:12px">Nothing goes to candidates until you publish. Every candidate then gets the same buyer mix and difficulty.</p>',
+    UI.modal({title:'Finish setup before you publish',body:'<p>'+E(R.t)+' isn\'t ready for candidates yet. These sections still need you:</p><ul style="margin:0 0 10px;padding-left:18px">'+left+'<li>Call settings: pick the call length and accommodations</li><li>Candidate notice: send to Legal for review</li></ul><p style="color:var(--mute);font-size:var(--fs-sm)">Nothing goes to candidates until you publish. Every candidate then gets the same buyer mix and difficulty.</p>',
       actions:[{label:'Cancel'},{label:'Open interview setup',primary:true,onClick:function(){location.href='setup.html?req='+encodeURIComponent(req);}}]});
   }
   function audit(){
@@ -97,7 +97,7 @@
       [R.st==='closed'?'Advanced':'Advanced',adv,pct(adv,R.enr),R.st==='closed'?R.hired+' hired':(undecided()+' not decided yet')]];
     if(R.st==='live')fs.splice(2,0,['In notice period',R.notice,pct(R.notice,R.enr),'Scored call not open yet']);
     var rest=R.enr-R.fin-R.notice;
-    h+=card('rl-fn','Candidates <span class="ov-chsub" style="margin-left:6px;font-weight:400">Counts since '+R.pub+'</span>','<button class="btn sm" data-js data-p="candidates">Open candidates</button>',
+    h+=card('rl-fn','Candidates <span class="ov-chsub" style="margin-left:6px;font-weight:var(--fw-regular)">Counts since '+R.pub+'</span>','<button class="btn sm" data-js data-p="candidates">Open candidates</button>',
       '<div class="ov-funnel'+(fs.length===5?' rl-f5':'')+'">'+fs.map(function(f){return '<div class="ov-fs"><small>'+f[0]+'</small><b>'+f[1]+'</b><div class="ov-bar"><i style="width:'+f[2]+'%"></i></div><span class="meta">'+f[3]+'</span></div>';}).join('')+'</div>'+
       '<div class="ov-fnote">'+(R.st==='closed'?'The other '+rest+' enrolled: '+R.stopped+' had open invites stopped when the role closed, '+R.withdrew+' withdrew.':'The other '+rest+' enrolled: '+R.invited+' invited, '+R.stopped+' with reminders stopped, '+R.withdrew+' withdrew.')+'</div>');
     var max=Math.max.apply(null,R.weeks.map(function(w){return w[1]}))||1;
@@ -151,7 +151,7 @@
       '<div class="rl-pager"><span class="meta">Ranked by the weighted midpoint of each range. A person makes every decision.</span><span class="meta" style="margin-right:0">'+(l.length?(page*PER+1)+'–'+Math.min(l.length,page*PER+PER):'0')+' of '+l.length+'</span><button class="rl-pg" data-js data-pg="-1" aria-label="Previous page"'+(page===0?' disabled':'')+'><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m10 4-4 4 4 4"/></svg></button><button class="rl-pg" data-js data-pg="1" aria-label="Next page"'+(page>=pages-1?' disabled':'')+'><svg class="i" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="m6 4 4 4-4 4"/></svg></button></div></section>';
   }
   function decide(i){var c=cands[i];
-    UI.modal({title:'Decision for '+c.name,body:'<p>'+c.name+' finished the scored call on '+c.day+'. Overall range '+c.range+(c.rec?', recommended.':', not recommended.')+'</p><label for="rlDec">Decision</label><select id="rlDec"><option>Advanced</option><option>Declined</option></select><p style="margin-top:10px;color:#68685D;font-size:12px">The decision email goes out from Dana Whitfield after you save. The stage changes in the applicant tracker right away.</p>',
+    UI.modal({title:'Decision for '+c.name,body:'<p>'+c.name+' finished the scored call on '+c.day+'. Overall range '+c.range+(c.rec?', recommended.':', not recommended.')+'</p><label for="rlDec">Decision</label><select id="rlDec"><option>Advanced</option><option>Declined</option></select><p style="margin-top:10px;color:var(--mute);font-size:var(--fs-sm)">The decision email goes out from Dana Whitfield after you save. The stage changes in the applicant tracker right away.</p>',
       actions:[{label:'Cancel'}].concat(c.dec?[{label:'Clear decision',onClick:function(){c.dec=null;RL.setRoleState(req,'dec-'+i,null);render();UI.toast('Cleared the decision for '+c.name+'.');}}]:[]).concat([{label:'Save decision',primary:true,onClick:function(md){var v=md.querySelector('#rlDec').value;c.dec=v;RL.setRoleState(req,'dec-'+i,v);render();UI.toast((v==='Advanced'?'Advanced ':'Declined ')+c.name+'. The email goes out from Dana.');}}])});
   }
   function csv(){var rows=['rank,candidate,scored_call,overall_range,recommended,decision'];cands.forEach(function(c){rows.push([c.i+1,c.name,c.day,c.range,c.rec?'yes':'no',c.dec||''].join(','));});UI.download('candidates-req-'+req+'.csv',rows.join('\n'));}
@@ -163,7 +163,7 @@
     var act='';
     if(R.st==='live')act=card('rl-si','Invites',R.paused?'<button class="btn sm" data-js data-a="resume">Resume invites</button>':'<button class="btn sm" data-js data-a="pause">Pause invites</button>','<div class="cb"><p class="help" style="margin:0">'+(R.paused?'Invites are paused. Candidates already invited keep their links and can still take the scored call.':'Pausing stops new invites. Candidates already invited keep their links.')+'</p></div>');
     if(R.st==='closed')act=card('rl-sa','Audit record','<button class="btn sm" data-js data-a="audit">Export audit log</button>','<div class="cb"><p class="help" style="margin:0">Recordings and the audit log are kept 12 months after the role closed, until Oct 30, 2027.</p></div>');
-    if(R.st==='draft')act=card('rl-sx','Delete draft','<button class="btn sm" data-js data-a="delete" style="color:#A12F27">Delete draft</button>','<div class="cb"><p class="help" style="margin:0">Nothing has gone to candidates. The req stays open in the applicant tracker.</p></div>');
+    if(R.st==='draft')act=card('rl-sx','Delete draft','<button class="btn sm" data-js data-a="delete" style="color:var(--danger)">Delete draft</button>','<div class="cb"><p class="help" style="margin:0">Nothing has gone to candidates. The req stays open in the applicant tracker.</p></div>');
     return h+teamCard()+act;
   }
 

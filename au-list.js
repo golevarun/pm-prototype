@@ -95,7 +95,7 @@
     if(r.href){location.href=r.href;return;}
     UI.drawer({title:r.name,width:480,body:
       '<dl class="au-dl"><dt>Status</dt><dd>'+r.status+'</dd><dt>Roles</dt><dd>'+E(r.roles.join(', '))+'</dd><dt>Owner</dt><dd>'+E(r.owner)+'</dd><dt>Enrolled</dt><dd>'+r.enrolled+' candidates</dd><dt>Last run</dt><dd>'+E(r.run)+'</dd></dl>'+stepsHtml(r)+
-      '<p class="au-dim" style="font-size:12px">Emails send from '+E(r.owner)+' on weekdays, 9:00 am to 5:00 pm in the candidate\'s time zone.</p>',
+      '<p class="au-dim" style="font-size:var(--fs-sm)">Emails send from '+E(r.owner)+' on weekdays, 9:00 am to 5:00 pm in the candidate\'s time zone.</p>',
       actions:[{label:'Close'},{label:'Edit',primary:true,onClick:function(){setTimeout(function(){edit(r)},0);}}]});
   }
   function optList(list,cur){return list.map(function(o){return '<option'+(o===cur?' selected':'')+'>'+E(o)+'</option>'}).join('');}
@@ -113,9 +113,9 @@
     UI.drawer({title:'Edit '+r.name,width:480,body:
       '<label for="auEN">Name</label><input id="auEN" value="'+E(r.name)+'"><label for="auED">Description</label><input id="auED" value="'+E(r.desc)+'">'+
       '<label for="auEO">Owner and sender</label><select id="auEO">'+optList(['Dana Whitfield','Marcus Lee'],r.owner)+'</select>'+
-      r.steps.map(stepField).join('')+'<p class="au-dim" style="font-size:12px;margin-top:12px">Changes apply to candidates who enroll after you save.</p>',
+      r.steps.map(stepField).join('')+'<p class="au-dim" style="font-size:var(--fs-sm);margin-top:12px">Changes apply to candidates who enroll after you save.</p>',
       actions:[{label:'Cancel'},{label:'Save',primary:true,onClick:function(d){
-        var n=d.querySelector('#auEN');if(!n.value.trim()){n.style.borderColor='#B42318';n.focus();return false;}
+        var n=d.querySelector('#auEN');if(!n.value.trim()){n.style.borderColor='var(--danger)';n.focus();return false;}
         r.name=n.value.trim();r.desc=d.querySelector('#auED').value.trim();r.owner=d.querySelector('#auEO').value;
         d.querySelectorAll('[data-i]').forEach(function(el){r.steps[+el.getAttribute('data-i')].v=el.value;});
         persist(r);render();UI.toast('Saved changes to '+r.name+'.');}}]});

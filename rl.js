@@ -36,9 +36,9 @@
   RL.reviewDev=function(done){
     UI.modal({title:'Extra time for Dev Kapoor',body:
       '<p>Dev asked for extra time on his scored call for Account Executive, Mid-Market (Req 114). His scored call opens Nov 30.</p>'+
-      '<div style="border:1px solid rgba(28,28,24,.08);border-radius:8px;padding:10px 12px;margin:0 0 10px;background:#FAFAF9"><div style="font-size:12px;color:#68685D">His note · 8:40 am</div>"I process spoken questions more slowly and would like a few extra minutes on the call."</div>'+
+      '<div style="border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px;margin:0 0 10px;background:var(--bg)"><div style="font-size:var(--fs-sm);color:var(--mute)">His note · 8:40 am</div>"I process spoken questions more slowly and would like a few extra minutes on the call."</div>'+
       '<label for="rlDevMin">Call length if approved</label><select id="rlDevMin"><option value="10" selected>10 minutes (7 plus 3)</option><option value="12">12 minutes (7 plus 5)</option><option value="14">14 minutes (double time)</option></select>'+
-      '<p style="margin-top:10px;color:#68685D;font-size:12px">Only recruiters see this request. The hiring team sees the scores, never the accommodation. Scoring uses the same skills and weights as everyone else.</p>',
+      '<p style="margin-top:10px;color:var(--mute);font-size:var(--fs-sm)">Only recruiters see this request. The hiring team sees the scores, never the accommodation. Scoring uses the same skills and weights as everyone else.</p>',
       actions:[{label:'Cancel'},{label:'Decline',onClick:function(){setNeed('dev',{ok:false,reason:'The call length is the same for everyone in this role.'});UI.toast('Declined. Dev gets an email that his call stays at 7 minutes.');if(done)done();}},
         {label:'Approve',primary:true,onClick:function(md){var m=md.querySelector('#rlDevMin').value;setNeed('dev',{ok:true,min:m});UI.toast('Approved. Dev\'s scored call is now '+m+' minutes. He gets an email.');if(done)done();}}]});
   };
@@ -47,7 +47,7 @@
       '<p>Mia asked for a person to run her call in place of the AI buyer. The interviewer plays the same buyer and scores the same three skills.</p>'+
       '<label for="rlMiaWho">Interviewer</label><select id="rlMiaWho">'+RL.interviewers().map(function(n){return '<option>'+RL.esc(n)+'</option>';}).join('')+'</select>'+
       '<label for="rlMiaWhen">Time</label><select id="rlMiaWhen"><option>Fri, Nov 20 · 11:00 am</option><option>Fri, Nov 20 · 2:30 pm</option><option>Mon, Nov 23 · 10:00 am</option></select>'+
-      '<p style="margin-top:10px;color:#68685D;font-size:12px">Mia gets a calendar invite and the buyer brief. The interviewer gets the script for Jordan Ellis and the scoring guide.</p>',
+      '<p style="margin-top:10px;color:var(--mute);font-size:var(--fs-sm)">Mia gets a calendar invite and the buyer brief. The interviewer gets the script for Jordan Ellis and the scoring guide.</p>',
       actions:[{label:'Cancel'},{label:'Assign',primary:true,onClick:function(md){var w=md.querySelector('#rlMiaWho').value,t=md.querySelector('#rlMiaWhen').value;setNeed('mia',{who:w,when:t});UI.toast('Assigned '+w+'. Mia gets an invite for '+t.replace(' · ',' at ')+'.');if(done)done();}}]});
   };
 
@@ -65,10 +65,10 @@
     var P=PMStore.pool(req);
     var md=UI.modal({title:'Invite candidates',wide:true,body:
       '<p>Invite people to '+RL.esc(role.t)+'. Each one gets the notice first, then practice opens. The scored call opens after 10 business days.</p>'+
-      '<label>From the applicant tracker <span style="color:#68685D">· at Phone screen, not invited yet</span></label>'+
-      '<div id="rlInvList" style="border:1px solid rgba(28,28,24,.08);border-radius:8px">'+
+      '<label>From the applicant tracker <span style="color:var(--mute)">· at Phone screen, not invited yet</span></label>'+
+      '<div id="rlInvList" style="border:1px solid var(--line);border-radius:var(--r-md)">'+
       (P.length?P.map(function(p,i){
-        return '<label style="display:flex;align-items:center;gap:8px;margin:0;padding:8px 12px;font-size:13px;color:#1C1C18;'+(i?'border-top:1px solid rgba(28,28,24,.08)':'')+'"><input type="checkbox" checked style="width:auto" data-n="'+RL.esc(p[0])+'">'+RL.esc(p[0])+'<span style="margin-left:auto;color:#68685D;font-size:12px">'+RL.esc(p[1])+'</span></label>';}).join(''):'<div style="padding:10px 12px;color:#68685D">Everyone at Phone screen for this role has been invited.</div>')+
+        return '<label style="display:flex;align-items:center;gap:8px;margin:0;padding:8px 12px;font-size:var(--fs-md);color:var(--ink);'+(i?'border-top:1px solid var(--line)':'')+'"><input type="checkbox" checked style="width:auto" data-n="'+RL.esc(p[0])+'">'+RL.esc(p[0])+'<span style="margin-left:auto;color:var(--mute);font-size:var(--fs-sm)">'+RL.esc(p[1])+'</span></label>';}).join(''):'<div style="padding:10px 12px;color:var(--mute)">Everyone at Phone screen for this role has been invited.</div>')+
       '</div><label for="rlInvEm">Or add email addresses</label><textarea id="rlInvEm" placeholder="One per line" style="min-height:64px"></textarea>',
       actions:[{label:'Cancel'},{label:'Send invites',primary:true,onClick:function(m){
         var names=[].map.call(m.querySelectorAll('#rlInvList input:checked'),function(i){return i.getAttribute('data-n');});

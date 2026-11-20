@@ -1,0 +1,104 @@
+/* Generated from golevarun/pm-app app/tokens.css by scripts/publish-ds.mjs. Do not edit this copy. */
+/*
+  PM design tokens. The only place colors, type sizes, radii, control heights and shadows are defined.
+  Values come from the Apollo dashboard measurements (see DESIGN.md). Every other stylesheet uses var(--…).
+  `npm run check:design` fails the build if a raw color, an off-scale font size, radius or weight appears elsewhere.
+*/
+:root{
+  /* Text */
+  --ink:#1C1C18;            /* primary text, icons */
+  --ink2:#535347;           /* secondary text, nav */
+  --mute:#68685D;           /* labels, meta */
+  --faint:#8A8A7E;          /* hints, axis ticks */
+  --disabled:#B9B9AE;       /* idle dots, disabled fills */
+
+  /* Surfaces */
+  --surface:#FFFFFF;        /* cards, top bar, inputs */
+  --bg:#FAFAF9;             /* page background, table headers, dialog footers */
+  --sub:var(--bg);
+  --field:#FDFDFC;          /* secondary button fill */
+  --row-hover:#FCFCFB;      /* hover on list rows */
+  --hover-solid:#F7F7F5;    /* hover on buttons and selected transcript lines */
+  --chip:#F4F4F2;           /* grey tag, active nav, selected row */
+  --chip2:#ECECE6;          /* selected and highlighted together */
+  --track:#D8D8D0;          /* inactive meter bars */
+
+  /* Lines */
+  --line:rgba(28,28,24,.08);
+  --line2:rgba(28,28,24,.12); /* control borders */
+  --line3:rgba(28,28,24,.24); /* dashed borders, strong dividers */
+  --hover:rgba(28,28,24,.06);
+  --active:rgba(28,28,24,.08);
+
+  /* Brand. Black until a brand color is chosen: change --primary here and nowhere else. */
+  --primary:#1C1C18;
+  --primary-hover:#2F2F27;
+  --on-primary:#FFFFFF;
+  --brand-dot:#D97757;      /* the logo dot */
+
+  /* Status */
+  --success:#3E8E56;  --success-bg:#E2F2E6;  --success-text:#2B6B3E; --success-bg-soft:#F6FAF6; /* highlighted live or new row */
+  --danger:#B42318;   --danger-hover:#912018; --danger-bg:#FBEAE8; --danger-line:rgba(180,35,24,.35);
+  --warn:#C9821E;     --warn-bg:#FFF8E6;      --warn-text:#6B4E00;  --warn-line:rgba(138,98,0,.15); --warn-bg-soft:#FDFAF3; /* flagged row */
+  --info:#2A4F99;     --info-bg:#EEF3FC;      --info-line:#7C9BD6;
+  --info-bg-soft:#F5F8FE;                     --info-line-soft:#C9D6EF;  /* selected rows, light blue borders */
+
+  /* Tags (background / text) */
+  --beige:#E8E2D8; --beigeT:#493B2C;
+  --blue:#E3ECFC;  --blueT:var(--info);
+  --pink:#F9E3F1;  --pinkT:#8A2D6B;
+  --green:var(--success-bg); --greenT:var(--success-text);
+  --orange:#FBE7DE; --orangeT:#9A4320;
+  --purple:#F3E8FD; --purpleT:#6B3FA0;
+
+  /* Candidate's employer mark (stands in for the hiring company's logo) */
+  --employer:#1F3A5F;
+
+  /* Focus, overlay, shadow */
+  --focus:var(--info);
+  --ring:0 0 0 3px rgba(28,28,24,.08);
+  --ring-info:0 0 0 3px rgba(42,79,153,.12);
+  --success-ring:rgba(62,142,86,.18);   /* glow around the live dot */
+  --info-ring:rgba(42,79,153,.25);      /* pulse around Jordan while he talks */
+  --info-ring-fade:rgba(42,79,153,.1);
+  --overlay:rgba(28,28,24,.32);
+  --shadow-pop:0 16px 48px rgba(28,28,24,.2);
+  --shadow-field:0 1px 2px rgba(28,28,24,.03);
+  --shadow-card:0 1px 2px rgba(28,28,24,.04);   /* raised cards and tiles */
+  --shadow-knob:0 1px 2px rgba(0,0,0,.2);       /* toggle switch knob */
+  --shadow-menu:0 6px 20px rgba(28,28,24,.2);   /* menus, popovers */
+  --on-dark-hover:rgba(255,255,255,.12);        /* hover on the dark step bar */
+  --on-dark-active:rgba(255,255,255,.2);
+  --on-dark-line:rgba(255,255,255,.3);
+
+  /* Type. Inter. Five sizes plus one display size. */
+  --font:"Inter",system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --fs-xs:11px;   /* avatar initials, step numbers, axis ticks */
+  --fs-sm:12px;   /* meta, labels, table headers, small buttons, banners */
+  --fs-md:13px;   /* body, buttons, inputs */
+  --fs-lg:15px;   /* card titles, dialog titles */
+  --fs-xl:20px;   /* page titles */
+  --fs-2xl:28px;  /* big numbers */
+  --lh-xs:16px; --lh-sm:16px; --lh-md:20px; --lh-lg:24px; --lh-xl:28px; --lh-2xl:34px;
+  --fw-regular:400; --fw-medium:450; --fw-strong:550;
+
+  /* Radius */
+  --r-xs:2px;     /* bars, meter segments */
+  --r-box:4px;    /* checkboxes, keyboard keys, small markers */
+  --r-sm:6px;     /* nav items, small inline buttons */
+  --r-md:8px;     /* buttons, inputs, banners */
+  --r-lg:12px;    /* cards, dialogs */
+  --r-pill:999px; /* tags, pills */
+
+  /* Sizes */
+  --h-sm:28px; --h-md:32px; --h-lg:36px;   /* control heights */
+  --sidebar:240px; --topbar:48px;
+  --content:1040px;                         /* recruiter pages */
+  --frame:1120px;                           /* candidate pages */
+  --rail:320px;                             /* candidate right-hand column */
+  --frame-narrow:960px;                     /* hiring manager pages */
+
+  /* Spacing, 4px steps */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s8:32px;
+}
