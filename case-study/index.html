@@ -173,6 +173,17 @@ footer a{margin-right:18px}
 
 /* Apple: full-width screen, one caption */
 .apple{margin-top:44px}
+/* hero prototype embed: the app renders at a laptop width and is scaled to fit */
+.proto{margin:48px 0 0}
+.proto-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;font:400 14px/1.5 Inter,sans-serif;color:var(--ink2);margin-bottom:14px}
+.proto-h a{margin-left:auto;font-weight:600;color:var(--ink);white-space:nowrap}
+.proto-frame{position:relative;width:100%;aspect-ratio:1440/900;border-radius:12px;border:1px solid var(--line);overflow:hidden;background:#FAFAF9;box-shadow:0 24px 70px rgba(0,0,0,.10)}
+.proto-frame iframe{position:absolute;left:0;top:0;width:1440px;height:900px;border:0;transform-origin:0 0}
+.proto-still{display:none;text-decoration:none;color:var(--ink)}
+.proto-still img{display:block;width:100%;border-radius:12px;border:1px solid var(--line)}
+.proto-still span{display:block;margin-top:12px;font:600 15px/1.4 Inter,sans-serif}.proto-still small{display:block;font-weight:400;color:var(--mute)}
+.proto .one{font:400 16px/1.5 Inter,sans-serif;color:var(--ink2);margin-top:18px;max-width:760px}
+@media (max-width:760px){.proto-frame{display:none}.proto-still{display:block}.proto-h a{display:none}}
 .apple img{display:block;width:100%;border-radius:12px;border:1px solid var(--line);box-shadow:0 24px 70px rgba(0,0,0,.10)}
 .apple .one{font:400 16px/1.5 Inter,sans-serif;color:var(--ink2);margin-top:18px;max-width:760px}
 .apple .one .tagl{margin-right:10px}
@@ -195,10 +206,12 @@ footer a{margin-right:18px}
 /* code snippets */
 .code{background:#15171b;color:#d6d9de;border-radius:12px;font:400 13px/1.6 ui-monospace,"SF Mono",Menlo,Consolas,monospace;overflow:hidden;margin-top:28px}
 .code .fn{display:flex;justify-content:space-between;padding:10px 16px;border-bottom:1px solid #262a31;font:400 12px/1.4 Inter,sans-serif;color:#8b919a}
-.code pre{margin:0;padding:18px 20px;white-space:pre;overflow-x:auto}
+.code{min-width:0;max-width:100%}
+.code pre{max-width:100%;margin:0;padding:18px 20px;white-space:pre;overflow-x:auto}
 .code .c{color:#7d8590}.code .kw{color:#ff8a60}.code .s{color:#a5d6a7}.code .hl{background:rgba(255,75,20,.14);display:inline}
 .rule a{display:inline-block;margin-top:12px;font:500 13px/1 Inter,sans-serif;color:var(--acc);text-decoration:none}
 
+@media (max-width:600px){.dm{font-size:12px}.dm th{font-size:9.5px;padding:0 3px 10px;letter-spacing:.02em}.dm td{padding:10px 3px}}
 @media (max-width:860px){h1{font-size:38px}h2{font-size:28px}.facts,.mx,.rules,.flow,.gr,.pipe,.ticks{grid-template-columns:1fr 1fr}.two,.pair{grid-template-columns:1fr}.br{grid-template-columns:1fr}}
 </style>
 <style>html.framed body:before{display:none}html.framed body{overflow:hidden}</style>
@@ -206,6 +219,7 @@ footer a{margin-right:18px}
 </head>
 <style>
 /* lean additions */
+.ex:has(>.dm){overflow-x:auto}
 .dm{width:100%;border-collapse:collapse;font:400 14px/1.3 Inter,sans-serif}
 .dm th{font:500 11.5px/1.25 Inter,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);text-align:center;padding:0 8px 14px;border-bottom:1px solid var(--ink);width:15%}
 .dm th:first-child{text-align:left;width:auto;padding-left:0}
@@ -248,7 +262,12 @@ footer a{margin-right:18px}
     <div><dt>State</dt><dd>Working app, live calls scored end to end</dd></div>
   </dl>
   <div class="btns"><a target="_blank" rel="noopener" class="btn pri" href="https://pm-app-one-kappa.vercel.app/c/consent">Take the interview ↗</a><a target="_blank" rel="noopener" class="btn" href="https://golevarun.github.io/pm-prototype/">Open the full prototype ↗</a></div>
-  <div class="apple"><img src="img/review-w.jpg" alt="Call review of a real scored call: transcript, score ranges and the moments behind each score"><p class="one"><span class="tagl live">Live call</span>Each score links to the line it came from. Click it to hear that part of the call.</p></div>
+  <figure class="proto" aria-label="Clickable prototype of the recruiter side of PM, from setting up a role to the hiring manager’s decision">
+    <div class="proto-h"><span class="tagl proto">Prototype</span><span>Sample data. Click around: it’s the full recruiter side, from setup to decision. The bar at the bottom steps through it.</span><a href="https://golevarun.github.io/pm-prototype/" target="_blank" rel="noopener">Open it full screen ↗</a></div>
+    <div class="proto-frame" id="protoFrame"><iframe src="https://golevarun.github.io/pm-prototype/" title="PM prototype, recruiter side" loading="lazy"></iframe></div>
+    <a class="proto-still" href="https://golevarun.github.io/pm-prototype/" target="_blank" rel="noopener"><img src="img/prototype-home.jpg" alt="The prototype’s Home screen: requests waiting on the recruiter, today’s calls, and each role’s next action"><span>Open the prototype ↗ <small>It’s built for a laptop screen.</small></span></a>
+    <figcaption class="one">The scores, calls and decisions in the <a href="https://pm-app-one-kappa.vercel.app/c/consent" target="_blank" rel="noopener">working app</a> are real. The prototype shows the whole product around them, with sample data. A live call review is in section 06.</figcaption>
+  </figure>
 </header>
 
 <section id="landscape"><div class="w">
@@ -354,6 +373,7 @@ Turn-taking:
 <span class="c">// After five runs. Runs whose quotes aren't in the transcript are already dropped.</span>
 skills.push(widen(Math.min(...scores), Math.max(...scores)));
 status: ok.length &gt;= 3 ? <span class="s">'scored'</span> : <span class="s">'needs_review'</span></pre></div>
+  <div class="apple"><img src="img/review-w.jpg" alt="Call review of a real scored call: transcript, score ranges and the moments behind each score"><p class="one"><span class="tagl live">Live call</span>Sam Rivera’s call review. Each score links to the line it came from. Click it to hear that part of the call.</p></div>
   <div class="apple"><img src="img/shortlist-w.jpg" alt="Shortlist grouped by overlapping score ranges"><p class="one"><span class="tagl live">Live call</span>Candidates whose ranges overlap are grouped together. Their order within a group isn't meaningful.</p></div>
 </div></section>
 
@@ -504,6 +524,11 @@ document.querySelectorAll('.ramp').forEach(function(r){
   document.querySelectorAll('img').forEach(function(i){i.addEventListener('load',send)});
   setInterval(send,1000);
 })();
+</script>
+<script>
+(function(){var f=document.getElementById('protoFrame');if(!f)return;var i=f.querySelector('iframe');
+function fit(){i.style.transform='scale('+(f.clientWidth/1440)+')';}
+fit();if(window.ResizeObserver)new ResizeObserver(fit).observe(f);else window.addEventListener('resize',fit);})();
 </script>
 </body>
 </html>
