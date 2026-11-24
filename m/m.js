@@ -115,7 +115,7 @@
       tour.innerHTML='<div class="t-g"><span class="tag '+(SC[1]==='Candidate'?'blue':'beige')+'">'+SC[1]+'</span><span>'+SC[3]+' · '+(idx+1)+' of '+SCREENS.length+'</span></div>'+
         '<h1>'+SC[2]+'</h1><p>'+SC[5]+'</p>'+stBtns()+
         '<div class="t-nav"><a class="'+(idx>0?'':'dis')+'" href="'+href(idx-1)+'">← Back</a><a class="pri '+(idx<SCREENS.length-1?'':'dis')+'" href="'+href(idx+1)+'">Next →</a></div>'+
-        '<p class="t-small">Use the arrow keys to move. <a href="index.html">All phone screens</a> · <a href="../home.html?desktop=1">Desktop prototype</a> · <a href="#" id="m-reset">Start over</a></p>';
+        '<p class="t-small">Use the arrow keys to move. <a href="index.html?all">All phone screens</a> · <a href="../home.html?desktop=1">Desktop prototype</a> · <a href="#" id="m-reset">Start over</a></p>';
     }
     var fit=document.createElement('div');fit.className='m-fit';fit.appendChild(dev);
     var list=document.createElement('nav');list.className='m-list';list.setAttribute('aria-label','All phone screens');
@@ -138,7 +138,7 @@
         '<a class="'+(idx<SCREENS.length-1?'':'dis')+'" href="'+href(idx+1)+'" aria-label="Next screen">'+ICON.next+'</a>';
       body.insertBefore(strip,body.firstChild);
       var menu=document.createElement('div');menu.className='m-stmenu';menu.id='m-stmenu';menu.hidden=true;
-      menu.innerHTML='<p>'+SC[5]+'</p>'+stBtns()+'<a href="index.html">All phone screens</a>';
+      menu.innerHTML='<p>'+SC[5]+'</p>'+stBtns()+'<a href="index.html?all">All phone screens</a>';
       strip.appendChild(menu);
       var tb=strip.querySelector('.s-t');
       tb.onclick=function(){menu.hidden=!menu.hidden;tb.setAttribute('aria-expanded',!menu.hidden);};

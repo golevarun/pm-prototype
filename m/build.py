@@ -13,11 +13,11 @@ def head(title, ios=False, extra=''):
             '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">'
             '<!-- Design tokens: shared with the PM app. Local copy first, live copy from the app second. -->'
             '<link rel="stylesheet" href="../ds/tokens.css"><link rel="stylesheet" href="https://pm-app-one-kappa.vercel.app/ds/tokens.css">'
-            '<link rel="stylesheet" href="m.css?v=11241425">' + ('<link rel="stylesheet" href="ios.css?v=11241425">' if ios else '') + extra +
+            '<link rel="stylesheet" href="m.css?v=11241637">' + ('<link rel="stylesheet" href="ios.css?v=11241637">' if ios else '') + extra +
             '</head>')
 
 def page(name, title, body, script='', ios=False, cls='', extra_head=''):
-    html = head(title, ios, extra_head) + f'<body class="{cls}">' + body + '<script src="m.js?v=11241425"></script>' + (f'<script>{script}</script>' if script else '') + '</body></html>\n'
+    html = head(title, ios, extra_head) + f'<body class="{cls}">' + body + '<script src="m.js?v=11241637"></script>' + (f'<script>{script}</script>' if script else '') + '</body></html>\n'
     open(os.path.join(OUT, name), 'w').write(html)
 
 # ---------- icons ----------
