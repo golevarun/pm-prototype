@@ -139,7 +139,7 @@
       body.insertBefore(strip,body.firstChild);
       var menu=document.createElement('div');menu.className='m-stmenu';menu.id='m-stmenu';menu.hidden=true;
       menu.innerHTML='<p>'+SC[5]+'</p>'+stBtns()+'<a href="index.html">All phone screens</a>';
-      body.appendChild(menu);
+      strip.appendChild(menu);
       var tb=strip.querySelector('.s-t');
       tb.onclick=function(){menu.hidden=!menu.hidden;tb.setAttribute('aria-expanded',!menu.hidden);};
       document.addEventListener('click',function(e){if(!menu.hidden&&!e.target.closest('.m-stmenu,.m-strip')){menu.hidden=true;tb.setAttribute('aria-expanded','false');}});

@@ -4,7 +4,7 @@
 body.ios .m-scr,body.ios .m-view{background:#fff}
 .im{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,sans-serif;color:#000;letter-spacing:-.2px;font-size:17px;line-height:22px;flex:1;display:flex;flex-direction:column;background:#fff}
 .im-nav{position:sticky;top:0;z-index:20;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 8px;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
-.m-stripped .im-nav{top:32px}
+.m-stripped .im-nav{top:0}
 .im-back{display:flex;align-items:center;gap:6px;height:44px;padding:0 8px 0 4px;color:#007AFF;font-size:17px;text-decoration:none}
 .im-back svg{width:12px;height:21px}
 .im-arw{display:flex;gap:2px}
@@ -38,3 +38,6 @@ body.ios .m-scr,body.ios .m-view{background:#fff}
 .im-att .pdf{width:34px;height:42px;border-radius:4px;background:#E8463A;color:#fff;font-size:10px;font-weight:700;display:grid;place-items:end center;padding-bottom:5px}
 .im-att b{display:block;font-size:15px;font-weight:500;color:#000}
 .im-att small{display:block;font-size:13px;color:rgba(60,60,67,.6)}
+/* The Mail toolbar is only for the laptop frame. On a real phone Safari's own bar sits there. */
+body:not(.m-framed) .im-tb{display:none}
+body:not(.m-framed) .im-body{padding-bottom:32px}
