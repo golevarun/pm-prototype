@@ -2,7 +2,7 @@
 var MO=[['03:12','Discovery','Asked what happened to the last tool before pitching anything.'],['05:40','Handling doubt','Offered to let drivers flag roads, tied to Jordan’s own story.'],['06:55','Getting a next step','Booked a follow-up with the ops manager for Tuesday.']];
 var SK=[['Discovery',40,[7.5,8.5]],['Handling doubt',35,[6.5,7.5]],['Getting a next step',25,[7.0,8.0]]];
 var RL={no:'No',lno:'Lean no',lyes:'Lean yes',yes:'Yes'};
-document.documentElement.style.setProperty('--stick',(document.body.classList.contains('m-stripped')?96:56)+'px');
+document.documentElement.style.setProperty('--stick',(document.body.classList.contains('m-stripped')?84:52)+'px');
 function sec(s){var p=s.split(':');return +p[0]*60+ +p[1]}
 function mm(n){n=Math.round(n);return (n<600?'0':'')+Math.floor(n/60)+':'+(n%60<10?'0':'')+n%60}
 var wave=document.getElementById('wave');wave.innerHTML=WAVE.map(function(h){return '<i style="flex:1;height:'+h+'%;border-radius:var(--r-xs);background:var(--track)"></i>'}).join('');

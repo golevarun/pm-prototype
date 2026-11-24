@@ -463,9 +463,9 @@ function f(n){return n.toFixed(1)}
 function ini(n){return n.split(' ').map(function(w){return w[0]}).join('')}
 var a=SL.filter(function(c){return unr.indexOf(c[0])>=0}).sort(function(x,y){return x[1]<y[1]?-1:1});
 var b=SL.map(function(c,k){return c.concat([k+1])}).filter(function(c){return unr.indexOf(c[0])<0});
-document.getElementById('a').innerHTML=a.map(function(c){return '<a class="row" href="'+(c[0]==='sam'?'review.html':'#')+'"'+(c[0]==='sam'?'':' data-note="In this prototype, Sam Rivera’s call is the one you can open."')+'><span class="av">'+ini(c[1])+'</span><div class="tx"><b>'+c[1]+'</b><small>Finished '+c[4]+' · 7 min</small></div><span class="blind">Rate to see score</span></a>'}).join('')||'<div class="cb muted" style="padding-top:14px">You’ve rated every call.</div>';
+document.getElementById('a').innerHTML=a.map(function(c){return '<a class="row" href="'+(c[0]==='sam'?'review.html':'#')+'"'+(c[0]==='sam'?'':' data-note="In this prototype, Sam Rivera’s call is the one you can open."')+'><span class="av">'+ini(c[1])+'</span><div class="tx"><b>'+c[1]+'</b><small>Finished '+c[4]+'</small></div><span class="blind">Not rated</span></a>'}).join('')||'<div class="cb muted" style="padding-top:14px">You’ve rated every call.</div>';
 document.getElementById('b').innerHTML=b.map(function(c){var tag=c[0]==='sam'&&D?'<span class="tag '+(D==='adv'?'green':'')+'" style="margin-left:6px;height:20px;font-size:var(--fs-sm)">'+(D==='adv'?'Final round':'Declined')+'</span>':'';
- return '<a class="row" href="'+(c[0]==='sam'?'review.html?s=rated':'#')+'"'+(c[0]==='sam'?'':' data-note="In this prototype, Sam Rivera’s call is the one you can open."')+' style="align-items:flex-start"><span class="num">'+c[5]+'</span><div class="tx"><b>'+c[1]+tag+'</b><small>'+c[2]+'</small><div style="display:flex;align-items:center;gap:10px;margin-top:8px"><span class="rbar"><i style="'+pos(c[3])+'"></i></span><span class="rg">'+f(c[3][0])+'–'+f(c[3][1])+'</span></div></div></a>'}).join('');
+ return '<a class="row" href="'+(c[0]==='sam'?'review.html?s=rated':'#')+'"'+(c[0]==='sam'?'':' data-note="In this prototype, Sam Rivera’s call is the one you can open."')+'><span class="num">'+c[5]+'</span><div class="tx"><b>'+c[1]+tag+'</b><small>'+c[2]+'</small></div><div style="width:96px;flex:none;text-align:right"><span class="rg">'+f(c[3][0])+'–'+f(c[3][1])+'</span><span class="rbar" style="display:block;margin-top:6px"><i style="'+pos(c[3])+'"></i></span></div></a>'}).join('');
 document.getElementById('h1').textContent='Rate first · '+a.length;document.getElementById('h2').textContent='Rated · '+b.length;""" % json.dumps([[a, b, c, list(d), e] for (a, b, c, d, e) in SL]))
 
 WAVE = [55,63,38,75,86,44,36,33,27,76,95,62,32,53,91,93,71,60,47,38,58,52,28,58,59,49,46,64,62,72,36,68,74,89,56,47,56,85,60,36,95,63,25,62,98,64,90,49,77,79]
@@ -493,7 +493,7 @@ page('review.html', 'Sam Rivera’s call', body=(
 var MO=[['03:12','Discovery','Asked what happened to the last tool before pitching anything.'],['05:40','Handling doubt','Offered to let drivers flag roads, tied to Jordan’s own story.'],['06:55','Getting a next step','Booked a follow-up with the ops manager for Tuesday.']];
 var SK=[['Discovery',40,[7.5,8.5]],['Handling doubt',35,[6.5,7.5]],['Getting a next step',25,[7.0,8.0]]];
 var RL={no:'No',lno:'Lean no',lyes:'Lean yes',yes:'Yes'};
-document.documentElement.style.setProperty('--stick',(document.body.classList.contains('m-stripped')?96:56)+'px');
+document.documentElement.style.setProperty('--stick',(document.body.classList.contains('m-stripped')?84:52)+'px');
 function sec(s){var p=s.split(':');return +p[0]*60+ +p[1]}
 function mm(n){n=Math.round(n);return (n<600?'0':'')+Math.floor(n/60)+':'+(n%%60<10?'0':'')+n%%60}
 var wave=document.getElementById('wave');wave.innerHTML=WAVE.map(function(h){return '<i style="flex:1;height:'+h+'%%;border-radius:var(--r-xs);background:var(--track)"></i>'}).join('');

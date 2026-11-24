@@ -134,7 +134,7 @@
       body.classList.add('m-stripped');
       var strip=document.createElement('nav');strip.className='m-strip';strip.setAttribute('aria-label','Prototype tour');
       strip.innerHTML='<a class="'+(idx>0?'':'dis')+'" href="'+href(idx-1)+'" aria-label="Previous screen">'+ICON.prev+'</a>'+
-        '<button type="button" class="s-t" aria-expanded="false" aria-controls="m-stmenu"><span>'+(idx+1)+' of '+SCREENS.length+' · '+SC[1]+(states?' · '+states.length+' states':'')+'</span><b>'+SC[2]+'</b></button>'+
+        '<button type="button" class="s-t" aria-expanded="false" aria-controls="m-stmenu"><span>'+(idx+1)+'/'+SCREENS.length+'</span><b>'+SC[2]+'</b>'+(states?'<span>· '+states.length+' states</span>':'')+'</button>'+
         '<a class="'+(idx<SCREENS.length-1?'':'dis')+'" href="'+href(idx+1)+'" aria-label="Next screen">'+ICON.next+'</a>';
       body.insertBefore(strip,body.firstChild);
       var menu=document.createElement('div');menu.className='m-stmenu';menu.id='m-stmenu';menu.hidden=true;
