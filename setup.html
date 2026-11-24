@@ -88,6 +88,12 @@ b,strong{font-weight:var(--fw-strong)}
 .lp-sum b{display:block;font-weight:var(--fw-medium);color:var(--ink)}
 .lp-sum span{display:inline-block;margin-top:2px;font-family:var(--mono);font-size:var(--fs-xs);line-height:16px;background:var(--chip);color:var(--ink2);border-radius:var(--r-lg);padding:0 6px}
 .lp-sum div.on span{background:var(--surface)}
+.lp-prog{margin:0 12px 12px;display:flex;flex-direction:column;gap:6px}
+.lp-meter{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px}
+.lp-meter i{height:4px;border-radius:var(--r-xs);background:var(--track);transition:background var(--dur-enter) var(--ease-out)}
+.lp-meter i.on{background:var(--success)}
+.lp-prog p{margin:0;font-size:var(--fs-sm);color:var(--mute)}
+.lp-prog a{color:var(--ink);font-weight:var(--fw-medium);text-decoration:underline;text-underline-offset:2px}
 .sec{display:flex;align-items:center;gap:10px;height:52px;padding:0 16px;border-top:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:var(--fw-medium)}
 .sec:hover{background:var(--sub)}
 .sec.on{background:var(--sub);box-shadow:inset 2px 0 0 var(--ink)}
@@ -140,7 +146,7 @@ b,strong{font-weight:var(--fw-strong)}
 
 /* buyers */
 .buyers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.by{border:1px solid var(--line);border-radius:var(--r-lg);padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--surface)}
+.by{border:1px solid var(--line);border-radius:var(--r-md);padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--surface)}
 .by:hover{border-color:var(--line2)}
 .by .tags{display:flex;gap:6px;flex-wrap:wrap}
 .by .who{display:flex;gap:10px;align-items:center}
@@ -301,6 +307,7 @@ button.btn[disabled]{opacity:.6;cursor:default}
           <div><b>To do</b><span>2</span></div>
           <div><b>Tested</b><span>1 of 3</span></div>
         </div>
+        <div class="lp-prog"><div class="lp-meter" id="lpMeter" role="img"></div><p id="lpNext"></p></div>
         <a class="sec" href="#job"><svg class="i" viewBox="0 0 16 16"><rect x="2.5" y="4.5" width="11" height="8.5" rx="1.5"/><path d="M5.5 4.5V3.2c0-.4.3-.7.7-.7h3.6c.4 0 .7.3.7.7v1.3"/></svg>Job<span class="st"><span class="ok"><svg viewBox="0 0 10 10"><path d="m2.5 5.2 1.7 1.7 3.3-3.4"/></svg></span></span></a>
         <a class="sec" href="#product"><svg class="i" viewBox="0 0 16 16"><path d="M3 4.5h10M3 8h10M3 11.5h6"/></svg>Product and buyer<span class="st"><span class="ok"><svg viewBox="0 0 10 10"><path d="m2.5 5.2 1.7 1.7 3.3-3.4"/></svg></span></span></a>
         <a class="sec on" href="#buyers"><svg class="i" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="2.5"/><path d="M3 13.5c.6-2.6 2.6-4 5-4s4.4 1.4 5 4"/></svg>Buyers<span class="st">1 of 3 tested<span class="todo"></span></span></a>
@@ -480,6 +487,15 @@ button.btn[disabled]{opacity:.6;cursor:default}
   show((location.hash||'#buyers').slice(1));
 
   function secStatus(id,html){var a=document.querySelector('.lp .sec[href="#'+id+'"] .st');if(a)a.innerHTML=html;}
+  /* progress: one segment per section, the counts, and a link to the first section still open */
+  function drawProg(){var secs=[].slice.call(document.querySelectorAll('.lp .sec')),done=secs.filter(function(x){return !!x.querySelector('.st .ok');});
+    var m=document.getElementById('lpMeter');m.innerHTML=secs.map(function(x){return '<i class="'+(x.querySelector('.st .ok')?'on':'')+'"></i>';}).join('');
+    m.setAttribute('aria-label',done.length+' of '+secs.length+' sections ready');
+    var ts=document.querySelectorAll('.lp-sum div span');ts[0].textContent=done.length;ts[1].textContent=secs.length-done.length;
+    var nx=secs.filter(function(x){return !x.querySelector('.st .ok');})[0];
+    document.getElementById('lpNext').innerHTML=nx?'Next: <a href="'+nx.getAttribute('href')+'" data-js>'+nx.childNodes[1].textContent.trim()+'</a>':'All sections ready. Publish when you are.';}
+  drawProg();var mo=new MutationObserver(drawProg);document.querySelectorAll('.lp .sec .st').forEach(function(st){mo.observe(st,{subtree:true,childList:true});});
+  document.getElementById('lpNext').addEventListener('click',function(e){var a=e.target.closest('a');if(!a)return;e.preventDefault();var sec=document.querySelector('.lp .sec[href="'+a.getAttribute('href')+'"]');if(sec)sec.click();});
   var OKS='<span class="ok"><svg viewBox="0 0 10 10"><path d="m2.5 5.2 1.7 1.7 3.3-3.4"/></svg></span>';
 
   /* 2. Product notes, redraft, upload */

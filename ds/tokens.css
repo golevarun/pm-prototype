@@ -41,7 +41,7 @@
   --danger:#B42318;   --danger-hover:#912018; --danger-bg:#FBEAE8; --danger-line:rgba(180,35,24,.35);
   --warn:#C9821E;     --warn-bg:#FFF8E6;      --warn-text:#6B4E00;  --warn-line:rgba(138,98,0,.15); --warn-bg-soft:#FDFAF3; /* flagged row */
   --info:#2A4F99;     --info-bg:#EEF3FC;      --info-line:#7C9BD6;
-  --info-bg-soft:#F5F8FE;                     --info-line-soft:#C9D6EF;  /* selected rows, light blue borders */
+  --info-bg-soft:#F5F8FE;                     --info-line-soft:rgba(42,79,153,.22);  /* selected rows, light blue borders (alpha, so it holds on tinted rows) */
 
   /* Tags (background / text) */
   --beige:#E8E2D8; --beigeT:#493B2C;
@@ -98,6 +98,14 @@
   --frame:1120px;                           /* candidate pages */
   --rail:320px;                             /* candidate right-hand column */
   --frame-narrow:960px;                     /* hiring manager pages */
+
+  /* Motion. Short and quiet. components.css turns it off for people who ask for reduced motion. */
+  --ease-out:cubic-bezier(.2,.8,.2,1);
+  --dur-press:120ms;   /* button press and release */
+  --dur-enter:160ms;   /* dialogs, menus, panel content entering */
+  --press-scale:.97;   /* buttons shrink to this while pressed */
+  --enter-scale:.97;   /* dialogs and menus grow from this, never from 0 */
+  --slide:12px;        /* distance for directional slides */
 
   /* Spacing, 4px steps */
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s8:32px;

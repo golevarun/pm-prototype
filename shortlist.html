@@ -538,7 +538,8 @@ function updPlayer(){var c=C[cur],D=420,prog=Math.floor(PL.t/D*60);
 function startPlay(){if(PL.t>=420)PL.t=0;PL.on=true;clearInterval(PL.tm);PL.tm=setInterval(function(){PL.t+=1;if(PL.t>=420){PL.t=420;stopPlay();}updPlayer();},1000);updPlayer();}
 function stopPlay(){PL.on=false;clearInterval(PL.tm);updPlayer();}
 function fullCall(){UI.modal({title:'Full call for '+C[cur].name,body:'<p>The full call review, with the transcript and every scored moment, is built for Sam Rivera in this prototype. '+first(C[cur])+'\'s recording and moments are on this panel.</p>',actions:[{label:'Stay here'},{label:'Open Sam\'s call review',primary:true,onClick:function(){location.href='call-review.html';}}]});}
-function select(i,noHash){cur=Math.max(0,Math.min(C.length-1,i));renderRows();renderPanel();
+function select(i,noHash){var V0=visible(),was=cur;cur=Math.max(0,Math.min(C.length-1,i));renderRows();renderPanel();
+ if(was!==cur&&window.UISlide){var dir=V0.indexOf(cur)>V0.indexOf(was)?'mv-down':'mv-up';[].forEach.call(document.getElementById('dp').children,function(el){UISlide(el,dir);});}
  if(!noHash&&location.hash!=='#'+C[cur].id)history.replaceState(null,'','#'+C[cur].id);}
 function step(d){var V=visible(),k=V.indexOf(cur);if(k<0)return;var n=V[Math.max(0,Math.min(V.length-1,k+d))];var pi=Math.floor(V.indexOf(n)/PER);if(pi!==page)page=pi;select(n);}
 function setView(v,keep){view=v;page=0;document.querySelectorAll('.views span').forEach(function(s){var on=s.getAttribute('data-v')===v;s.classList.toggle('on',on);s.setAttribute('aria-selected',on);});
@@ -549,7 +550,7 @@ function fLabel(){var n=(F.und?1:0)+(F.min6?1:0)+F.str.length;document.querySele
 document.getElementById('rows').addEventListener('click',function(e){var bx=e.target.closest('.box');var tr=e.target.closest('tr[data-i]');if(!tr)return;
  if(bx){var c=C[+tr.getAttribute('data-i')];if(cmp[c.id])delete cmp[c.id];else{if(Object.keys(cmp).length>=2){protoNote('You can compare two at a time. Clear one first.');return;}cmp[c.id]=1;}renderRows();return;}
  select(+tr.getAttribute('data-i'));});
-document.getElementById('rows').addEventListener('keydown',function(e){var tr=e.target.closest('tr[data-i]');if(tr&&e.key===' '&&e.target.classList.contains('box')){e.preventDefault();e.target.click();return;}if(tr&&e.key==='Enter'){e.preventDefault();select(+tr.getAttribute('data-i'));var n=document.querySelector('tbody tr[data-i="'+cur+'"]');if(n)n.focus();}});
+document.getElementById('rows').addEventListener('keydown',function(e){var tr=e.target.closest('tr[data-i]');if(tr&&e.key===' '&&e.target.classList.contains('box')){e.preventDefault();e.target.click();return;}if(tr&&(e.key==='ArrowDown'||e.key==='ArrowUp')&&tr.getAttribute('data-i')==String(cur)){e.preventDefault();step(e.key==='ArrowDown'?1:-1);var m=document.querySelector('tbody tr[data-i="'+cur+'"]');if(m)m.focus();return;}if(tr&&e.key==='Enter'){e.preventDefault();select(+tr.getAttribute('data-i'));var n=document.querySelector('tbody tr[data-i="'+cur+'"]');if(n)n.focus();}});
 document.querySelectorAll('.views span').forEach(function(s){s.addEventListener('click',function(){setView(s.getAttribute('data-v'));});s.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();setView(s.getAttribute('data-v'));}});});
 document.getElementById('cxPrev').addEventListener('click',function(){page=Math.max(0,page-1);renderRows();});
 document.getElementById('cxNext').addEventListener('click',function(){page++;renderRows();});

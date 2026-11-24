@@ -64,6 +64,10 @@
   var hooks=[];function refresh(){drawSteps();hooks.forEach(function(f){f();});}
   window.CD.onChange=function(f){hooks.push(f);};
   drawSteps();
+  /* direction of travel: the body slides in from the left when this step comes before the last one seen */
+  (function(){var now=-1;spans.forEach(function(sp,i){if(sp.classList.contains('now'))now=i;});if(now<0)return;
+    var prev=-1;try{prev=+(sessionStorage.getItem('pm-cand-step')||-1);sessionStorage.setItem('pm-cand-step',now);}catch(e){}
+    if(prev>now&&window.UISlide){var b=document.querySelector('.cd-body');if(b){b.style.animation='none';void b.offsetWidth;b.style.animation='';UISlide(b,'mv-back');}}})();
 
   /* ---------- scored-call button used on prep and lookback ---------- */
   function scoredButton(el){
@@ -357,7 +361,8 @@
   /* ---------- done ---------- */
   PAGES.done=function(){
     if(!S.practices.length){S.practices.push({n:1,date:'Nov 3',dur:'6 min',canon:true});save();}
-    if(S.scoredLen&&S.scoredLen!=='07:00'&&$('cd-dlen'))$('cd-dlen').textContent=S.scoredLen+' with Jordan Ellis. You ended the call early.';
+    var np=S.practices.length,after=np?', after '+(np===1?'one practice call':np+' practice calls'):'';
+    if($('cd-dlen'))$('cd-dlen').textContent=S.scoredLen&&S.scoredLen!=='07:00'?S.scoredLen+' with Jordan Ellis'+after+'. You ended the call early.':'7 minutes with Jordan Ellis'+after;
     callRows($('cd-calls'));
     var rate=$('rate'),bs=[].slice.call(rate.querySelectorAll('button'));
     var host=rate.parentNode;

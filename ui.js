@@ -5,7 +5,7 @@
   var css=document.createElement('style');
   css.textContent=[
   '.ui-pop{position:fixed;z-index:200;min-width:200px;max-width:320px;background:var(--surface);border:1px solid var(--line2);border-radius:var(--r-md);box-shadow:0 8px 24px var(--line2);padding:4px;font-family:var(--font);font-size:var(--fs-md);font-weight:var(--fw-regular);line-height:20px;color:var(--ink)}',
-  '.ui-pop .ui-it{display:flex;align-items:center;gap:8px;width:100%;height:30px;padding:0 10px;border:0;background:none;border-radius:var(--r-sm);text-align:left;font:inherit;color:inherit;cursor:pointer;text-decoration:none}',
+  '.ui-pop .ui-it{display:flex;align-items:center;gap:8px;width:100%;height:30px;padding:0 10px;border:0;background:none;border-radius:var(--r-box);text-align:left;font:inherit;color:inherit;cursor:pointer;text-decoration:none}',
   '.ui-pop .ui-it:hover,.ui-pop .ui-it:focus-visible{background:var(--chip);outline:none}',
   '.ui-pop .ui-it.danger{color:var(--danger)}',
   '.ui-pop .ui-it .ck{width:14px;flex:none;color:var(--ink)}',
@@ -56,7 +56,21 @@
   '.side .grp{cursor:pointer;user-select:none}',
   '.side .grp.ui-shut .chev{transform:rotate(180deg)}',
   '.side .sub.ui-hide{display:none!important}',
-  '.topbar .search{cursor:pointer}','[hidden]{display:none!important}'
+  '.topbar .search{cursor:pointer}','[hidden]{display:none!important}',
+  /* Motion, same tokens as the app (golevarun/pm-app app/components.css): buttons press in, dialogs and menus grow from 0.97,
+     .mv-* slide content in from the direction you moved. Copy buttons swap their icon to a check with a short blur. */
+  '.btn,.ui-b,.ui-x,.iconbtn,.help{transition:transform var(--dur-press) var(--ease-out)}',
+  '.btn:active,.ui-b:active,.ui-x:active,.iconbtn:active,.help:active{transform:scale(var(--press-scale))}',
+  '@keyframes mv-fade{from{opacity:0}}@keyframes mv-grow{from{opacity:0;transform:scale(var(--enter-scale))}}',
+  '@keyframes mv-from-r{from{opacity:0;transform:translateX(var(--slide))}}@keyframes mv-from-l{from{opacity:0;transform:translateX(calc(var(--slide) * -1))}}',
+  '@keyframes mv-from-b{from{opacity:0;transform:translateY(var(--slide))}}@keyframes mv-from-t{from{opacity:0;transform:translateY(calc(var(--slide) * -1))}}',
+  '.ui-ov{animation:mv-fade var(--dur-enter) var(--ease-out)}.ui-md{animation:mv-grow var(--dur-enter) var(--ease-out);transform-origin:50% 0}',
+  '.ui-pop{animation:mv-grow var(--dur-enter) var(--ease-out);transform-origin:50% 0}',
+  '.mv-fwd{animation:mv-from-r var(--dur-enter) var(--ease-out)}.mv-back{animation:mv-from-l var(--dur-enter) var(--ease-out)}',
+  '.mv-down{animation:mv-from-b var(--dur-enter) var(--ease-out)}.mv-up{animation:mv-from-t var(--dur-enter) var(--ease-out)}',
+  '.cp-ic{display:inline-grid;flex:none}.cp-ic>svg{grid-area:1/1;transition:opacity var(--dur-enter) var(--ease-out),filter var(--dur-enter) var(--ease-out),transform var(--dur-enter) var(--ease-out)}',
+  '.cp-ic>.cp-ck,.cp-on .cp-ic>svg:first-child{opacity:0;filter:blur(2px);transform:scale(.6)}.cp-on .cp-ic>.cp-ck{opacity:1;filter:none;transform:none}',
+  '@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important}.btn:active,.ui-b:active,.ui-x:active,.iconbtn:active,.help:active{transform:none}}'
   ].join('');
   document.head.appendChild(css);
 
@@ -230,4 +244,15 @@
     wire(b,function(){modal({title:'Write to Dana Whitfield',body:'<p>Dana is the recruiter for this role at Northwind Freight. Your message goes to her inbox. It doesn’t go to the hiring manager and doesn’t affect your score.</p><label for="ui-q">Your message</label><textarea id="ui-q" placeholder="For example: can I move my scored call to Friday?"></textarea>',
       actions:[{label:'Cancel'},{label:'Send',primary:true,onClick:function(m){var t=m.querySelector('textarea');if(!t.value.trim()){t.focus();t.style.borderColor='var(--danger)';return false;}toast('Sent to Dana. She usually replies within a day.');}}]});});
   });
+
+  /* Copy buttons with an icon: the icon blurs into a check for a moment. */
+  document.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('button,a.btn');if(!b||!/^\s*Copy\b/.test(b.textContent))return;
+    var ic=b.querySelector('svg');if(!ic)return;
+    if(!ic.parentNode.classList.contains('cp-ic')){var w=document.createElement('span');w.className='cp-ic';ic.parentNode.insertBefore(w,ic);w.appendChild(ic);
+      w.insertAdjacentHTML('beforeend','<svg class="'+(ic.getAttribute('class')||'i')+' cp-ck" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.5 3 3 6-7"/></svg>');}
+    b.classList.add('cp-on');clearTimeout(b._cp);b._cp=setTimeout(function(){b.classList.remove('cp-on');},1600);
+  });
+  /* UISlide(el, cls): replay an .mv-* entrance on el (used when panel content changes). */
+  window.UISlide=function(el,cls){if(!el)return;el.classList.remove('mv-fwd','mv-back','mv-up','mv-down');void el.offsetWidth;if(cls)el.classList.add(cls);};
 })();
