@@ -1,0 +1,40 @@
+/* ios.css: Apple Mail look for the three email screens (invite, outcome, team invite).
+   It imitates iOS on purpose, so it uses iOS colors and sizes instead of PM tokens.
+   ds/check.mjs skips files named ios.* and ios-*. */
+body.ios .m-scr,body.ios .m-view{background:#fff}
+.im{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,sans-serif;color:#000;letter-spacing:-.2px;font-size:17px;line-height:22px;flex:1;display:flex;flex-direction:column;background:#fff}
+.im-nav{position:sticky;top:0;z-index:20;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 8px;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.m-stripped .im-nav{top:40px}
+.im-back{display:flex;align-items:center;gap:6px;height:44px;padding:0 8px 0 4px;color:#007AFF;font-size:17px;text-decoration:none}
+.im-back svg{width:12px;height:21px}
+.im-arw{display:flex;gap:2px}
+.im-arw span{width:40px;height:40px;display:grid;place-items:center;color:#007AFF}
+.im-arw span.off{color:rgba(60,60,67,.3)}
+.im-body{padding:4px 16px 120px;flex:1}
+.im-from{display:flex;gap:12px;align-items:flex-start;padding:8px 0 12px;border-bottom:.5px solid rgba(60,60,67,.29)}
+.im-av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:15px;font-weight:600;flex:none;background:linear-gradient(#7FC59A,#4E9A6B)}
+.im-av.blue{background:linear-gradient(#7FA2E0,#4D74C2)}
+.im-fm{flex:1;min-width:0}
+.im-fm b{display:flex;justify-content:space-between;font-weight:600;font-size:17px}
+.im-fm b span{font-weight:400;font-size:15px;color:rgba(60,60,67,.6)}
+.im-fm small{display:block;font-size:15px;color:rgba(60,60,67,.6);line-height:20px}
+.im-subj{font-size:20px;line-height:25px;font-weight:600;letter-spacing:-.4px;margin:14px 0 12px}
+.im-txt p{margin:0 0 14px;font-size:17px;line-height:23px}
+.im-cta{border:.5px solid rgba(60,60,67,.29);border-radius:14px;padding:14px 16px;margin:6px 0 16px;background:#F9F9FB}
+.im-cta dl{margin:0 0 12px}
+.im-cta dl div{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:.5px solid rgba(60,60,67,.18);font-size:15px;line-height:20px}
+.im-cta dl div:last-child{border-bottom:0}
+.im-cta dt{color:rgba(60,60,67,.6)}
+.im-cta dd{margin:0;text-align:right;font-weight:500}
+.im-btn{display:flex;align-items:center;justify-content:center;height:50px;border-radius:12px;background:#1C1C18;color:#fff;font-size:17px;font-weight:600;text-decoration:none}
+.im-btn:active{opacity:.85}
+.im-sig{font-size:13px;line-height:18px;color:rgba(60,60,67,.6);margin-top:18px}
+.im-tb{position:fixed;left:0;right:0;bottom:0;z-index:30;height:83px;padding:0 20px 34px;display:flex;align-items:center;justify-content:space-between;background:rgba(249,249,249,.96);box-shadow:0 -.5px 0 rgba(60,60,67,.29);color:#007AFF}
+.im-tb svg{width:24px;height:24px}
+.im-sw{display:flex;gap:2px;border-radius:9px;background:rgba(118,118,128,.12);padding:2px;margin:12px 0 4px}
+.im-sw button{flex:1;height:30px;border-radius:7px;font-size:13px;font-weight:500;color:#000}
+.im-sw button.on{background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.12),0 3px 1px rgba(0,0,0,.04)}
+.im-att{display:flex;align-items:center;gap:12px;padding:10px 12px;border:.5px solid rgba(60,60,67,.29);border-radius:12px;width:100%;text-align:left;margin-top:4px;font-family:inherit}
+.im-att .pdf{width:34px;height:42px;border-radius:4px;background:#E8463A;color:#fff;font-size:10px;font-weight:700;display:grid;place-items:end center;padding-bottom:5px}
+.im-att b{display:block;font-size:15px;font-weight:500;color:#000}
+.im-att small{display:block;font-size:13px;color:rgba(60,60,67,.6)}

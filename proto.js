@@ -1,5 +1,11 @@
 /* Prototype helpers: demo step bar and a note for things outside this prototype. */
 (function(){
+  /* Phones get the phone screens (m/). ?desktop=1 keeps the desktop prototype for this visit. */
+  try{
+    var q=new URLSearchParams(location.search);
+    if(q.get('desktop')==='1')sessionStorage.setItem('pm-desktop','1');
+    if(Math.min(window.innerWidth,screen.width||9999)<810&&sessionStorage.getItem('pm-desktop')!=='1'){location.replace('m/');return;}
+  }catch(e){}
   var STEPS=[
     ['home.html','Recruiter','Dana opens PM','Tue, Nov 17'],
     ['new-role.html','Recruiter','Dana creates the role from the applicant tracker','Mon, Oct 26'],
@@ -32,7 +38,8 @@
   bar.innerHTML=
     '<a class="'+(prev?'':'dis')+'" href="'+(prev?prev[0]:'#')+'" aria-label="Previous step">←</a>'+
     '<span class="t">'+(i>=0?'<span class="pd">'+STEPS[i][3]+'</span>Step <b>'+(i+1)+'</b> of '+STEPS.length+' · '+STEPS[i][1]+' · '+STEPS[i][2]:'Prototype')+'</span>'+
-    '<a class="'+(next?'':'dis')+'" href="'+(next?next[0]:'#')+'">'+(next?'Next →':'End')+'</a>';
+    '<a class="'+(next?'':'dis')+'" href="'+(next?next[0]:'#')+'">'+(next?'Next →':'End')+'</a>'+
+    '<span class="sep"></span><a href="m/" title="The candidate and hiring manager screens on a phone">On a phone</a>';
   document.body.appendChild(bar);
   var t=document.createElement('div');t.className='ptoast';t.setAttribute('role','status');document.body.appendChild(t);var tm;
   window.protoNote=function(msg){t.textContent=msg;t.classList.add('on');clearTimeout(tm);tm=setTimeout(function(){t.classList.remove('on')},2200);};

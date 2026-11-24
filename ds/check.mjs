@@ -1,10 +1,12 @@
 // Prototype design check: `node ds/check.mjs` from the repo root.
 // Fails if a page, stylesheet or script uses a raw color, font size, radius or weight instead of a token
 // from ds/tokens.css. ds/tokens.css is generated from golevarun/pm-app (app/tokens.css): edit it there,
-// then run `npm run sync:prototype` in pm-app. The iPhone Mail mock (cd-ios-*) and case-study/ are exempt.
+// then run `npm run sync:prototype` in pm-app. Checks the root pages and the phone screens in m/.
+// The iPhone Mail mocks (cd-ios-*, m/ios.css) and case-study/ are exempt.
 import fs from 'node:fs';
 
-const files = fs.readdirSync('.').filter((f) => /\.(html|css|js)$/.test(f) && !f.startsWith('cd-ios'));
+const files = [...fs.readdirSync('.'), ...fs.readdirSync('m').map((f) => 'm/' + f)]
+  .filter((f) => /\.(html|css|js)$/.test(f) && !/(^|\/)(cd-ios|ios[.-])/.test(f));
 const RULES = [
   ['raw color', /#[0-9a-fA-F]{6}\b|\brgba?\(\s*\d/g],
   ['font size', /font-size:\s*\d[\d.]*px/g],

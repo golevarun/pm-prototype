@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>PM on a phone</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<!-- Design tokens: shared with the PM app. Local copy first, live copy from the app second. -->
+<link rel="stylesheet" href="../ds/tokens.css"><link rel="stylesheet" href="https://pm-app-one-kappa.vercel.app/ds/tokens.css"><link rel="stylesheet" href="m.css">
+<style>
+.ld{max-width:680px;margin:0 auto;padding:32px 16px 48px;display:flex;flex-direction:column;gap:16px}
+.ld .pm{display:flex;align-items:center;gap:6px;font-weight:var(--fw-strong);letter-spacing:-.01em}
+.ld .pm i{width:14px;height:14px;border-radius:50%;background:var(--brand-dot);display:block}
+.ld h1{font-size:var(--fs-2xl);line-height:var(--lh-2xl);letter-spacing:-.02em;margin-top:8px}
+.ld .lede{color:var(--ink2)}
+.ld .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+@media (max-width:640px){.ld .grid{grid-template-columns:1fr}.ld{padding-top:20px}}
+.ld .card .ch{padding-bottom:4px}
+.ld .card .cb{padding-bottom:12px}
+.ld ol{list-style:none;margin:0;padding:0}
+.ld ol a{display:flex;gap:10px;align-items:center;min-height:44px;padding:6px 16px;border-top:1px solid var(--line);text-decoration:none;color:var(--ink2);font-size:var(--fs-md);line-height:18px}
+.ld ol a em{font-style:normal;color:var(--faint);width:18px;flex:none;font-variant-numeric:tabular-nums}
+.ld ol a:active,.ld ol a:hover{background:var(--hover-solid);color:var(--ink)}
+.ld .start{padding:12px 16px 16px;border-top:1px solid var(--line)}
+.ld .links{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:var(--fs-md)}
+</style></head><body>
+<main class="ld">
+  <div><span class="pm"><i></i>PM</span><h1>PM on a phone</h1>
+  <p class="lede" style="margin-top:8px">Candidates take these interviews on their phones, and hiring managers often rate calls between meetings. These are the screens each of them uses. Setup, invites and the candidates table stay on a laptop.</p></div>
+  <div class="grid">
+    <section class="card"><div class="ch"><h2>Candidate</h2><span class="meta">10 screens</span></div>
+      <div class="cb small ink2">Sam Rivera, from Dana’s invite to the decision.</div>
+      <ol id="c"></ol>
+      <div class="start"><a class="btn pri block" href="invite.html">Start with Sam</a></div></section>
+    <section class="card"><div class="ch"><h2>Hiring manager</h2><span class="meta">6 screens</span></div>
+      <div class="cb small ink2">Marcus Lee joins the role, rates Sam’s call, then decides.</div>
+      <ol id="h"></ol>
+      <div class="start"><a class="btn block" href="join-email.html">Start with Marcus</a></div></section>
+  </div>
+  <div class="ban info"><svg class="i sm" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M10 9v4.5M10 6.5v.1"/></svg><div>Sample data. Nothing is saved to a server, no call connects and no email is sent. The working app does those for real.</div></div>
+  <div class="links"><a href="../home.html?desktop=1" class="link">Open the desktop prototype</a><a href="https://pm-app-one-kappa.vercel.app" class="link">Open the working app</a><button type="button" class="link" id="rs" style="color:var(--mute)">Start the story over</button></div>
+</main>
+<script>
+(function(){
+  var S=[['invite.html','Sam gets the invite'],['notice.html','Reads how it works and agrees'],['ask.html','Asks for live captions'],['buyer.html','Meets Jordan, checks his mic'],['practice.html','Takes a practice call'],['notes.html','Reads his practice notes'],['ready.html','Gets ready for the scored call'],['scored.html','Takes the scored call'],['done.html','Done, knows when he’ll hear back'],['outcome.html','Hears back from Dana'],
+         ['join-email.html','Marcus is added to the role'],['join.html','Joins from his phone'],['home.html','Opens PM between meetings'],['shortlist.html','Sees the shortlist'],['review.html','Listens and rates Sam’s call'],['decide.html','Advances Sam']];
+  function li(s,k){return '<li><a href="'+s[0]+'"><em>'+(k+1)+'</em>'+s[1]+'</a></li>';}
+  document.getElementById('c').innerHTML=S.slice(0,10).map(li).join('');
+  document.getElementById('h').innerHTML=S.slice(10).map(function(s,k){return li(s,k+10);}).join('');
+  document.getElementById('rs').onclick=function(){try{for(var i=localStorage.length-1;i>=0;i--){var k=localStorage.key(i);if(k&&k.indexOf('pmm:')===0)localStorage.removeItem(k);}}catch(e){}this.textContent='Done. The story starts over.';};
+})();
+</script>
+</body></html>

@@ -4,6 +4,15 @@ A clickable desktop prototype of PM, an AI first-round sales interview. Built at
 
 It opens on the Home screen. Use the step bar at the bottom to move through the flow.
 
+## Phone screens (`m/`)
+
+The candidate flow and the hiring manager's screens, built for a phone: 16 screens, several with states (mic blocked, call dropped, before and after rating). Start at `m/index.html`.
+
+- On a phone they fill the screen, with a thin tour strip on top. On a laptop they sit in a phone frame with the tour beside them.
+- Phones that open any desktop page are sent to `m/`. Add `?desktop=1` to stay on the desktop prototype.
+- `m/build.py` writes the screen pages. Edit it, then run `python3 m/build.py`. Shared styles are in `m/m.css`, the tour and states in `m/m.js`. The three email screens use `m/ios.css`, which imitates iOS Mail and is exempt from the token check.
+- Demo data (the rating and the decision) lives in localStorage under `pmm:`. "Start over" clears it.
+
 People and companies in the prototype are invented.
 
 ## Design tokens
