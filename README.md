@@ -6,7 +6,7 @@ It opens on the Home screen. Use the step bar at the bottom to move through the 
 
 ## Phone screens (`m/`)
 
-The candidate flow and the hiring manager's screens, built for a phone: 16 screens, several with states (mic blocked, call dropped, before and after rating). Start at `m/index.html`.
+The candidate flow and the hiring manager's screens, built for a phone: 16 screens, several with states (mic blocked, call dropped, before and after rating). `m/index.html` opens the first screen, "Sam gets the invite", on phones and laptops. The list of all screens is at `m/index.html?all`.
 
 - On a phone they fill the screen, with a thin tour strip on top. On a laptop they sit in a phone frame with the tour beside them.
 - Phones that open any desktop page are sent to `m/`. Add `?desktop=1` to stay on the desktop prototype.
